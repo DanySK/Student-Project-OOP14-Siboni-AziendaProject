@@ -1,4 +1,4 @@
-package model.operation;
+package model.douments;
 
 public class GeneratingDocumentException extends RuntimeException {
 

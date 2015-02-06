@@ -3,8 +3,10 @@ package model.operation;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
+import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Document;
 
@@ -23,7 +25,7 @@ public interface Operation extends Serializable {
 	int getNum();
 	
 	/**
-	 * Aggiunge un conto movimentato a questa operazione; lancia IllegalArgumentException se l'importo è uguale a zero, o se il conto non esiste
+	 * Aggiunge un conto movimentato a questa operazione; lancia IllegalArgumentException se l'importo è uguale a zero, o se il conto era già stato movimentato
 	 * 
 	 * @param c il conto da movimentare
 	 * @param importo l'importo di cui il conto dovrà essere movimentato
@@ -61,11 +63,11 @@ public interface Operation extends Serializable {
 	String getDescription();
 	
 	/**
+	 * @param contatti i contatti su cui generare il documento
 	 * 
-	 * @return il documento generato dall'operazione corrente; lancia UnsupportedOperationException se l'operazione non è bilanciata,
-	 * 			oppure una NotRecognisedException se non si riesce a riconoscere il tipo di documento da generare
+	 * @return il documento generato dall'operazione corrente; lancia IllegalStateException se l'operazione non è bilanciata;
 	 */
-	Document generateDocument();
+	Optional<Document> generateDocument(Contatto... contatti);
 	
 	/**
 	 * 
@@ -82,4 +84,5 @@ public interface Operation extends Serializable {
 	 * 			il documento da cui prendere i dati per la generazione dell'operazione
 	 *
 	static Operation generateOperationFromDocument(Document doc);*/
+	
 }

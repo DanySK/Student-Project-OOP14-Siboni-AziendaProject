@@ -1,6 +1,6 @@
 package model;
 
-import java.io.File;
+import java.util.Set;
 
 import model.conto.Conto;
 import model.douments.Document;
@@ -15,11 +15,10 @@ import model.operation.Operation;
 public interface Model {
 
 	/**
-	 * Carica i dati salvati sui file
+	 * Carica i dati salvati e popola il modello
 	 * 
-	 * @param file
 	 */
-	void load(File... file);
+	void load();
 	
 	/**
 	 * Aggiunge il conto passato come parametro, se questo non era già presente, al file dei conti; lancia IllegalArgumentException se il conto esisteva già
@@ -28,6 +27,12 @@ public interface Model {
 	 * 		il conto da aggiungere
 	 */
 	void addConto(Conto c);
+	
+	/**
+	 * 
+	 * @return il set dei conti utilizzabili nell'applicazione
+	 */
+	Set<Conto> getConti();
 	
 	/**
 	 * Aggiunge l'operazione passata come parametro, al modello
@@ -57,13 +62,15 @@ public interface Model {
 	Document getDocumentReferredTo(int numOperation);
 	
 	/**
-	 * Salva il modello su files
-	 * 
-	 * @param file
+	 * Salva il modello
 	 */
-	void saveAll(File... file);
+	void save();
 	
-	
+	/**
+	 * Resetta il modello allo stato di partenza
+	 * 
+	 */
+	void reset();
 	
 	/*
 	 * 

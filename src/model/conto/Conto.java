@@ -11,6 +11,12 @@ import java.io.Serializable;
 public interface Conto extends Serializable {
 	
 	/**
+	 * 
+	 * @return il nome del conto
+	 */
+	String getName();
+	
+	/**
 	 * Aggiunge una movimentazione al conto
 	 * @param importo l'importo della movimentazione
 	 */
@@ -27,6 +33,13 @@ public interface Conto extends Serializable {
 	 * @return il segno dell'eccedenza di questo conto
 	 */
 	Eccedenza getSegnoEccedenza();
+	
+	/**
+	 * 
+	 * @param importo l'importo che si sarebbe aggiunto
+	 * @return il segno del'eccedenza se si aggiungesse un movimento con quell'importo
+	 */
+	Eccedenza getSegnoEccedenzaSeAggiunto(double importo);
 	
 	/**
 	 * 
