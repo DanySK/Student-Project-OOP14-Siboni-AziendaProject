@@ -114,6 +114,7 @@ public class OperationImpl implements Operation {
 
 		@Override
 		public Optional<Document> generate(Operation op, Contatto... contatti) {
+			Document resultDocument = null;
 			if (contatti.length == 1) {
 				if (op.getContiMovimentati()
 						.stream()
@@ -124,14 +125,14 @@ public class OperationImpl implements Operation {
 										"IVA a Debito", "Vendita Merci"))) {
 
 					//TODO Mettere i vari casi di documenti, implementare document
-					return null;
+					
 				}
 			} else if (contatti.length == 2) {
-				return null;
+				
 			} else {
-				return Optional.empty();
+				
 			}
-			return null;
+			return Optional.ofNullable(resultDocument);
 		}
 
 	}

@@ -1,8 +1,6 @@
 package model.douments;
 
 import java.io.Serializable;
-import java.util.Date;
-
 import model.contatti.Contatto;
 
 /**
@@ -33,9 +31,9 @@ public interface Document extends Serializable{
 	
 	/**
 	 * 
-	 * @return la data di emissione del documeto
+	 * @return la data di emissione del documeto in formato stringa
 	 */
-	Date getData();
+	String getData();
 	
 	/**
 	 * 

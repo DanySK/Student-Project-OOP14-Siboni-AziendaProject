@@ -1,4 +1,6 @@
-package model.douments;
+package model.douments.fattura;
+
+import model.douments.Document;
 
 public interface Fattura extends Document {
 

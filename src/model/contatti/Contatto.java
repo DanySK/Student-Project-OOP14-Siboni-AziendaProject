@@ -1,6 +1,7 @@
 package model.contatti;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * Descrive i dati relativi alle persone che vengono a contatto con l'azienda
@@ -38,29 +39,29 @@ public interface Contatto extends Serializable{
 	 * 
 	 * @return "prefisso-numero" del contatto
 	 */
-	String getTelefono();
+	Optional<String> getTelefono();
 	
 	/**
 	 * 
 	 * @return la stringa rappresentante la sede legale
 	 */
-	String getSedeLegale();
+	Optional<String> getSedeLegale();
 	
 	/**
 	 * 
 	 * @return la città
 	 */
-	String getCitta();
+	Optional<String> getCitta();
 	
 	/**
 	 * 
 	 * @return il CAP
 	 */
-	String getCAP();
+	Optional<String> getCAP();
 	
 	/**
 	 * 
 	 * @return la provincia
 	 */
-	String getProvincia();
+	Optional<String> getProvincia();
 }
