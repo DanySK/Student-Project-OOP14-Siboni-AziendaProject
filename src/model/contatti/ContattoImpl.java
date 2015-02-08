@@ -105,37 +105,43 @@ public class ContattoImpl implements Contatto {
 			return false;
 		}
 		final ContattoImpl other = (ContattoImpl) obj;
-		return nomeTit.equals(other.nomeTit) && ragSoc.equals(other.ragSoc)
-				&& PIVA.equals(other.PIVA) && CF.equals(other.CF)
-				&& sedeLeg.isPresent() ? sedeLeg.equals(other.sedeLeg)
-				: true && citta.isPresent() ? citta.equals(other.citta)
-						: true && Prov.isPresent() ? Prov.equals(other.Prov)
-								: true && CAP.isPresent() ? CAP
-										.equals(other.CAP) : true && Telefono
-										.isPresent() ? Telefono
-										.equals(other.Telefono) : true;
+		
+		/* Questa equals ritorna vero se due campi sono uguali (senza considerare le maiuscole),
+		 * ma anche quando un campo non è presente in un contatto e nell'altro si, e viceversa;
+		 * 
+		 * Cioè un contatto si considera uguale ad un'altro se i campi RIEMPITI coincidono,
+		 * se un campo è pieno in uno, ma non nell'altro, allora sono comunque uguali.
+		 */
+		
+		return nomeTit.equalsIgnoreCase(other.nomeTit) && ragSoc.equalsIgnoreCase(other.ragSoc)
+				&& PIVA.equalsIgnoreCase(other.PIVA) && CF.equalsIgnoreCase(other.CF) &&
+				sedeLeg.isPresent() ? sedeLeg.get().equalsIgnoreCase(other.sedeLeg.isPresent() ? other.sedeLeg.get() : sedeLeg.get()) : true &&
+				citta.isPresent() ? citta.get().equalsIgnoreCase(other.citta.isPresent() ? other.citta.get() : citta.get()) : true &&
+				Prov.isPresent() ? Prov.get().equalsIgnoreCase(other.Prov.isPresent() ? other.Prov.get() : Prov.get()) : true &&
+				CAP.isPresent() ? CAP.get().equalsIgnoreCase(other.CAP.isPresent() ? other.CAP.get() : CAP.get()): true &&
+				Telefono.isPresent() ? Telefono.get().equalsIgnoreCase(other.Telefono.isPresent() ? other.Telefono.get() : Telefono.get()) : true;
 	}
 
 	@Override
 	public String toString() {
 		final StringBuilder s = new StringBuilder(100);
-		s.append("Contatto [Ragione Sociale=").append(ragSoc)
-				.append(", Nome Titolare=").append(nomeTit).append(", P.IVA=")
-				.append(PIVA).append(", C.F.=").append(CF);
+		s.append("Contatto [RagioneSociale= ").append(ragSoc)
+				.append(", NomeTitolare= ").append(nomeTit).append(", P.IVA= ")
+				.append(PIVA).append(", C.F.= ").append(CF);
 		if (Telefono.isPresent()) {
-			s.append(", Telefono=").append(Telefono.get());
+			s.append(", Telefono= ").append(Telefono.get());
 		}
 		if (sedeLeg.isPresent()) {
-			s.append(", Sede Leg.=").append(sedeLeg.get());
+			s.append(", SedeLeg.= ").append(sedeLeg.get());
 		}
 		if (citta.isPresent()) {
-			s.append(", Citta'=").append(citta.get());
+			s.append(", Citta'= ").append(citta.get());
 		}
 		if (CAP.isPresent()) {
-			s.append(", CAP=").append(CAP.get());
+			s.append(", CAP= ").append(CAP.get());
 		}
 		if (Prov.isPresent()) {
-			s.append(", Provincia=").append(Prov.get());
+			s.append(", Provincia= ").append(Prov.get());
 		}
 		return s.append("]").toString();
 	}
@@ -147,6 +153,10 @@ public class ContattoImpl implements Contatto {
 	 *
 	 */
 	public static class ContattoBuilder {
+
+		private static final int CF_LENGTH = 16;
+		private static final int PIVA_LENGTH = 11;
+		private static final int CAP_LENGTH = 5;
 
 		private Optional<String> nomeTit;
 		private Optional<String> ragSoc;
@@ -216,19 +226,32 @@ public class ContattoImpl implements Contatto {
 		}
 
 		public Contatto build() {
-			if (cf.orElseThrow(()-> new IllegalStateException("Il campo C.F. non è stato compilato")).length() != 16){
-				throw new IllegalStateException("Il campo C.F. deve contenere 16 caratteri");
+			if (cf.orElseThrow(
+					() -> new IllegalStateException(
+							"Il campo C.F. non è stato compilato")).length() != CF_LENGTH) {
+				throw new IllegalStateException("Il campo C.F. deve contenere "
+						+ CF_LENGTH + " caratteri");
 			}
-			if(piva.orElseThrow(()-> new IllegalStateException("Il campo P.IVA non è stato compilato")).length()!=11){
-				throw new IllegalStateException("Il campo P.IVA deve contenere 11 caratteri");
+
+			if (piva.orElseThrow(
+					() -> new IllegalStateException(
+							"Il campo P.IVA non è stato compilato")).length() != PIVA_LENGTH) {
+				throw new IllegalStateException(
+						"Il campo P.IVA deve contenere " + PIVA_LENGTH
+								+ " caratteri");
 			}
-			//aggiungere controllo sul cap
-			if(nomeTit.isPresent() && ragSoc.isPresent()) {
+
+			if (cap.isPresent() && cap.get().length() != CAP_LENGTH) {
+				throw new IllegalStateException("Il campo CAP deve contenere "
+						+ CAP_LENGTH + " caratteri");
+			}
+
+			if (nomeTit.isPresent() && ragSoc.isPresent()) {
 				return new ContattoImpl(nomeTit.get(), ragSoc.get(), cf.get(),
 						piva.get(), telefono, sedeLeg, citta, cap, prov);
 			} else {
 				throw new IllegalStateException(
-						"Uno dei seguenti campi non e' stato compilato adeguatamente: Nome Titolare, Codice Fiscale, P.IVA, Rag. Sociale");
+						"I campi Nome Titolare e/o Rag. Sociale non sono stati compilati");
 			}
 		}
 	}
