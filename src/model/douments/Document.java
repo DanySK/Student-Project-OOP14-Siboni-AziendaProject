@@ -33,7 +33,7 @@ public interface Document extends Serializable{
 	 * 
 	 * @return la data di emissione del documeto in formato stringa
 	 */
-	String getData();
+	Data getData();
 	
 	/**
 	 * 

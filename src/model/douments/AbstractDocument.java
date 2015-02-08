@@ -1,5 +1,7 @@
 package model.douments;
 
+import java.util.Date;
+
 import model.contatti.Contatto;
 
 /**
@@ -13,11 +15,11 @@ public abstract class AbstractDocument implements Document {
 	 * 
 	 */
 	private static final long serialVersionUID = 7283770252215004660L;
-
+	
 	private final Contatto mittente;
 	private final Contatto benefiaciario;
 	private final Contatto debitore;
-	private final String data;
+	private final Data data;
 
 	protected AbstractDocument(final Contatto mittente,
 			final Contatto beneficiario, final Contatto debitore,
@@ -26,7 +28,7 @@ public abstract class AbstractDocument implements Document {
 		this.mittente = mittente;
 		this.debitore = debitore;
 		this.benefiaciario = beneficiario;
-		this.data = data;
+		this.data = new DataImpl(data);
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public abstract class AbstractDocument implements Document {
 	}
 
 	@Override
-	public String getData() {
+	public Data getData() {
 		return this.data;
 	}
 

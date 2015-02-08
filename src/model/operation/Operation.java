@@ -1,13 +1,13 @@
 package model.operation;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import model.contatti.Contatto;
 import model.conto.Conto;
+import model.douments.Data;
 import model.douments.Document;
 
 /**
@@ -33,10 +33,23 @@ public interface Operation extends Serializable {
 	void addContoMovimentato(Conto c, double importo);
 
 	/**
+	 * Aggiunge una descrizione all'operazione
+	 * 
+	 * @param descr la descrizione da aggiungere
+	 */
+	void setDescription(String descr);
+	
+	/**
+	 * Setta il numero dell'operazione; può essere chiamato solo una volta sull'operazione
+	 * @param numOp il numero operazione da settare
+	 */
+	void setNumOperation(int numOp);
+	
+	/**
 	 * 
 	 * @return la data di registrazione dell'operazione
 	 */
-	Date getDate();
+	Data getData();
 	
 	/**
 	 * 

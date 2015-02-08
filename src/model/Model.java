@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import model.conto.Conto;
@@ -12,7 +13,7 @@ import model.operation.Operation;
  * @author Enrico
  *
  */
-public interface Model {
+public interface Model extends Serializable{
 
 	/**
 	 * Carica i dati salvati e popola il modello
@@ -35,7 +36,7 @@ public interface Model {
 	Set<Conto> getConti();
 	
 	/**
-	 * Aggiunge l'operazione passata come parametro, al modello
+	 * Aggiunge l'operazione passata come parametro al modello, preoccupandosi di dargli un numero progressivo
 	 * 
 	 * @param op
 	 */

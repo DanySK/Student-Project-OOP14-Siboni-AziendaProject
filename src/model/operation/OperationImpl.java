@@ -1,7 +1,6 @@
 package model.operation;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +9,8 @@ import java.util.stream.Collectors;
 
 import model.contatti.Contatto;
 import model.conto.Conto;
+import model.douments.Data;
+import model.douments.DataImpl;
 import model.douments.Document;
 import model.douments.DocumentGenerationStrategy;
 
@@ -20,20 +21,18 @@ public class OperationImpl implements Operation {
 	 */
 	private static final long serialVersionUID = 1445965986132678879L;
 
-	private static int operationCounter;
 	private static DocumentGenerationStrategy documentStrategy = new DocumentStrategy();
 
 	private final Map<Conto, Double> map;
-	private final int operationNum;
-	private final Date data;
-	private final String description;
+	private Integer operationNum;
+	private final Data data;
+	private Optional<String> description;
 	private Optional<Document> document;
 
-	public OperationImpl(final String description) {
+	public OperationImpl() {
 		this.map = new HashMap<>();
-		this.operationNum = OperationImpl.getNextOperationNumber();
-		this.data = new Date();
-		this.description = description;
+		this.data = new DataImpl();
+		this.description = Optional.empty();
 		this.document = Optional.empty();
 	}
 
@@ -56,7 +55,21 @@ public class OperationImpl implements Operation {
 	}
 
 	@Override
-	public Date getDate() {
+	public void setDescription(final String description){
+		this.description = Optional.ofNullable(description);
+	}
+	
+	@Override
+	public void setNumOperation(final int numOp){
+		if(this.operationNum == null){
+			this.operationNum = numOp;
+		}else{
+			throw new UnsupportedOperationException("Il numero dell'operazione non si può settare due volte");
+		}
+	}
+	
+	@Override
+	public Data getData() {
 		return this.data;
 	}
 
@@ -79,7 +92,7 @@ public class OperationImpl implements Operation {
 
 	@Override
 	public String getDescription() {
-		return this.description;
+		return this.description.orElse("");
 	}
 
 	@Override
@@ -92,10 +105,6 @@ public class OperationImpl implements Operation {
 	public boolean canGenerateDocument() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	private static int getNextOperationNumber() {
-		return OperationImpl.operationCounter++;
 	}
 
 	/**

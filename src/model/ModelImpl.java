@@ -10,6 +10,13 @@ import model.operation.Operation;
 
 public class ModelImpl implements Model {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3485815033963843598L;
+
+	private static int operationCounter;
+	
 	private Set<Conto> contiStore;
 	
 	public ModelImpl(){
@@ -39,7 +46,7 @@ public class ModelImpl implements Model {
 	@Override
 	public void addOperation(final Operation op) {
 		// TODO Auto-generated method stub
-
+		op.setNumOperation(getNextOperationNumber());
 	}
 
 	@Override
@@ -66,6 +73,8 @@ public class ModelImpl implements Model {
 
 	}
 
-
+	private static int getNextOperationNumber() {
+		return ModelImpl.operationCounter++;
+	}
 
 }
