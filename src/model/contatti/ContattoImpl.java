@@ -36,6 +36,13 @@ public class ContattoImpl implements Contatto {
 		this.Prov = Prov;
 	}
 
+	public ContattoImpl(final Contatto toCopy) {
+		this(toCopy.getNomeCognomeTitolare(), toCopy.getRagioneSociale(),
+				toCopy.getCF(), toCopy.getPIVA(), toCopy.getTelefono(), toCopy
+						.getSedeLegale(), toCopy.getCitta(), toCopy.getCAP(),
+				toCopy.getProvincia());
+	}
+
 	@Override
 	public String getRagioneSociale() {
 		return this.ragSoc;
@@ -105,21 +112,45 @@ public class ContattoImpl implements Contatto {
 			return false;
 		}
 		final ContattoImpl other = (ContattoImpl) obj;
-		
-		/* Questa equals ritorna vero se due campi sono uguali (senza considerare le maiuscole),
-		 * ma anche quando un campo non è presente in un contatto e nell'altro si, e viceversa;
+
+		/*
+		 * Questa equals ritorna vero se due campi sono uguali (senza
+		 * considerare le maiuscole), ma anche quando un campo non è presente in
+		 * un contatto e nell'altro si, e viceversa;
 		 * 
-		 * Cioè un contatto si considera uguale ad un'altro se i campi RIEMPITI coincidono,
-		 * se un campo è pieno in uno, ma non nell'altro, allora sono comunque uguali.
+		 * Cioè un contatto si considera uguale ad un'altro se i campi RIEMPITI
+		 * coincidono, se un campo è pieno in uno, ma non nell'altro, allora
+		 * sono comunque uguali.
 		 */
-		
-		return nomeTit.equalsIgnoreCase(other.nomeTit) && ragSoc.equalsIgnoreCase(other.ragSoc)
-				&& PIVA.equalsIgnoreCase(other.PIVA) && CF.equalsIgnoreCase(other.CF) &&
-				sedeLeg.isPresent() ? sedeLeg.get().equalsIgnoreCase(other.sedeLeg.isPresent() ? other.sedeLeg.get() : sedeLeg.get()) : true &&
-				citta.isPresent() ? citta.get().equalsIgnoreCase(other.citta.isPresent() ? other.citta.get() : citta.get()) : true &&
-				Prov.isPresent() ? Prov.get().equalsIgnoreCase(other.Prov.isPresent() ? other.Prov.get() : Prov.get()) : true &&
-				CAP.isPresent() ? CAP.get().equalsIgnoreCase(other.CAP.isPresent() ? other.CAP.get() : CAP.get()): true &&
-				Telefono.isPresent() ? Telefono.get().equalsIgnoreCase(other.Telefono.isPresent() ? other.Telefono.get() : Telefono.get()) : true;
+
+		return nomeTit.equalsIgnoreCase(other.nomeTit)
+				&& ragSoc.equalsIgnoreCase(other.ragSoc)
+				&& PIVA.equalsIgnoreCase(other.PIVA)
+				&& CF.equalsIgnoreCase(other.CF) && sedeLeg.isPresent() ? sedeLeg
+				.get().equalsIgnoreCase(
+						other.sedeLeg.isPresent() ? other.sedeLeg.get()
+								: sedeLeg.get())
+				: true && citta.isPresent() ? citta.get().equalsIgnoreCase(
+						other.citta.isPresent() ? other.citta.get() : citta
+								.get())
+						: true && Prov.isPresent() ? Prov.get()
+								.equalsIgnoreCase(
+										other.Prov.isPresent() ? other.Prov
+												.get() : Prov.get())
+								: true && CAP.isPresent() ? CAP
+										.get()
+										.equalsIgnoreCase(
+												other.CAP.isPresent() ? other.CAP
+														.get() : CAP.get())
+										: true && Telefono.isPresent() ? Telefono
+												.get()
+												.equalsIgnoreCase(
+														other.Telefono
+																.isPresent() ? other.Telefono
+																.get()
+																: Telefono
+																		.get())
+												: true;
 	}
 
 	@Override
