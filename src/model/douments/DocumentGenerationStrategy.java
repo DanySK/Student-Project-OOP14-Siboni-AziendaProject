@@ -17,10 +17,21 @@ public interface DocumentGenerationStrategy {
 	 * Genera un documento da un'operazione
 	 * 
 	 * @param op operazione in ingresso
+	 * @param other l'altro soggetto presente nel documento
 	 * @return il documento se l'operazione poteva generarlo, altrimenti Optional.empty
-	 * @throws IllegalArgumentException se il numero di contati passati è diverso da 1 o 2
 	 */
-	Optional<Document> generate(Operation op, Contatto... contatti );
+	Optional<Document> generate(Operation op, Contatto other);
+	
+	/**
+	 * Genera un documento a partire da un'operazione (questo è specifico per cambiali tratte)
+	 * 
+	 * @param op operazione in ingresso
+	 * @param traente colui che spicca il documento
+	 * @param trattario colui che è tenuto ad onorare il documento
+	 * @param beneficiario colui che riceve i benefici dal documento
+	 * @return il documento se l'operazione poteva generarlo, altrimenti Optional.empty
+	 */
+	Optional<Document> generate(Operation op, Contatto traente, Contatto trattario, Contatto beneficiario);
 	
 	/**
 	 * Dice se l'operazione passata può generare un documento

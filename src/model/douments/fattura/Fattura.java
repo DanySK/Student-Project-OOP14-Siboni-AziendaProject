@@ -1,5 +1,7 @@
 package model.douments.fattura;
 
+import java.util.Optional;
+
 import model.douments.Document;
 
 public interface Fattura extends Document {
@@ -14,11 +16,17 @@ public interface Fattura extends Document {
 	 * 
 	 * @return l'iva calcolata sull'imponibile
 	 */
-	double getIVA();
+	double getImportoIVA();
 	
 	/**
 	 * 
-	 * @return l'imponibile della fattura
+	 * @return l'importo merci senza sconti
+	 */
+	double getImportoMerce();
+	
+	/**
+	 * 
+	 * @return l'imponibile della fattura (quindi detratti eventuali socnti)
 	 */
 	double getImponibile();
 	
@@ -26,11 +34,23 @@ public interface Fattura extends Document {
 	 * 
 	 * @return l'importo dello sconto eventuale
 	 */
-	double getImportoSconto();
+	Optional<Double> getImportoSconto();
 	
 	/**
 	 * 
 	 * @return l'aliquota dello sconto in formato a due cifre intere
 	 */
-	int getAliquotaSconto();
+	Optional<Integer> getAliquotaSconto();
+	
+	/**
+	 * 
+	 * @return le spese documentate eventuali
+	 */
+	Optional<Double> getSpeseDocumentate();
+	
+	/**
+	 * 
+	 * @return gli interessi eventuali
+	 */
+	Optional<Double> getInteressi();
 }

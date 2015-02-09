@@ -1,11 +1,9 @@
 package model.douments;
 
-import java.util.Date;
-
 import model.contatti.Contatto;
 
 /**
- * Implementazione astratta di un Documeto
+ * Implementazione astratta di un Documento
  * @author Enrico
  *
  */
@@ -24,7 +22,7 @@ public abstract class AbstractDocument implements Document {
 	protected AbstractDocument(final Contatto mittente,
 			final Contatto beneficiario, final Contatto debitore,
 			final String data) {
-
+		
 		this.mittente = mittente;
 		this.debitore = debitore;
 		this.benefiaciario = beneficiario;
