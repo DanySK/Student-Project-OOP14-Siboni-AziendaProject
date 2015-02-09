@@ -8,6 +8,12 @@ public interface Fattura extends Document {
 
 	/**
 	 * 
+	 * @return il numero della fattura in una stringa (potrebbero esserci numeri fattura come 8bis)
+	 */
+	String getNumFattura();
+	
+	/**
+	 * 
 	 * @return l'aliquota iva in formato a due cifre intere
 	 */
 	int getAliquotaIva();

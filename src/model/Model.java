@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Set;
 
+import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Document;
 import model.operation.Operation;
@@ -34,6 +35,18 @@ public interface Model extends Serializable{
 	 * @return il set dei conti utilizzabili nell'applicazione
 	 */
 	Set<Conto> getConti();
+	
+	/**
+	 * Setta il contatto della nostra azienda
+	 * @param c il contatto da settare come nostro
+	 */
+	void setOurContact(Contatto c);
+	
+	/**
+	 * 
+	 * @return il nostro contatto, se non presente lo crea
+	 */
+	Contatto getOurContact();
 	
 	/**
 	 * Aggiunge l'operazione passata come parametro al modello, preoccupandosi di dargli un numero progressivo

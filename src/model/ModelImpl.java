@@ -4,23 +4,32 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import model.contatti.Contatto;
+import model.contatti.ContattoImpl;
 import model.conto.Conto;
 import model.douments.Document;
 import model.operation.Operation;
 
-public class ModelImpl implements Model {
+public final class ModelImpl implements Model {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3485815033963843598L;
-
+	private static final Model SINGLETON = new ModelImpl();
+	
+	private static Contatto ourContact;
 	private static int operationCounter;
 	
-	private Set<Conto> contiStore;
+	private final Set<Conto> contiStore;
 	
-	public ModelImpl(){
+	private ModelImpl(){
 		this.contiStore = new HashSet<>();
+	}
+	
+	
+	public static Model getInstance() {
+		return ModelImpl.SINGLETON;
 	}
 	
 	@Override
@@ -41,6 +50,16 @@ public class ModelImpl implements Model {
 	@Override
 	public Set<Conto> getConti() {
 		return new HashSet<>(this.contiStore);
+	}
+	
+	@Override
+	public void setOurContact(final Contatto c) {
+		ModelImpl.ourContact = new ContattoImpl(c);
+	}
+	
+	@Override
+	public Contatto getOurContact() {
+		return new ContattoImpl(ModelImpl.ourContact);
 	}
 	
 	@Override

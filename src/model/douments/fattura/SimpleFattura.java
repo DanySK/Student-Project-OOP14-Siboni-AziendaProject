@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import model.contatti.Contatto;
 import model.douments.AbstractDocument;
+import model.douments.Data;
 
 /**
  * Implementazione astratta di una Fattura
@@ -20,6 +21,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 
 	private final double importoMerce;
 	private final int aliqIva;
+	private final String numFattura;
 	private final Optional<Integer> aliqSconto;
 	private Optional<Double> importoSconto = Optional.empty();
 	private final Optional<Double> speseDoc;
@@ -27,8 +29,8 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	private transient Optional<Double> totCached;
 
 	private SimpleFattura(final Contatto mittente, final Contatto debitore,
-			final String data, final double importo, final int aliqIva,
-			final Optional<Integer> aliqSconto,
+			final Data data, final double importo, final int aliqIva,
+			final String num, final Optional<Integer> aliqSconto,
 			final Optional<Double> importoSconto,
 			final Optional<Double> speseDoc, final Optional<Double> interessi) {
 
@@ -36,6 +38,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 
 		this.importoMerce = importo;
 		this.aliqIva = aliqIva;
+		this.numFattura = num;
 		this.aliqSconto = aliqSconto;
 		this.importoSconto = importoSconto;
 		this.speseDoc = speseDoc;
@@ -100,6 +103,11 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 		return totCached.get();
 	}
 
+	@Override
+	public String getNumFattura() {
+		return this.numFattura;
+	}
+
 	/**
 	 * Builder per la classe SimpleFattura
 	 * 
@@ -110,9 +118,10 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 
 		private Optional<Contatto> mittente = Optional.empty();
 		private Optional<Contatto> debitore = Optional.empty();
-		private Optional<String> data = Optional.empty();
+		private Optional<Data> data = Optional.empty();
 		private Optional<Double> importoMerce = Optional.empty();
 		private Optional<Integer> aliqIva = Optional.empty();
+		private Optional<String> numFattura = Optional.empty();
 		private Optional<Integer> aliqSconto = Optional.empty();
 		private Optional<Double> importoSconto = Optional.empty();
 		private Optional<Double> speseDoc = Optional.empty();
@@ -128,7 +137,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 			return this;
 		}
 
-		public Builder setData(final String data) {
+		public Builder setData(final Data data) {
 			this.data = Optional.ofNullable(data);
 			return this;
 		}
@@ -140,6 +149,11 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 
 		public Builder setAliqIva(final int aliqIva) {
 			this.aliqIva = Optional.of(aliqIva);
+			return this;
+		}
+
+		public Builder setNumFattura(final String num) {
+			this.numFattura = Optional.of(num);
 			return this;
 		}
 
@@ -167,7 +181,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 
 			if (mittente.isPresent() && debitore.isPresent()
 					&& data.isPresent() && importoMerce.isPresent()
-					&& aliqIva.isPresent()) {
+					&& aliqIva.isPresent() && numFattura.isPresent()) {
 
 				if (importoMerce.get() < 0) {
 					throw new IllegalArgumentException(
@@ -203,11 +217,11 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 				return new SimpleFattura(this.mittente.get(),
 						this.debitore.get(), this.data.get(),
 						this.importoMerce.get(), this.aliqIva.get(),
-						this.aliqSconto, this.importoSconto, this.speseDoc,
-						this.interessi);
+						this.numFattura.get(), this.aliqSconto,
+						this.importoSconto, this.speseDoc, this.interessi);
 			} else {
 				throw new IllegalArgumentException(
-						"Uno o piu' campi tra: Mittente, Debitore, Data, ImportoMerce, AliqiotaIva non sono stati compilati");
+						"Uno o piu' campi tra: Mittente, Debitore, Data, ImportoMerce, AliqiotaIva, NumeroFattura non sono stati compilati");
 			}
 
 		}

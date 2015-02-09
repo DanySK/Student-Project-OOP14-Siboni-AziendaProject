@@ -1,6 +1,5 @@
 package model.operation;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -12,7 +11,6 @@ import model.conto.Conto;
 import model.douments.Data;
 import model.douments.DataImpl;
 import model.douments.Document;
-import model.douments.DocumentGenerationStrategy;
 
 public class OperationImpl implements Operation {
 
@@ -20,8 +18,6 @@ public class OperationImpl implements Operation {
 	 * 
 	 */
 	private static final long serialVersionUID = 1445965986132678879L;
-
-	private static DocumentGenerationStrategy documentStrategy = new DocumentStrategy();
 
 	private final Map<Conto, Double> map;
 	private Integer operationNum;
@@ -55,19 +51,20 @@ public class OperationImpl implements Operation {
 	}
 
 	@Override
-	public void setDescription(final String description){
+	public void setDescription(final String description) {
 		this.description = Optional.ofNullable(description);
 	}
-	
+
 	@Override
-	public void setNumOperation(final int numOp){
-		if(this.operationNum == null){
+	public void setNumOperation(final int numOp) {
+		if (this.operationNum == null) {
 			this.operationNum = numOp;
-		}else{
-			throw new UnsupportedOperationException("Il numero dell'operazione non si può settare due volte");
+		} else {
+			throw new UnsupportedOperationException(
+					"Il numero dell'operazione non si può settare due volte");
 		}
 	}
-	
+
 	@Override
 	public Data getData() {
 		return this.data;
@@ -105,44 +102,5 @@ public class OperationImpl implements Operation {
 	public boolean canGenerateDocument() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	/**
-	 * Clase che implementa la strategia di generazione delle operazioni
-	 * 
-	 * @author Enrico
-	 *
-	 */
-	private static class DocumentStrategy implements DocumentGenerationStrategy {
-
-		@Override
-		public boolean canGenerateFrom(final Operation op) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public Optional<Document> generate(Operation op, Contatto... contatti) {
-			Document resultDocument = null;
-			if (contatti.length == 1) {
-				if (op.getContiMovimentati()
-						.stream()
-						.map(c -> c.getName())
-						.collect(Collectors.toSet())
-						.containsAll(
-								Arrays.asList("Crediti v/clienti",
-										"IVA a Debito", "Vendita Merci"))) {
-
-					//TODO Mettere i vari casi di documenti, implementare document
-					
-				}
-			} else if (contatti.length == 2) {
-				
-			} else {
-				
-			}
-			return Optional.ofNullable(resultDocument);
-		}
-
 	}
 }

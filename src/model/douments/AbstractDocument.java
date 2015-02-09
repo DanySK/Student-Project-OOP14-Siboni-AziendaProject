@@ -21,12 +21,12 @@ public abstract class AbstractDocument implements Document {
 
 	protected AbstractDocument(final Contatto mittente,
 			final Contatto beneficiario, final Contatto debitore,
-			final String data) {
+			final Data data) {
 		
 		this.mittente = mittente;
 		this.debitore = debitore;
 		this.benefiaciario = beneficiario;
-		this.data = new DataImpl(data);
+		this.data = data;
 	}
 
 	@Override
