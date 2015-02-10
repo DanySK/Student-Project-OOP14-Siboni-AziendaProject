@@ -108,6 +108,80 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 		return this.numFattura;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + aliqIva;
+		result = prime * result
+				+ ((aliqSconto == null) ? 0 : aliqSconto.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(importoMerce);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result
+				+ ((importoSconto == null) ? 0 : importoSconto.hashCode());
+		result = prime * result
+				+ ((interessi == null) ? 0 : interessi.hashCode());
+		result = prime * result
+				+ ((numFattura == null) ? 0 : numFattura.hashCode());
+		result = prime * result
+				+ ((speseDoc == null) ? 0 : speseDoc.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SimpleFattura other = (SimpleFattura) obj;
+		if (aliqIva != other.aliqIva)
+			return false;
+		if (aliqSconto == null) {
+			if (other.aliqSconto != null)
+				return false;
+		} else if (!aliqSconto.equals(other.aliqSconto))
+			return false;
+		if (Double.doubleToLongBits(importoMerce) != Double
+				.doubleToLongBits(other.importoMerce))
+			return false;
+		if (importoSconto == null) {
+			if (other.importoSconto != null)
+				return false;
+		} else if (!importoSconto.equals(other.importoSconto))
+			return false;
+		if (interessi == null) {
+			if (other.interessi != null)
+				return false;
+		} else if (!interessi.equals(other.interessi))
+			return false;
+		if (numFattura == null) {
+			if (other.numFattura != null)
+				return false;
+		} else if (!numFattura.equals(other.numFattura))
+			return false;
+		if (speseDoc == null) {
+			if (other.speseDoc != null)
+				return false;
+		} else if (!speseDoc.equals(other.speseDoc))
+			return false;
+		return true;
+	}
+
+	@Override
+	//TODO Rifare con lo stringBuilder in modo che gli optional ci siano solo se sono present() (esempio come nei contatti)
+	public String toString() {
+		return "Mittente=" + this.getMittente() + ",\nDebitore="
+				+ this.getDebitore() + ",\nData=" + this.getData()
+				+ ",\nNumFattura=" + numFattura + ",\nImportoMerce="
+				+ importoMerce + ",\nAliqIva=" + aliqIva + ",\naliqSconto="
+				+ aliqSconto + ",\nimportoSconto=" + importoSconto
+				+ ",\nspeseDoc=" + speseDoc + ",\ninteressi=" + interessi + "]";
+	}
+
 	/**
 	 * Builder per la classe SimpleFattura
 	 * 

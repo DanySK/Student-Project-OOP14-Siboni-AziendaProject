@@ -86,6 +86,17 @@ public interface Model extends Serializable{
 	 */
 	void reset();
 	
+	
+	/*
+	 * Queta funzione sarebbe un po avanzata... non so riusciremo a implementarla...
+	 * 
+	 * Genera l'operazione a partire dal documento che la rappresenta; lancia NullPointerException se il documento passato è null
+	 * @param doc
+	 * 			il documento da cui prendere i dati per la generazione dell'operazione
+	 *
+	Operation generateOperationFromDocument(Document doc);*/
+	
+	
 	/*
 	 * 
 	 * questi due metodi sotto sono da meglio definire...

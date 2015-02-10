@@ -52,4 +52,58 @@ public abstract class AbstractDocument implements Document {
 	@Override
 	public abstract double getTotale();
 
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((benefiaciario == null) ? 0 : benefiaciario.hashCode());
+		result = prime * result + ((data == null) ? 0 : data.hashCode());
+		result = prime * result
+				+ ((debitore == null) ? 0 : debitore.hashCode());
+		result = prime * result
+				+ ((mittente == null) ? 0 : mittente.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractDocument other = (AbstractDocument) obj;
+		if (benefiaciario == null) {
+			if (other.benefiaciario != null)
+				return false;
+		} else if (!benefiaciario.equals(other.benefiaciario))
+			return false;
+		if (data == null) {
+			if (other.data != null)
+				return false;
+		} else if (!data.equals(other.data))
+			return false;
+		if (debitore == null) {
+			if (other.debitore != null)
+				return false;
+		} else if (!debitore.equals(other.debitore))
+			return false;
+		if (mittente == null) {
+			if (other.mittente != null)
+				return false;
+		} else if (!mittente.equals(other.mittente))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Document [Mittente=" + mittente + ", Benefiaciario="
+				+ benefiaciario + ", Debitore=" + debitore + ", Data=" + data
+				+ "]";
+	}
+	
 }

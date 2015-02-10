@@ -24,21 +24,21 @@ public interface Conto extends Serializable {
 	
 	/**
 	 * 
-	 * @return l'eccedenza di questo conto
+	 * @return il saldo di questo conto
 	 */
-	double getEccedenza();
+	double getSaldo();
 	
 	/**
 	 * 
 	 * @return il segno dell'eccedenza attuale di questo conto
 	 */
-	Eccedenza getSegnoEccedenzaAttuale();
+	Eccedenza getEccedenzaAttuale();
 	
 	/**
 	 * 
 	 * @return il segno dell'eccedenza che dovrebbe avere questo conto in condizioni normali
 	 */
-	Eccedenza getSegnoEccedenzaSolito();
+	Eccedenza getEccedenzaSolita();
 	
 	/**
 	 * 
@@ -103,6 +103,7 @@ public interface Conto extends Serializable {
 	static enum AccesoA{
 		CREDITI("Crediti",Tipo.FINANZIARIO),
 		DEBITI("Debiti",Tipo.FINANZIARIO),
+		DENARO("Denaro",Tipo.FINANZIARIO),
 		COSTI_ES("Costi d'Esercizio",Tipo.ECONOMICO_DI_REDDITO),
 		COSTI_SOSP("Costi Sospesi",Tipo.ECONOMICO_DI_REDDITO),
 		COSTI_PLUR("Costi Pluriennali",Tipo.ECONOMICO_DI_REDDITO),

@@ -30,19 +30,19 @@ public class ContoImpl implements Conto {
 	}
 
 	@Override
-	public double getEccedenza() {
+	public double getSaldo() {
 		return this.importo;
 	}
 
 	@Override
-	public Eccedenza getSegnoEccedenzaAttuale() {
-		return this.importo >= 0 ? getSegnoEccedenzaSolito() : eccedenzaContrariaDi(getSegnoEccedenzaSolito());
+	public Eccedenza getEccedenzaAttuale() {
+		return this.importo >= 0 ? getEccedenzaSolita() : eccedenzaContrariaDi(getEccedenzaSolita());
 	}
 
 	@Override
-	public Eccedenza getSegnoEccedenzaSolito() {
+	public Eccedenza getEccedenzaSolita() {
 		if (Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
-				AccesoA.COSTI_SOSP, AccesoA.CREDITI).contains(this.accesoA)) {
+				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO).contains(this.accesoA)) {
 
 			return Eccedenza.DARE;
 		} else {

@@ -16,20 +16,14 @@ public final class ModelImpl implements Model {
 	 * 
 	 */
 	private static final long serialVersionUID = 3485815033963843598L;
-	private static final Model SINGLETON = new ModelImpl();
 	
 	private static Contatto ourContact;
 	private static int operationCounter;
 	
 	private final Set<Conto> contiStore;
 	
-	private ModelImpl(){
+	public ModelImpl(){
 		this.contiStore = new HashSet<>();
-	}
-	
-	
-	public static Model getInstance() {
-		return ModelImpl.SINGLETON;
 	}
 	
 	@Override
@@ -95,5 +89,4 @@ public final class ModelImpl implements Model {
 	private static int getNextOperationNumber() {
 		return ModelImpl.operationCounter++;
 	}
-
 }
