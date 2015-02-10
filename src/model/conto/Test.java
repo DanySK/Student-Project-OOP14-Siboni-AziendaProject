@@ -19,7 +19,9 @@ public class Test {
 		
 		assertEquals(0, c.getEccedenza(), 0.001);
 		
-		assertEquals(c.getSegnoEccedenza(),Eccedenza.DARE);
+		assertEquals(c.getSegnoEccedenzaAttuale(),Eccedenza.DARE);
+		
+		assertEquals(c.getSegnoEccedenzaSolito(),Eccedenza.DARE);
 		
 		assertEquals(c.getTipo(),Tipo.FINANZIARIO);
 		
@@ -31,21 +33,17 @@ public class Test {
 		
 		assertEquals(0, c.getEccedenza(), 0.001);
 		
-		assertEquals(c.getSegnoEccedenzaSeAggiunto(10),Eccedenza.DARE);
-		
-		assertEquals(c.getSegnoEccedenzaSeAggiunto(-0.9),Eccedenza.AVERE);
-		
 		System.out.println(c);
 		
-		assertEquals(c.getSegnoEccedenza(),Eccedenza.DARE);
+		assertEquals(c.getSegnoEccedenzaAttuale(),Eccedenza.DARE);
 		
 		c.addMovimento(-10.05);
 		
 		System.out.println(c);
 		
-		assertEquals(c.getSegnoEccedenza(),Eccedenza.AVERE);
+		assertEquals(c.getSegnoEccedenzaAttuale(),Eccedenza.AVERE);
 		
-		assertEquals(c.getSegnoEccedenzaSeAggiunto(10.06),Eccedenza.DARE);
+		assertEquals(c.getSegnoEccedenzaSolito(),Eccedenza.DARE);
 		
 	}
 

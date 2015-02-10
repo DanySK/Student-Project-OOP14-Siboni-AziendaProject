@@ -8,7 +8,7 @@ public class ContoImpl implements Conto {
 	 * 
 	 */
 	private static final long serialVersionUID = 1960640700205838185L;
-	
+
 	private double importo;
 	private final AccesoA accesoA;
 	private final String name;
@@ -35,23 +35,19 @@ public class ContoImpl implements Conto {
 	}
 
 	@Override
-	public Eccedenza getSegnoEccedenza() {
-		if (Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
-				AccesoA.COSTI_SOSP, AccesoA.CREDITI).contains(this.accesoA)) {
-
-			return this.importo >= 0 ? Eccedenza.DARE : Eccedenza.AVERE;
-		} else {
-			return this.importo >= 0 ? Eccedenza.AVERE : Eccedenza.DARE;
-		}
+	public Eccedenza getSegnoEccedenzaAttuale() {
+		return this.importo >= 0 ? getSegnoEccedenzaSolito() : eccedenzaContrariaDi(getSegnoEccedenzaSolito());
 	}
 
 	@Override
-	public Eccedenza getSegnoEccedenzaSeAggiunto(final double importo) {
-		final Eccedenza ecc;
-		this.addMovimento(importo);
-		ecc = this.getSegnoEccedenza();
-		this.addMovimento(-importo);
-		return ecc;
+	public Eccedenza getSegnoEccedenzaSolito() {
+		if (Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
+				AccesoA.COSTI_SOSP, AccesoA.CREDITI).contains(this.accesoA)) {
+
+			return Eccedenza.DARE;
+		} else {
+			return Eccedenza.AVERE;
+		}
 	}
 
 	@Override
@@ -62,6 +58,14 @@ public class ContoImpl implements Conto {
 	@Override
 	public AccesoA getAccesoA() {
 		return this.accesoA;
+	}
+	
+	private Eccedenza eccedenzaContrariaDi(final Eccedenza e){
+		if(e.equals(Eccedenza.DARE)){
+			return Eccedenza.AVERE;
+		}else{
+			return Eccedenza.DARE;
+		}
 	}
 
 	@Override
@@ -87,7 +91,7 @@ public class ContoImpl implements Conto {
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!name.equalsIgnoreCase(other.name))
 			return false;
 		return true;
 	}

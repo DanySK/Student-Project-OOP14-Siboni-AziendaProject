@@ -30,16 +30,15 @@ public interface Conto extends Serializable {
 	
 	/**
 	 * 
-	 * @return il segno dell'eccedenza di questo conto
+	 * @return il segno dell'eccedenza attuale di questo conto
 	 */
-	Eccedenza getSegnoEccedenza();
+	Eccedenza getSegnoEccedenzaAttuale();
 	
 	/**
 	 * 
-	 * @param importo l'importo che si sarebbe aggiunto
-	 * @return il segno del'eccedenza se si aggiungesse un movimento con quell'importo
+	 * @return il segno dell'eccedenza che dovrebbe avere questo conto in condizioni normali
 	 */
-	Eccedenza getSegnoEccedenzaSeAggiunto(double importo);
+	Eccedenza getSegnoEccedenzaSolito();
 	
 	/**
 	 * 
