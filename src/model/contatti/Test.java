@@ -18,30 +18,28 @@ public class Test {
 		System.out.println("1--> Test Exceptions on construction");
 
 		try {
-			new ContattoImpl.ContattoBuilder().build();
+			new ContattoImpl.Builder().build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324dsX")
-					.build();
+			new ContattoImpl.Builder().setCF("asderf51c10324dsX").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324ds")
-					.build();
+			new ContattoImpl.Builder().setCF("asderf51c10324ds").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setCF("asderf51c10324ds")
 					.setPIVA("11111111111X").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
@@ -49,7 +47,7 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setCF("asderf51c10324ds")
 					.setPIVA("11111111111").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
@@ -57,7 +55,7 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setCF("asderf51c10324ds")
 					.setPIVA("11111111111").setNomeTitolare("ciccio").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
@@ -65,7 +63,7 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.ContattoBuilder().setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setCF("asderf51c10324ds")
 					.setPIVA("11111111111").setNomeTitolare("ciccio")
 					.setRagSoc("ciccio snc").setCAP("47122X").build();
 			fail("No exception generated");
@@ -79,7 +77,7 @@ public class Test {
 		System.out.println("\n2--> Test Content generated");
 
 		try {
-			final Contatto a = new ContattoImpl.ContattoBuilder()
+			final Contatto a = new ContattoImpl.Builder()
 					.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
 					.setPIVA("11111111111").setCF("asderf51c10324ds")
 					.setCAP("47122").build();
@@ -100,19 +98,29 @@ public class Test {
 		}
 
 	}
-	
+
 	@org.junit.Test
-	public void testEquals(){
-		
-		final Contatto a = new ContattoImpl.ContattoBuilder()
-		.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
-		.setPIVA("11111111111").setCF("asderf51c10324ds")
-		.setCAP("47122").setProvincia("FC").build();
-		
-		final Contatto b = new ContattoImpl.ContattoBuilder().setNomeTitolare("CICCIO").setRagSoc("CICCIO SNC").setPIVA("11111111111").setCF("ASDERF51C10324DS").setSedeLeg("via Ciccio, 50").build();
-		
-		assertEquals(a,b);
-		
-		assertEquals(b,a);
+	public void testEquals() {
+
+		final Contatto a = new ContattoImpl.Builder().setNomeTitolare("ciccio")
+				.setRagSoc("ciccio snc").setPIVA("11111111111")
+				.setCF("asderf51c10324ds").setCAP("47122").setProvincia("FC")
+				.build();
+
+		final Contatto b = new ContattoImpl.Builder().setNomeTitolare("CICCIO")
+				.setRagSoc("CICCIO SNC").setPIVA("11111111111")
+				.setCF("ASDERF51C10324DS").setSedeLeg("via Ciccio, 50").build();
+
+		final Contatto c = new ContattoImpl.Builder().setNomeTitolare("io")
+				.setRagSoc("cio").setCF("eeeeeeeeeeeeeeee")
+				.setPIVA("22222222222").build();
+
+		assertEquals(a, b);
+
+		assertEquals(b, a);
+
+		assertNotEquals(c, b);
+
+		assertNotEquals(b, c);
 	}
 }

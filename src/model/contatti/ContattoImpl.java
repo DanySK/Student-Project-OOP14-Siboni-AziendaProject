@@ -126,31 +126,17 @@ public class ContattoImpl implements Contatto {
 		return nomeTit.equalsIgnoreCase(other.nomeTit)
 				&& ragSoc.equalsIgnoreCase(other.ragSoc)
 				&& PIVA.equalsIgnoreCase(other.PIVA)
-				&& CF.equalsIgnoreCase(other.CF) && sedeLeg.isPresent() ? sedeLeg
-				.get().equalsIgnoreCase(
-						other.sedeLeg.isPresent() ? other.sedeLeg.get()
-								: sedeLeg.get())
-				: true && citta.isPresent() ? citta.get().equalsIgnoreCase(
-						other.citta.isPresent() ? other.citta.get() : citta
-								.get())
-						: true && Prov.isPresent() ? Prov.get()
-								.equalsIgnoreCase(
-										other.Prov.isPresent() ? other.Prov
-												.get() : Prov.get())
-								: true && CAP.isPresent() ? CAP
-										.get()
-										.equalsIgnoreCase(
-												other.CAP.isPresent() ? other.CAP
-														.get() : CAP.get())
-										: true && Telefono.isPresent() ? Telefono
-												.get()
-												.equalsIgnoreCase(
-														other.Telefono
-																.isPresent() ? other.Telefono
-																.get()
-																: Telefono
-																		.get())
-												: true;
+				&& CF.equalsIgnoreCase(other.CF)
+				&& (sedeLeg.isPresent() ? sedeLeg.get().equalsIgnoreCase(
+						other.sedeLeg.orElse(sedeLeg.get())) : true)
+				&& (citta.isPresent() ? citta.get().equalsIgnoreCase(
+						other.citta.orElse(citta.get())) : true)
+				&& (Prov.isPresent() ? Prov.get().equalsIgnoreCase(
+						other.Prov.orElse(Prov.get())) : true)
+				&& (CAP.isPresent() ? CAP.get().equalsIgnoreCase(
+						other.CAP.orElse(CAP.get())) : true)
+				&& (Telefono.isPresent() ? Telefono.get().equalsIgnoreCase(
+						other.Telefono.orElse(Telefono.get())) : true);
 	}
 
 	@Override
@@ -183,7 +169,7 @@ public class ContattoImpl implements Contatto {
 	 * @author Enrico
 	 *
 	 */
-	public static class ContattoBuilder {
+	public static class Builder {
 
 		private static final int CF_LENGTH = 16;
 		private static final int PIVA_LENGTH = 11;
@@ -199,7 +185,7 @@ public class ContattoImpl implements Contatto {
 		private Optional<String> cap;
 		private Optional<String> prov;
 
-		public ContattoBuilder() {
+		public Builder() {
 			this.nomeTit = Optional.empty();
 			this.ragSoc = Optional.empty();
 			this.cf = Optional.empty();
@@ -211,47 +197,47 @@ public class ContattoImpl implements Contatto {
 			this.prov = Optional.empty();
 		}
 
-		public ContattoBuilder setNomeTitolare(final String name) {
+		public Builder setNomeTitolare(final String name) {
 			this.nomeTit = Optional.ofNullable(name);
 			return this;
 		}
 
-		public ContattoBuilder setRagSoc(final String rag) {
+		public Builder setRagSoc(final String rag) {
 			this.ragSoc = Optional.ofNullable(rag);
 			return this;
 		}
 
-		public ContattoBuilder setCF(final String cf) {
+		public Builder setCF(final String cf) {
 			this.cf = Optional.ofNullable(cf);
 			return this;
 		}
 
-		public ContattoBuilder setPIVA(final String piva) {
+		public Builder setPIVA(final String piva) {
 			this.piva = Optional.ofNullable(piva);
 			return this;
 		}
 
-		public ContattoBuilder setTelefono(final String tel) {
+		public Builder setTelefono(final String tel) {
 			this.telefono = Optional.ofNullable(tel);
 			return this;
 		}
 
-		public ContattoBuilder setSedeLeg(final String sede) {
+		public Builder setSedeLeg(final String sede) {
 			this.sedeLeg = Optional.ofNullable(sede);
 			return this;
 		}
 
-		public ContattoBuilder setCitta(final String citta) {
+		public Builder setCitta(final String citta) {
 			this.citta = Optional.ofNullable(citta);
 			return this;
 		}
 
-		public ContattoBuilder setCAP(final String cap) {
+		public Builder setCAP(final String cap) {
 			this.cap = Optional.ofNullable(cap);
 			return this;
 		}
 
-		public ContattoBuilder setProvincia(final String prov) {
+		public Builder setProvincia(final String prov) {
 			this.prov = Optional.ofNullable(prov);
 			return this;
 		}
