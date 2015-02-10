@@ -24,7 +24,7 @@ public final class ModelImpl implements Model {
 	private static final long serialVersionUID = 3485815033963843598L;
 
 	private static Contatto ourContact;
-	private static int operationCounter;
+	private static int operationCounter = 1;
 
 	private final Controller c = null;
 
@@ -47,6 +47,16 @@ public final class ModelImpl implements Model {
 			throw new IllegalArgumentException("Conto già presente");
 		}
 		this.contiStore.add(c);
+	}
+
+	@Override
+	public void deleteConto(final Conto c) {
+		Objects.requireNonNull(c);
+		if (this.contiStore.contains(c)) {
+			this.contiStore.remove(c);
+		} else {
+			throw new NoSuchElementException();
+		}
 	}
 
 	@Override
@@ -81,7 +91,7 @@ public final class ModelImpl implements Model {
 	}
 
 	@Override
-	public boolean addDocumentForOperation(final int numOperation,
+	public boolean addDocumentToOperation(final int numOperation,
 			final Document doc) {
 		Objects.requireNonNull(doc);
 
@@ -133,7 +143,7 @@ public final class ModelImpl implements Model {
 	@Override
 	public void deleteContatto(final Contatto contatto) {
 		Objects.requireNonNull(contatto);
-		
+
 		if (this.contattiStore.contains(contatto)) {
 			this.contattiStore.remove(contatto);
 		} else {
@@ -150,7 +160,7 @@ public final class ModelImpl implements Model {
 	public void reset() {
 		this.documentMap.clear();
 		this.operationMap.clear();
-		operationCounter = 0;
+		operationCounter = 1;
 	}
 
 	/*

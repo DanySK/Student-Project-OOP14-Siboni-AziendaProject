@@ -25,6 +25,13 @@ public interface Model extends Serializable{
 	void addConto(Conto c);
 	
 	/**
+	 * Cancella il conto passato come parametro; lancia NoSuchElementException se il conto non era presente
+	 * 
+	 * @param c il conto da cancellare
+	 */
+	void deleteConto(Conto c);
+	
+	/**
 	 * 
 	 * @return il set dei conti utilizzabili nell'applicazione
 	 */
@@ -67,7 +74,7 @@ public interface Model extends Serializable{
 	 * @param doc il documento da collegare
 	 * @return true se il documento viene aggiunto, false se l'operazione aveva già un documento correlato
 	 */
-	boolean addDocumentForOperation(int numOperation, Document doc);
+	boolean addDocumentToOperation(int numOperation, Document doc);
 	
 	/**
 	 * Ritorna il documento riferito all'operazione con quel numero; lancia IllegalArgumentException se il numero passato è negativo o 0,
