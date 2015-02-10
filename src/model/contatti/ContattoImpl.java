@@ -2,6 +2,12 @@ package model.contatti;
 
 import java.util.Optional;
 
+/**
+ * Implementazione della classe Contatto.
+ * 
+ * @author Enrico
+ *
+ */
 public class ContattoImpl implements Contatto {
 
 	/**
@@ -11,31 +17,37 @@ public class ContattoImpl implements Contatto {
 
 	private final String nomeTit;
 	private final String ragSoc;
-	private final String CF;
-	private final String PIVA;
-	private final Optional<String> Telefono;
+	private final String cf;
+	private final String piva;
+	private final Optional<String> telefono;
 	private final Optional<String> sedeLeg;
 	private final Optional<String> citta;
-	private final Optional<String> CAP;
-	private final Optional<String> Prov;
+	private final Optional<String> cap;
+	private final Optional<String> provincia;
 
 	private ContattoImpl(final String nome, final String ragSoc,
-			final String CF, final String PIVA,
-			final Optional<String> Telefono, final Optional<String> sedeLeg,
-			final Optional<String> citta, final Optional<String> CAP,
-			final Optional<String> Prov) {
+			final String cf, final String piva,
+			final Optional<String> telefono, final Optional<String> sedeLeg,
+			final Optional<String> citta, final Optional<String> cap,
+			final Optional<String> provincia) {
 
 		this.nomeTit = nome;
 		this.ragSoc = ragSoc;
-		this.CF = CF;
-		this.PIVA = PIVA;
-		this.Telefono = Telefono;
+		this.cf = cf;
+		this.piva = piva;
+		this.telefono = telefono;
 		this.sedeLeg = sedeLeg;
 		this.citta = citta;
-		this.CAP = CAP;
-		this.Prov = Prov;
+		this.cap = cap;
+		this.provincia = provincia;
 	}
 
+	/**
+	 * Costruisce un nuovo contatto a partire da uno presente.
+	 * 
+	 * @param toCopy
+	 *            il contatto da copiare
+	 */
 	public ContattoImpl(final Contatto toCopy) {
 		this(toCopy.getNomeCognomeTitolare(), toCopy.getRagioneSociale(),
 				toCopy.getCF(), toCopy.getPIVA(), toCopy.getTelefono(), toCopy
@@ -50,12 +62,12 @@ public class ContattoImpl implements Contatto {
 
 	@Override
 	public String getPIVA() {
-		return this.PIVA;
+		return this.piva;
 	}
 
 	@Override
 	public String getCF() {
-		return this.CF;
+		return this.cf;
 	}
 
 	@Override
@@ -65,7 +77,7 @@ public class ContattoImpl implements Contatto {
 
 	@Override
 	public Optional<String> getTelefono() {
-		return this.Telefono;
+		return this.telefono;
 	}
 
 	@Override
@@ -80,20 +92,20 @@ public class ContattoImpl implements Contatto {
 
 	@Override
 	public Optional<String> getCAP() {
-		return this.CAP;
+		return this.cap;
 	}
 
 	@Override
 	public Optional<String> getProvincia() {
-		return this.Prov;
+		return this.provincia;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((CF == null) ? 0 : CF.hashCode());
-		result = prime * result + ((PIVA == null) ? 0 : PIVA.hashCode());
+		result = prime * result + ((cf == null) ? 0 : cf.hashCode());
+		result = prime * result + ((piva == null) ? 0 : piva.hashCode());
 		result = prime * result + ((nomeTit == null) ? 0 : nomeTit.hashCode());
 		result = prime * result + ((ragSoc == null) ? 0 : ragSoc.hashCode());
 		result = prime * result + ((sedeLeg == null) ? 0 : sedeLeg.hashCode());
@@ -125,18 +137,18 @@ public class ContattoImpl implements Contatto {
 
 		return nomeTit.equalsIgnoreCase(other.nomeTit)
 				&& ragSoc.equalsIgnoreCase(other.ragSoc)
-				&& PIVA.equalsIgnoreCase(other.PIVA)
-				&& CF.equalsIgnoreCase(other.CF)
+				&& piva.equalsIgnoreCase(other.piva)
+				&& cf.equalsIgnoreCase(other.cf)
 				&& (sedeLeg.isPresent() ? sedeLeg.get().equalsIgnoreCase(
 						other.sedeLeg.orElse(sedeLeg.get())) : true)
 				&& (citta.isPresent() ? citta.get().equalsIgnoreCase(
 						other.citta.orElse(citta.get())) : true)
-				&& (Prov.isPresent() ? Prov.get().equalsIgnoreCase(
-						other.Prov.orElse(Prov.get())) : true)
-				&& (CAP.isPresent() ? CAP.get().equalsIgnoreCase(
-						other.CAP.orElse(CAP.get())) : true)
-				&& (Telefono.isPresent() ? Telefono.get().equalsIgnoreCase(
-						other.Telefono.orElse(Telefono.get())) : true);
+				&& (provincia.isPresent() ? provincia.get().equalsIgnoreCase(
+						other.provincia.orElse(provincia.get())) : true)
+				&& (cap.isPresent() ? cap.get().equalsIgnoreCase(
+						other.cap.orElse(cap.get())) : true)
+				&& (telefono.isPresent() ? telefono.get().equalsIgnoreCase(
+						other.telefono.orElse(telefono.get())) : true);
 	}
 
 	@Override
@@ -144,9 +156,9 @@ public class ContattoImpl implements Contatto {
 		final StringBuilder s = new StringBuilder(100);
 		s.append("Contatto [RagioneSociale= ").append(ragSoc)
 				.append(", NomeTitolare= ").append(nomeTit).append(", P.IVA= ")
-				.append(PIVA).append(", C.F.= ").append(CF);
-		if (Telefono.isPresent()) {
-			s.append(", Telefono= ").append(Telefono.get());
+				.append(piva).append(", C.F.= ").append(cf);
+		if (telefono.isPresent()) {
+			s.append(", Telefono= ").append(telefono.get());
 		}
 		if (sedeLeg.isPresent()) {
 			s.append(", SedeLeg.= ").append(sedeLeg.get());
@@ -154,17 +166,20 @@ public class ContattoImpl implements Contatto {
 		if (citta.isPresent()) {
 			s.append(", Citta'= ").append(citta.get());
 		}
-		if (CAP.isPresent()) {
-			s.append(", CAP= ").append(CAP.get());
+		if (cap.isPresent()) {
+			s.append(", CAP= ").append(cap.get());
 		}
-		if (Prov.isPresent()) {
-			s.append(", Provincia= ").append(Prov.get());
+		if (provincia.isPresent()) {
+			s.append(", Provincia= ").append(provincia.get());
 		}
 		return s.append("]").toString();
 	}
 
+	// TODO implementare la writeE read Objecct in modo da non scrivere
+	// direttamente Optional che non è serializzabile -.-
+
 	/**
-	 * Builder per la classe Contatto
+	 * Builder per la classe Contatto.
 	 * 
 	 * @author Enrico
 	 *
@@ -179,18 +194,21 @@ public class ContattoImpl implements Contatto {
 		private Optional<String> ragSoc;
 		private Optional<String> cf;
 		private Optional<String> piva;
-		private Optional<String> telefono;
+		private Optional<String> tel;
 		private Optional<String> sedeLeg;
 		private Optional<String> citta;
 		private Optional<String> cap;
 		private Optional<String> prov;
 
+		/**
+		 * Restituisce un Builder per la classe Contatto.
+		 */
 		public Builder() {
 			this.nomeTit = Optional.empty();
 			this.ragSoc = Optional.empty();
 			this.cf = Optional.empty();
 			this.piva = Optional.empty();
-			this.telefono = Optional.empty();
+			this.tel = Optional.empty();
 			this.sedeLeg = Optional.empty();
 			this.citta = Optional.empty();
 			this.cap = Optional.empty();
@@ -218,7 +236,7 @@ public class ContattoImpl implements Contatto {
 		}
 
 		public Builder setTelefono(final String tel) {
-			this.telefono = Optional.ofNullable(tel);
+			this.tel = Optional.ofNullable(tel);
 			return this;
 		}
 
@@ -265,7 +283,7 @@ public class ContattoImpl implements Contatto {
 
 			if (nomeTit.isPresent() && ragSoc.isPresent()) {
 				return new ContattoImpl(nomeTit.get(), ragSoc.get(), cf.get(),
-						piva.get(), telefono, sedeLeg, citta, cap, prov);
+						piva.get(), tel, sedeLeg, citta, cap, prov);
 			} else {
 				throw new IllegalStateException(
 						"I campi Nome Titolare e/o Rag. Sociale non sono stati compilati");

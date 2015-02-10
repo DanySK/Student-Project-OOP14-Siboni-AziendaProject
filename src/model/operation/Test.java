@@ -9,103 +9,103 @@ import model.conto.Conto.AccesoA;
 import model.conto.ContoImpl;
 
 /**
- * Classe di testing per le operazioni
+ * Classe di testing per le operazioni.
+ * 
  * @author Enrico
  *
  */
 public class Test {
 
 	@org.junit.Test
-	public void testOK(){
-		
+	public void testOK() {
+
 		Operation o = new OperationImpl();
-		
-		Conto creditivclienti = new ContoImpl("Crediti v/Clienti",AccesoA.CREDITI);
-		Conto venditamerci = new ContoImpl("Vendita merci",AccesoA.RICAVI_ES);
-		Conto ivadebito = new ContoImpl("Iva a debito",AccesoA.DEBITI);
-		
+
+		Conto creditivclienti = new ContoImpl("Crediti v/Clienti",
+				AccesoA.CREDITI);
+		Conto venditamerci = new ContoImpl("Vendita merci", AccesoA.RICAVI_ES);
+		Conto ivadebito = new ContoImpl("Iva a debito", AccesoA.DEBITI);
+
 		o.setContoMovimentato(creditivclienti, 133.64);
-		
-		try{
+
+		try {
 			o.setContoMovimentato(venditamerci, 0);
 			fail("Deve generare eccezione");
-		}catch(IllegalArgumentException e){
+		} catch (IllegalArgumentException e) {
 		}
-		
+
 		o.setContoMovimentato(venditamerci, 111.37);
-		
+
 		assertFalse(o.isBalanced());
-		
-		try{
+
+		try {
 			o.applicaMovimenti();
 			fail("Deve generare eccezione");
-		}catch(IllegalStateException e){
+		} catch (IllegalStateException e) {
 		}
-		
+
 		System.out.println(creditivclienti);
 		System.out.println(venditamerci);
-		System.out.println(ivadebito+"\n");
-		
-		
+		System.out.println(ivadebito + "\n");
+
 		o.setContoMovimentato(ivadebito, 22.27);
-		
+
 		assertFalse(o.haveMovementsBeenApplied());
-		
-		try{
+
+		try {
 			o.applicaMovimenti();
-		}catch(IllegalStateException e){
+		} catch (IllegalStateException e) {
 			fail("Non deve generare eccezioni");
 		}
-		
+
 		assertTrue(o.haveMovementsBeenApplied());
-		assertEquals(creditivclienti.getSaldo(),133.64,0.001);
-		
-		try{
+		assertEquals(creditivclienti.getSaldo(), 133.64, 0.001);
+
+		try {
 			o.applicaMovimenti();
-		}catch(IllegalStateException e){
+		} catch (IllegalStateException e) {
 			fail("Non deve generare eccezioni");
 		}
-		
+
 		assertTrue(o.isBalanced());
-		
-		assertEquals(creditivclienti.getSaldo(),133.64,0.001);
-		
+
+		assertEquals(creditivclienti.getSaldo(), 133.64, 0.001);
+
 		System.out.println(creditivclienti);
 		System.out.println(venditamerci);
-		System.out.println(ivadebito+"\n");
-		
-		System.out.println("\n"+o+"\n");
-		
+		System.out.println(ivadebito + "\n");
+
+		System.out.println("\n" + o + "\n");
+
 		Operation o2 = new OperationImpl();
-		
-		Conto assegni = new ContoImpl("Assegni",AccesoA.DENARO);
-		
+
+		Conto assegni = new ContoImpl("Assegni", AccesoA.DENARO);
+
 		o2.setContoMovimentato(assegni, 133.64);
 		o2.setContoMovimentato(creditivclienti, -133.63);
-		System.out.println("\n"+o2+"\n");
-		
+		System.out.println("\n" + o2 + "\n");
+
 		assertFalse(o2.isBalanced());
-		
+
 		System.out.println(creditivclienti);
-		System.out.println(assegni+"\n");
-		
+		System.out.println(assegni + "\n");
+
 		o2.setContoMovimentato(creditivclienti, -133.64);
-		
-		
-		try{
+
+		try {
 			o2.applicaMovimenti();
-		}catch(IllegalStateException e){
+		} catch (IllegalStateException e) {
 			fail("Non deve generare eccezioni");
 		}
-		
-		assertEquals(creditivclienti.getSaldo(),0,0.001);
-		
+
+		assertEquals(creditivclienti.getSaldo(), 0, 0.001);
+
 		System.out.println(creditivclienti);
 		System.out.println(assegni);
-		
-		final Map<Conto,Double> first = o2.getContiMovimentatiEImporto();
+
+		final Map<Conto, Double> first = o2.getContiMovimentatiEImporto();
 		o2.setContoMovimentato(creditivclienti, 10);
-		assertEquals(first,o2.getContiMovimentatiEImporto());
-		
+		assertEquals(first, o2.getContiMovimentatiEImporto());
+
 	}
 }

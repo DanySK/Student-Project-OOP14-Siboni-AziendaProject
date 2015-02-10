@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import java.util.Optional;
 
 /**
- * Classe di testing per ContattoImpl
+ * Classe di testing per ContattoImpl.
  * 
  * @author Enrico
  *

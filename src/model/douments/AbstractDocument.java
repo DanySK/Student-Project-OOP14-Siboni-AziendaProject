@@ -3,7 +3,8 @@ package model.douments;
 import model.contatti.Contatto;
 
 /**
- * Implementazione astratta di un Documento
+ * Implementazione astratta di un Documento.
+ * 
  * @author Enrico
  *
  */
@@ -19,6 +20,14 @@ public abstract class AbstractDocument implements Document {
 	private final Contatto debitore;
 	private final Data data;
 
+	/**
+	 * Costruttore di un documento qualunque.
+	 * 
+	 * @param mittente il mittente/traente del documento
+	 * @param beneficiario il beneficiario del documento
+	 * @param debitore il debitore/trattario del documento
+	 * @param data la data del documento
+	 */
 	protected AbstractDocument(final Contatto mittente,
 			final Contatto beneficiario, final Contatto debitore,
 			final Data data) {
@@ -68,7 +77,7 @@ public abstract class AbstractDocument implements Document {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

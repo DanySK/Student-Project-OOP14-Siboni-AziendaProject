@@ -2,6 +2,12 @@ package model.conto;
 
 import java.util.Arrays;
 
+/**
+ * Implementazione concreta della classe Conto.
+ * 
+ * @author Enrico
+ *
+ */
 public class ContoImpl implements Conto {
 
 	/**
@@ -13,6 +19,12 @@ public class ContoImpl implements Conto {
 	private final AccesoA accesoA;
 	private final String name;
 
+	/**
+	 * Ritorna un nuovo conto.
+	 * 
+	 * @param name il nome del nuovo conto
+	 * @param acc a cosa è acceso il nuovo conto
+	 */
 	public ContoImpl(final String name, final AccesoA acc) {
 		this.accesoA = acc;
 		this.name = name;
@@ -36,13 +48,15 @@ public class ContoImpl implements Conto {
 
 	@Override
 	public Eccedenza getEccedenzaAttuale() {
-		return this.importo >= 0 ? getEccedenzaSolita() : eccedenzaContrariaDi(getEccedenzaSolita());
+		return this.importo >= 0 ? getEccedenzaSolita()
+				: eccedenzaContrariaDi(getEccedenzaSolita());
 	}
 
 	@Override
 	public Eccedenza getEccedenzaSolita() {
 		if (Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
-				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO).contains(this.accesoA)) {
+				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO).contains(
+				this.accesoA)) {
 
 			return Eccedenza.DARE;
 		} else {
@@ -59,11 +73,11 @@ public class ContoImpl implements Conto {
 	public AccesoA getAccesoA() {
 		return this.accesoA;
 	}
-	
-	private Eccedenza eccedenzaContrariaDi(final Eccedenza e){
-		if(e.equals(Eccedenza.DARE)){
+
+	private Eccedenza eccedenzaContrariaDi(final Eccedenza e) {
+		if (e.equals(Eccedenza.DARE)) {
 			return Eccedenza.AVERE;
-		}else{
+		} else {
 			return Eccedenza.DARE;
 		}
 	}
@@ -78,7 +92,7 @@ public class ContoImpl implements Conto {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)

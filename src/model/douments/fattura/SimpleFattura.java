@@ -7,7 +7,7 @@ import model.douments.AbstractDocument;
 import model.douments.Data;
 
 /**
- * Implementazione astratta di una Fattura
+ * Implementazione concreta di una Fattura.
  * 
  * @author Enrico
  *
@@ -78,6 +78,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 		return this.importoSconto;
 	}
 
+	@Override
 	public Optional<Integer> getAliquotaSconto() {
 		return this.aliqSconto;
 	}
@@ -130,7 +131,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (!super.equals(obj))
@@ -172,18 +173,30 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	}
 
 	@Override
-	//TODO Rifare con lo stringBuilder in modo che gli optional ci siano solo se sono present() (esempio come nei contatti)
 	public String toString() {
-		return "Mittente=" + this.getMittente() + ",\nDebitore="
-				+ this.getDebitore() + ",\nData=" + this.getData()
-				+ ",\nNumFattura=" + numFattura + ",\nImportoMerce="
-				+ importoMerce + ",\nAliqIva=" + aliqIva + ",\naliqSconto="
-				+ aliqSconto + ",\nimportoSconto=" + importoSconto
-				+ ",\nspeseDoc=" + speseDoc + ",\ninteressi=" + interessi + "]";
+		final StringBuilder s = new StringBuilder(100);
+		s.append("Mittente=").append(this.getMittente()).append(",\nDebitore=")
+				.append(this.getDebitore()).append(",\nData=")
+				.append(this.getData()).append(",\nNumFattura=")
+				.append(numFattura).append(",\nImportoMerce=")
+				.append(importoMerce).append(",\nAliqIva=").append(aliqIva);
+		if (aliqSconto.isPresent()) {
+			s.append("\nAliqSconto=").append(aliqSconto);
+		}
+		if (importoSconto.isPresent()) {
+			s.append(",\nImportoSconto=").append(importoSconto);
+		}
+		if (speseDoc.isPresent()) {
+			s.append(",\nSpeseDocumentate=").append(speseDoc);
+		}
+		if (interessi.isPresent()) {
+			s.append(",\nInteressi=").append(interessi);
+		}
+		return s.toString();
 	}
 
 	/**
-	 * Builder per la classe SimpleFattura
+	 * Builder per la classe SimpleFattura.
 	 * 
 	 * @author Enrico
 	 *

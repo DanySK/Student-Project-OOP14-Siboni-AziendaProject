@@ -17,6 +17,12 @@ import model.douments.fattura.SimpleFattura;
 import model.operation.Operation;
 import model.operation.OperationImpl;
 
+/**
+ * Classe di testing per la classe ModelImpl.
+ * 
+ * @author Enrico
+ *
+ */
 public class Test {
 
 	@org.junit.Test

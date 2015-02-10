@@ -12,14 +12,17 @@ import model.douments.fattura.SimpleFattura;
 import model.operation.Operation;
 
 /**
- * Classe che implementa la strategia di generazione dei documenti
+ * Classe che implementa la strategia di generazione dei documenti.
  * 
  * @author Enrico
  *
  */
 
-// TODO 
-public class Documents {
+// TODO
+public final class Documents {
+
+	private Documents() {
+	}
 
 	/**
 	 * Enumerazione che contiene i conti che possono generare dei documenti
@@ -52,7 +55,7 @@ public class Documents {
 	}
 
 	/**
-	 * Genera un documento da un'operazione
+	 * Genera un documento da un'operazione.
 	 * 
 	 * @param op
 	 *            operazione in ingresso
@@ -72,7 +75,7 @@ public class Documents {
 	}
 
 	/**
-	 * Genera un documento da un'operazione
+	 * Genera un documento da un'operazione.
 	 * 
 	 * @param op
 	 *            operazione in ingresso
@@ -95,7 +98,7 @@ public class Documents {
 	}
 
 	/**
-	 * Genera un documento da un'operazione
+	 * Genera un documento da un'operazione.
 	 * 
 	 * @param op
 	 *            operazione in ingresso
@@ -143,7 +146,7 @@ public class Documents {
 	}
 
 	/**
-	 * Genera un documento a partire da un'operazione
+	 * Genera un documento a partire da un'operazione.
 	 * 
 	 * @param op
 	 *            operazione in ingresso
@@ -166,7 +169,7 @@ public class Documents {
 	}
 
 	/**
-	 * Genera un documento a partire da un'operazione
+	 * Genera un documento a partire da un'operazione.
 	 * 
 	 * @param op
 	 *            operazione in ingresso
@@ -192,7 +195,7 @@ public class Documents {
 	}
 
 	/**
-	 * Dice se l'operazione passata può generare un documento
+	 * Dice se l'operazione passata può generare un documento.
 	 * 
 	 * @param op
 	 *            l'operaione da cui generare

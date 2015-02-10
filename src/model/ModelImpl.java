@@ -1,6 +1,5 @@
 package model;
 
-import java.io.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -16,6 +15,12 @@ import model.conto.Conto;
 import model.douments.Document;
 import model.operation.Operation;
 
+/**
+ * Implementazione concreta della classe Model.
+ * 
+ * @author Enrico
+ *
+ */
 public final class ModelImpl implements Model {
 
 	/**
@@ -23,16 +28,18 @@ public final class ModelImpl implements Model {
 	 */
 	private static final long serialVersionUID = 3485815033963843598L;
 
-	private static Contatto ourContact;
-	private static int operationCounter = 1;
-
 	private final Controller c = null;
 
+	private int operationCounter = 1;
+	private Contatto ourContact;
 	private final Set<Conto> contiStore;
 	private final Set<Contatto> contattiStore;
 	private final Map<Integer, Operation> operationMap;
 	private final Map<Integer, Document> documentMap;
 
+	/**
+	 * Restituisce un modello vuoto.
+	 */
 	public ModelImpl() {
 		this.contiStore = new HashSet<>();
 		this.contattiStore = new HashSet<>();
@@ -67,15 +74,15 @@ public final class ModelImpl implements Model {
 	@Override
 	public void setOurContact(final Contatto c) {
 		Objects.requireNonNull(c);
-		ModelImpl.ourContact = new ContattoImpl(c);
+		ourContact = new ContattoImpl(c);
 	}
 
 	@Override
 	public Contatto getOurContact() {
-		if (ModelImpl.ourContact == null) {
-			ModelImpl.ourContact = c.askOurContact();
+		if (ourContact == null) {
+			ourContact = c.askOurContact();
 		}
-		return new ContattoImpl(ModelImpl.ourContact);
+		return new ContattoImpl(ourContact);
 	}
 
 	@Override
@@ -178,8 +185,8 @@ public final class ModelImpl implements Model {
 	 * 
 	 * @return il numero progressivo da dare alla prossima operazione
 	 */
-	private static int getNextOperationNumber() {
-		return ModelImpl.operationCounter++;
+	private int getNextOperationNumber() {
+		return operationCounter++;
 	}
 
 	/**

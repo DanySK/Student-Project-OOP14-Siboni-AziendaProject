@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Optional;
 
 /**
- * Descrive i dati relativi alle persone che vengono a contatto con l'azienda
+ * Descrive i dati relativi alle persone che vengono a contatto con l'azienda.
  * 
  * @author Enrico
  *

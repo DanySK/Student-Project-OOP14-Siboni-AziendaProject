@@ -11,18 +11,28 @@ import model.conto.Conto.Eccedenza;
 import model.douments.Data;
 import model.douments.DataImpl;
 
+/**
+ * Implementazione concreta di una Operazione.
+ * 
+ * @author Enrico
+ *
+ */
 public class OperationImpl implements Operation {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1445965986132678879L;
+	private static final double TOLLERANZA = 0.001;
 
 	private final Map<Conto, Double> map;
 	private final Data data;
 	private boolean movementsApplied;
 	private Optional<String> description;
 
+	/**
+	 * Restituisce una nuova operazione.
+	 */
 	public OperationImpl() {
 		this.map = new HashMap<>();
 		this.data = new DataImpl();
@@ -46,7 +56,6 @@ public class OperationImpl implements Operation {
 		this.description = Optional.ofNullable(description);
 	}
 
-
 	@Override
 	public Data getData() {
 		return this.data;
@@ -67,7 +76,7 @@ public class OperationImpl implements Operation {
 								.equals(Eccedenza.AVERE))
 						.mapToDouble(e -> e.getValue()).sum();
 
-		return result > -0.001 && result < 0.001;
+		return result > -TOLLERANZA && result < TOLLERANZA;
 	}
 
 	@Override
@@ -106,7 +115,6 @@ public class OperationImpl implements Operation {
 		return this.description.orElse("");
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -117,7 +125,7 @@ public class OperationImpl implements Operation {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -140,8 +148,7 @@ public class OperationImpl implements Operation {
 
 	@Override
 	public String toString() {
-		String result = "Data=" + data
-				+ ",\nMovimenti=" + map;
+		String result = "Data=" + data + ",\nMovimenti=" + map;
 		if (description.isPresent()) {
 			result += ",\nDescrizione=" + description.get();
 		}

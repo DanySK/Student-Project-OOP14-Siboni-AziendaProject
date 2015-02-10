@@ -1,7 +1,7 @@
 package view;
 
 /**
- * Descrive il comportamento della vista dell'applicazione
+ * Descrive il comportamento della vista dell'applicazione.
  * 
  * @author Enrico
  *
