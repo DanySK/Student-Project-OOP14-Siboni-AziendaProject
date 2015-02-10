@@ -17,12 +17,6 @@ import model.operation.Operation;
 public interface Model extends Serializable{
 
 	/**
-	 * Carica i dati salvati e popola il modello
-	 * 
-	 */
-	void load();
-	
-	/**
 	 * Aggiunge il conto passato come parametro, se questo non era già presente, al file dei conti; lancia IllegalArgumentException se il conto esisteva già
 	 * 
 	 * @param c
@@ -38,13 +32,14 @@ public interface Model extends Serializable{
 	
 	/**
 	 * Setta il contatto della nostra azienda
+	 * 
 	 * @param c il contatto da settare come nostro
 	 */
 	void setOurContact(Contatto c);
 	
 	/**
 	 * 
-	 * @return il nostro contatto, se non presente lo crea
+	 * @return il nostro contatto, se non presente lo genera
 	 */
 	Contatto getOurContact();
 	
@@ -56,7 +51,7 @@ public interface Model extends Serializable{
 	void addOperation(Operation op);
 	
 	/**
-	 * Ottiene l'operazione attraverso il numero progressivo; lancia IllegalArgumentException se viene passato un numero negativo,
+	 * Ottiene l'operazione attraverso il numero progressivo; lancia IllegalArgumentException se viene passato un numero negativo o 0,
 	 * oppure lancia NoSuchElementException se il numero non corrisponde ad un'operazione ancora
 	 * 
 	 * @param numOperation
@@ -66,8 +61,17 @@ public interface Model extends Serializable{
 	Operation getOperation(int numOperation);
 	
 	/**
-	 * Ritorna il documento riferito all'operazione con quel numero; lancia IllegalargumentException se il numero passato è negativo,
-	 * oppure NoSuchElementException se il numero ancora non corrisponde ad alcuna operazione
+	 * Aggiunge un documento all'operazione indicata dal numero passato; lancia IllegalArgumentException se il numero passato è negativo o 0,
+	 * NoSuchElementException se il numero dell'operazione passato ancora non corrisponde a nessuna 
+	 * @param numOperation il numero dell'operazione a cui collegare il documento
+	 * @param doc il documento da collegare
+	 * @return true se il documento viene aggiunto, false se l'operazione aveva già un documento correlato
+	 */
+	boolean addDocumentForOperation(int numOperation, Document doc);
+	
+	/**
+	 * Ritorna il documento riferito all'operazione con quel numero; lancia IllegalArgumentException se il numero passato è negativo o 0,
+	 * lancia NoSuchElementException se il numero ancora non corrisponde ad alcuna operazione oppure se non c'è un documento correlato all'operazione
 	 * 
 	 * @param numOperation
 	 * 			numero dell'operazione da trovare
@@ -76,9 +80,32 @@ public interface Model extends Serializable{
 	Document getDocumentReferredTo(int numOperation);
 	
 	/**
-	 * Salva il modello
+	 * Elimina il documento riferito all'operazione indicata; lancia IllegalArgumentException se il numero passato è negativo o 0,
+	 * lancia NoSuchElementException se il numero ancora non corrisponde ad alcuna operazione;
+	 * se l'operazione indicata non ha un documento allegato non fa nulla
+	 * 
+	 * @param numOperation numero operazione di cui eliminare il documento
 	 */
-	void save();
+	void deleteDocumentReferredTo(int numOperation);
+	
+	/**
+	 * Aggiunge un conttatto all'insieme degli altri contatti; se uno equals è già presente, si chiede quale mantenere.
+	 * 
+	 * @param contatto da aggiungere
+	 */
+	void addContatto(Contatto contatto);
+	
+	/**
+	 * Cancella il conttato da quelli salvati; lancia NoSuchElementException se il contatto passato non è presente in memoria 
+	 * @param contatto il contatto da eliminare
+	 */
+	void deleteContatto(Contatto contatto);
+	
+	/**
+	 * 
+	 * @return il set dei contatti salvati
+	 */
+	Set<Contatto> getContatti();
 	
 	/**
 	 * Resetta il modello allo stato di partenza

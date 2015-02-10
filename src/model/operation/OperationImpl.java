@@ -19,7 +19,6 @@ public class OperationImpl implements Operation {
 	private static final long serialVersionUID = 1445965986132678879L;
 
 	private final Map<Conto, Double> map;
-	private Integer operationNum;
 	private final Data data;
 	private boolean movementsApplied;
 	private Optional<String> description;
@@ -28,11 +27,6 @@ public class OperationImpl implements Operation {
 		this.map = new HashMap<>();
 		this.data = new DataImpl();
 		this.description = Optional.empty();
-	}
-
-	@Override
-	public int getNum() {
-		return this.operationNum;
 	}
 
 	@Override
@@ -52,19 +46,6 @@ public class OperationImpl implements Operation {
 		this.description = Optional.ofNullable(description);
 	}
 
-	@Override
-	public void setNumOperation(final int numOp) {
-		if (this.operationNum == null) {
-			if(numOp<=0){
-				throw new IllegalArgumentException("Il numero operazione non può essere negativo");
-			}
-			
-			this.operationNum = numOp;
-		} else {
-			throw new UnsupportedOperationException(
-					"Il numero dell'operazione non si può settare due volte");
-		}
-	}
 
 	@Override
 	public Data getData() {
@@ -97,10 +78,6 @@ public class OperationImpl implements Operation {
 	@Override
 	public void applicaMovimenti() {
 		if (!this.movementsApplied) {
-			if(this.operationNum == null){
-				throw new IllegalStateException("L'operazione deve avere un numero!!");
-			}
-			
 			if (this.isBalanced()) {
 				this.map.entrySet().stream()
 						.forEach(e -> e.getKey().addMovimento(e.getValue()));
@@ -129,13 +106,13 @@ public class OperationImpl implements Operation {
 		return this.description.orElse("");
 	}
 
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
-		result = prime * result
-				+ ((operationNum == null) ? 0 : operationNum.hashCode());
+		result = prime * result + ((map == null) ? 0 : map.hashCode());
 		return result;
 	}
 
@@ -153,17 +130,17 @@ public class OperationImpl implements Operation {
 				return false;
 		} else if (!data.equals(other.data))
 			return false;
-		if (operationNum == null) {
-			if (other.operationNum != null)
+		if (map == null) {
+			if (other.map != null)
 				return false;
-		} else if (!operationNum.equals(other.operationNum))
+		} else if (!map.equals(other.map))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		String result = "OperationNum=" + operationNum + ",\nData=" + data
+		String result = "Data=" + data
 				+ ",\nMovimenti=" + map;
 		if (description.isPresent()) {
 			result += ",\nDescrizione=" + description.get();

@@ -15,11 +15,6 @@ import model.douments.Data;
  */
 public interface Operation extends Serializable {
 
-	/**
-	 * 
-	 * @return il numero dell'operazione
-	 */
-	int getNum();
 	
 	/**
 	 * Aggiunge un conto movimentato a questa operazione; lancia IllegalArgumentException se l'importo è uguale a zero
@@ -55,14 +50,6 @@ public interface Operation extends Serializable {
 	 * @param descr la descrizione da aggiungere
 	 */
 	void setDescription(String descr);
-	
-	/**
-	 * Setta il numero dell'operazione; può essere chiamato solo una volta sull'operazione, dopodichè lancia UnsupportedOperationException
-	 * @param numOp il numero operazione da settare
-	 * @throws UnsupportedOperationException se è già stato settato il numero
-	 * @throws IllegalArgumentException se il numero operazione passato è negativo o 0
-	 */
-	void setNumOperation(int numOp);
 	
 	/**
 	 * 

@@ -53,20 +53,6 @@ public class Test {
 		
 		try{
 			o.applicaMovimenti();
-			fail("Deve generare eccezione");
-		}catch(IllegalStateException e){
-		}
-		
-		o.setNumOperation(1);
-		
-		try{
-			o.setNumOperation(2);
-			fail("Deve generare eccezione");
-		}catch(UnsupportedOperationException e){
-		}
-		
-		try{
-			o.applicaMovimenti();
 		}catch(IllegalStateException e){
 			fail("Non deve generare eccezioni");
 		}
@@ -96,8 +82,6 @@ public class Test {
 		
 		o2.setContoMovimentato(assegni, 133.64);
 		o2.setContoMovimentato(creditivclienti, -133.63);
-		
-		o2.setNumOperation(2);
 		System.out.println("\n"+o2+"\n");
 		
 		assertFalse(o2.isBalanced());
