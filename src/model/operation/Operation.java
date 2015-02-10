@@ -2,13 +2,10 @@ package model.operation;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
-import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Data;
-import model.douments.Document;
 
 /**
  * Descrive un'operazione di gestione
@@ -20,18 +17,38 @@ public interface Operation extends Serializable {
 
 	/**
 	 * 
-	 * @return il numero progressivo dell'operazione
+	 * @return il numero dell'operazione
 	 */
 	int getNum();
 	
 	/**
-	 * Aggiunge un conto movimentato a questa operazione; lancia IllegalArgumentException se l'importo è uguale a zero, o se il conto era già stato movimentato
+	 * Aggiunge un conto movimentato a questa operazione; lancia IllegalArgumentException se l'importo è uguale a zero
+	 * 
+	 * se l'operazione aveva già un movimento su quel conto questo lo sovrascrive
+	 * se i movimenti sono già stati applicati questo metodo non ha più effetti sull'operazione
 	 * 
 	 * @param c il conto da movimentare
 	 * @param importo l'importo di cui il conto dovrà essere movimentato
+	 * @throws IllgalArgumentException se il valore passato come importo è 0
 	 */
-	void addContoMovimentato(Conto c, double importo);
+	void setContoMovimentato(Conto c, double importo);
 
+	/**
+	 * Applica i movimenti di questa Operazione ai conti, se l'operazione bilancia... altrimenti lancia IllegalStateException
+	 * 
+	 * se i movimenti erano già stati applicati non fa nulla
+	 * se il numeo operazione non era stato settato lancia IllegalStateException
+	 * 
+	 * @throws IllegalStateException se l'operazione non bilancia oppure se il numero operazione non è stato settato
+	 */
+	void applicaMovimenti();
+	
+	/**
+	 * 
+	 * @return true se i movimenti sono già stati applicati ai conti, false altrimenti
+	 */
+	boolean haveMovementsBeenApplied();
+	
 	/**
 	 * Aggiunge una descrizione all'operazione
 	 * 
@@ -40,8 +57,10 @@ public interface Operation extends Serializable {
 	void setDescription(String descr);
 	
 	/**
-	 * Setta il numero dell'operazione; può essere chiamato solo una volta sull'operazione
+	 * Setta il numero dell'operazione; può essere chiamato solo una volta sull'operazione, dopodichè lancia UnsupportedOperationException
 	 * @param numOp il numero operazione da settare
+	 * @throws UnsupportedOperationException se è già stato settato il numero
+	 * @throws IllegalArgumentException se il numero operazione passato è negativo o 0
 	 */
 	void setNumOperation(int numOp);
 	
@@ -67,35 +86,12 @@ public interface Operation extends Serializable {
 	 * 
 	 * @return la mappa conto -> importo di cui è stato movimentato
 	 */
-	Map<Conto,Double> getContiMovimentatiEImporto();
+	Map<Conto, Double> getContiMovimentatiEImporto();
 	
 	/**
 	 * 
 	 * @return la descrizione dell'operazione
 	 */
 	String getDescription();
-	
-	/**
-	 * @param contatti i contatti su cui generare il documento
-	 * 
-	 * @return il documento generato dall'operazione corrente; lancia IllegalStateException se l'operazione non è bilanciata;
-	 */
-	Optional<Document> generateDocument(Contatto... contatti);
-	
-	/**
-	 * 
-	 * @return se l'operazione è registrazione di un documento, oppure no
-	 */
-	boolean canGenerateDocument();
-	
-	
-	/*
-	 * Queta funzione sarebbe un po avanzata... non so riusciremo a implementarla...
-	 * 
-	 * Genera l'operazione a partire dal documento che la rappresenta; lancia NullPointerException se il documento passato è null
-	 * @param doc
-	 * 			il documento da cui prendere i dati per la generazione dell'operazione
-	 *
-	static Operation generateOperationFromDocument(Document doc);*/
 	
 }
