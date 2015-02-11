@@ -1,6 +1,9 @@
 package model.conto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Descrive un conto, e il suo comportamento.
@@ -62,12 +65,22 @@ public interface Conto extends Serializable {
 	 *
 	 */
 	static enum Eccedenza {
-		DARE("Dare"), AVERE("Avere");
+		DARE("Dare", Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
+				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO)),
+		AVERE("Avere", Arrays.asList(AccesoA.DEBITI,
+				AccesoA.PATRIMONIO_NETTO, AccesoA.RICAVI_ES,
+				AccesoA.RICAVI_PLUR, AccesoA.RICAVI_SOSP));
 
 		private final String nome;
+		private final List<AccesoA> listConti;
 
-		private Eccedenza(final String name) {
+		private Eccedenza(final String name, final List<AccesoA> list) {
 			this.nome = name;
+			this.listConti = list;
+		}
+
+		public List<AccesoA> getContiAccesiQui() {
+			return new ArrayList<>(this.listConti);
 		}
 
 		@Override

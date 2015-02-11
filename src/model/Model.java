@@ -7,6 +7,8 @@ import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Document;
 import model.operation.Operation;
+import model.situazione.SituazioneEconomica;
+import model.situazione.SituazionePatrimoniale;
 
 /**
  * Descrive il comportamento del modello dell'applicazione.
@@ -139,6 +141,18 @@ public interface Model extends Serializable {
 	Set<Contatto> getContatti();
 
 	/**
+	 * 
+	 * @return la situazione economica dell'azienda
+	 */
+	SituazioneEconomica getSituazioneEconomica();
+	
+	/**
+	 * 
+	 * @return la situazione patrimoniale dell'azienda
+	 */
+	SituazionePatrimoniale getSituazionePatrimoniale();
+	
+	/**
 	 * Resetta il modello allo stato di partenza
 	 * 
 	 */
@@ -146,7 +160,7 @@ public interface Model extends Serializable {
 
 	/*
 	 * Queta funzione sarebbe un po avanzata... non so riusciremo a
-	 * implementarla...
+	 * implementarla... dipende se rimane tempo
 	 * 
 	 * Genera l'operazione a partire dal documento che la rappresenta; lancia
 	 * NullPointerException se il documento passato è null
@@ -155,15 +169,6 @@ public interface Model extends Serializable {
 	 * dell'operazione
 	 * 
 	 * Operation generateOperationFromDocument(Document doc);
-	 */
-
-	/*
-	 * 
-	 * questi due metodi sotto sono da meglio definire...
-	 * 
-	 * void getSituazioneEconomica();
-	 * 
-	 * void getSituazionePatrimoniale();
 	 */
 
 }

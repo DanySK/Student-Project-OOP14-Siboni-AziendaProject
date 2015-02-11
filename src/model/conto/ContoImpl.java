@@ -1,7 +1,5 @@
 package model.conto;
 
-import java.util.Arrays;
-
 /**
  * Implementazione concreta della classe Conto.
  * 
@@ -54,8 +52,7 @@ public class ContoImpl implements Conto {
 
 	@Override
 	public Eccedenza getEccedenzaSolita() {
-		if (Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
-				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO).contains(
+		if (Eccedenza.DARE.getContiAccesiQui().contains(
 				this.accesoA)) {
 
 			return Eccedenza.DARE;

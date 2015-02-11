@@ -14,6 +14,8 @@ import model.contatti.ContattoImpl;
 import model.conto.Conto;
 import model.douments.Document;
 import model.operation.Operation;
+import model.situazione.SituazioneEconomica;
+import model.situazione.SituazionePatrimoniale;
 
 /**
  * Implementazione concreta della classe Model.
@@ -163,6 +165,18 @@ public final class ModelImpl implements Model {
 		return new HashSet<>(this.contattiStore);
 	}
 
+	@Override
+	public SituazioneEconomica getSituazioneEconomica() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SituazionePatrimoniale getSituazionePatrimoniale() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public void reset() {
 		this.documentMap.clear();
