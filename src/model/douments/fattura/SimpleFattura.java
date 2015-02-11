@@ -1,5 +1,8 @@
 package model.douments.fattura;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 
 import model.contatti.Contatto;
@@ -22,10 +25,10 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	private final double importoMerce;
 	private final int aliqIva;
 	private final String numFattura;
-	private final Optional<Integer> aliqSconto;
-	private Optional<Double> importoSconto = Optional.empty();
-	private final Optional<Double> speseDoc;
-	private final Optional<Double> interessi;
+	private transient Optional<Integer> aliqSconto;
+	private transient Optional<Double> importoSconto = Optional.empty();
+	private transient Optional<Double> speseDoc;
+	private transient Optional<Double> interessi;
 	private transient Optional<Double> totCached;
 
 	private SimpleFattura(final Contatto mittente, final Contatto debitore,
@@ -195,6 +198,44 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 		return s.toString();
 	}
 
+	
+	/**
+	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
+	 * una SimpleFattura.
+	 * 
+	 * @param out
+	 *            l'outputstream su cui scrivere
+	 * @throws IOException
+	 */
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		
+		out.writeObject(aliqSconto.orElse(null));
+		out.writeObject(importoSconto.orElse(null));
+		out.writeObject(speseDoc.orElse(null));
+		out.writeObject(interessi.orElse(null));
+	}
+
+	/**
+	 * Metodo chiamato da un input stream che legge; indica come leggere una
+	 * SimpleFattura serializzata.
+	 * 
+	 * @param in
+	 *            l'input stream da cui si legge
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	private void readObject(final ObjectInputStream in)
+			throws ClassNotFoundException, IOException {
+		in.defaultReadObject();
+		
+		aliqSconto = Optional.ofNullable((Integer)in.readObject());
+		importoSconto = Optional.ofNullable((Double)in.readObject());
+		speseDoc = Optional.ofNullable((Double)in.readObject());
+		interessi = Optional.ofNullable((Double)in.readObject());
+		totCached = Optional.empty();
+	}
+	
 	/**
 	 * Builder per la classe SimpleFattura.
 	 * 

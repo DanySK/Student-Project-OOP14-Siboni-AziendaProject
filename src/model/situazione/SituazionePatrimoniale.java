@@ -50,7 +50,3 @@ public interface SituazionePatrimoniale extends Situazione {
 	 */
 	double getTotRicaviSospesi();
 }
-
-
-/*
-Aggiunto un metodo all'eccedenza per farsi dare i conti che si accendono in dare o avere; aggiunte interfacce per situazioni patrimoniale e economica*/

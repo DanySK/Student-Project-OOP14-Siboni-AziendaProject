@@ -1,5 +1,11 @@
 package model;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,19 +31,23 @@ import model.situazione.SituazionePatrimoniale;
  */
 public final class ModelImpl implements Model {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3485815033963843598L;
+	private static final String CONTATTI_FILENAME = "contatti.azpj";
+	private static final String CONTI_FILENAME = "conti.azpj";
+	private static final String OPERATIONS_FILENAME = "operations.azpj";
+	private static final String DOCUMENTS_FILENAME = "documents.azpj";
 
-	private final Controller c = null;
+	private transient Controller c;
 
 	private int operationCounter = 1;
 	private Contatto ourContact;
-	private final Set<Conto> contiStore;
-	private final Set<Contatto> contattiStore;
-	private final Map<Integer, Operation> operationMap;
-	private final Map<Integer, Document> documentMap;
+	private Set<Conto> contiStore;
+	private Set<Contatto> contattiStore;
+	private Map<Integer, Operation> operationMap;
+	private Map<Integer, Document> documentMap;
+	private boolean contiStoreChanged;
+	private boolean contattiStoreChanged;
+	private boolean operationMapChanged;
+	private boolean documentMapChanged;
 
 	/**
 	 * Restituisce un modello vuoto.
@@ -56,6 +66,7 @@ public final class ModelImpl implements Model {
 			throw new IllegalArgumentException("Conto già presente");
 		}
 		this.contiStore.add(c);
+		this.contiStoreChanged = true;
 	}
 
 	@Override
@@ -63,6 +74,7 @@ public final class ModelImpl implements Model {
 		Objects.requireNonNull(c);
 		if (this.contiStore.contains(c)) {
 			this.contiStore.remove(c);
+			this.contiStoreChanged = true;
 		} else {
 			throw new NoSuchElementException();
 		}
@@ -77,6 +89,7 @@ public final class ModelImpl implements Model {
 	public void setOurContact(final Contatto c) {
 		Objects.requireNonNull(c);
 		ourContact = new ContattoImpl(c);
+		this.contattiStoreChanged = true;
 	}
 
 	@Override
@@ -91,6 +104,7 @@ public final class ModelImpl implements Model {
 	public void addOperation(final Operation op) {
 		Objects.requireNonNull(op);
 		this.operationMap.put(getNextOperationNumber(), op);
+		this.operationMapChanged = true;
 	}
 
 	@Override
@@ -110,6 +124,7 @@ public final class ModelImpl implements Model {
 			return false;
 		}
 		this.documentMap.put(numOperation, doc);
+		this.documentMapChanged = true;
 		return true;
 	}
 
@@ -132,6 +147,7 @@ public final class ModelImpl implements Model {
 		controlNumOp(numOperation);
 
 		this.documentMap.remove(numOperation);
+		this.documentMapChanged = true;
 	}
 
 	@Override
@@ -147,6 +163,7 @@ public final class ModelImpl implements Model {
 			this.contattiStore.removeAll(set);
 			this.contattiStore.add(c.wichContattoToMantain(set));
 		}
+		this.contattiStoreChanged = true;
 	}
 
 	@Override
@@ -155,6 +172,7 @@ public final class ModelImpl implements Model {
 
 		if (this.contattiStore.contains(contatto)) {
 			this.contattiStore.remove(contatto);
+			this.contattiStoreChanged = true;
 		} else {
 			throw new NoSuchElementException();
 		}
@@ -176,23 +194,132 @@ public final class ModelImpl implements Model {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
+	@Override
+	public void setController(final Controller c) {
+		Objects.requireNonNull(c);
+		this.c = c;
+	}
+
+	@Override
+	public void save(final String path) throws FileNotFoundException {
+
+		if (this.operationMapChanged) {
+			try {
+				final ObjectOutputStream out = new ObjectOutputStream(
+						new FileOutputStream(path + OPERATIONS_FILENAME));
+				out.writeInt(operationCounter);
+				out.writeObject(operationMap);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (this.documentMapChanged) {
+			try {
+				final ObjectOutputStream out = new ObjectOutputStream(
+						new FileOutputStream(path + DOCUMENTS_FILENAME));
+				out.writeObject(documentMap);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (this.contattiStoreChanged) {
+			try {
+				final ObjectOutputStream out = new ObjectOutputStream(
+						new FileOutputStream(path + CONTATTI_FILENAME));
+				out.writeObject(ourContact);
+				out.writeObject(contattiStore);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if (this.contiStoreChanged) {
+			try {
+				final ObjectOutputStream out = new ObjectOutputStream(
+						new FileOutputStream(path + CONTI_FILENAME));
+				out.writeObject(contiStore);
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void load(final String path) throws FileNotFoundException {
+		try {
+			final ObjectInputStream in = new ObjectInputStream(
+					new FileInputStream(path + OPERATIONS_FILENAME));
+			operationCounter = in.readInt();
+			operationMap = (Map<Integer, Operation>) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			final ObjectInputStream in = new ObjectInputStream(
+					new FileInputStream(path + DOCUMENTS_FILENAME));
+			documentMap = (Map<Integer, Document>) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			final ObjectInputStream in = new ObjectInputStream(
+					new FileInputStream(path + CONTATTI_FILENAME));
+			ourContact = (Contatto) in.readObject();
+			contattiStore = (Set<Contatto>) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			final ObjectInputStream in = new ObjectInputStream(
+					new FileInputStream(path + CONTI_FILENAME));
+			contiStore = (Set<Conto>) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void reset() {
 		this.documentMap.clear();
 		this.operationMap.clear();
 		operationCounter = 1;
 	}
-
-	/*
-	 * private void writeObject(final ObjectOutputStream out){
-	 * 
-	 * }
-	 * 
-	 * private void readObject(final ObjectInputStream in){
-	 * 
-	 * }
-	 */
 
 	/**
 	 * Metodo che da il numero progressivo alle operazioni

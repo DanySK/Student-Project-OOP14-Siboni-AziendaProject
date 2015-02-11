@@ -2,6 +2,11 @@ package model.contatti;
 
 import static org.junit.Assert.*;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 
 /**
@@ -122,5 +127,38 @@ public class Test {
 		assertNotEquals(c, b);
 
 		assertNotEquals(b, c);
+	}
+
+	@org.junit.Test
+	public void testReadWriteObject() {
+		try {
+			final Contatto a = new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").setPIVA("11111111111")
+					.setCF("asderf51c10324ds").setCAP("47122").setProvincia("FC")
+					.build();
+			
+			final ObjectOutputStream o = new ObjectOutputStream(
+					new FileOutputStream(System.getProperty("java.io.tmpdir")
+							+ System.getProperty("file.separator")
+							+ "fileProva.file"));
+			
+			o.writeObject(a);
+			o.close();
+			final ObjectInputStream i = new ObjectInputStream(new FileInputStream(System.getProperty("java.io.tmpdir")
+							+ System.getProperty("file.separator")
+							+ "fileProva.file"));
+			
+			final Contatto b = (Contatto) i.readObject();
+			i.close();
+			
+			assertEquals(a,b);
+			assertEquals(b,a);
+			assertEquals(b.toString(),a.toString());
+			
+		} catch (IOException e) {
+			fail("No Exception Expected");
+		} catch (ClassNotFoundException e) {
+			fail("No Exception Expected");
+		}
 	}
 }

@@ -2,12 +2,13 @@ package controller;
 
 import java.util.Set;
 
+import view.View;
 import model.contatti.Contatto;
 
 /**
  * Descrive il comportamento del controllore dell'applicazione.
  * 
- * @author Enrico
+ * @author Enrico, Marco, Elia
  *
  */
 public interface Controller {
@@ -17,12 +18,26 @@ public interface Controller {
 	 * 
 	 */
 	void load();
-	
+
 	/**
 	 * Salva il modello.
 	 */
 	void save();
+
+	/**
+	 * Aggiunge una View al controller.
+	 * 
+	 * @param v
+	 *            la view da aggiungere
+	 */
+	void attachView(View v);
 	
+	/**
+	 * Rimuove la view passata, se non corrisponde a nessuna view non fa nulla
+	 * @param v la view da rimuovere
+	 */
+	void removeView(View v);
+
 	/**
 	 * Chiede l'inserimento del nostro contatto all'utente.
 	 * 
@@ -31,10 +46,12 @@ public interface Controller {
 	Contatto askOurContact();
 
 	/**
-	 * Chiede all'utente quale contatto mantenere tra quelli equals presenti nel set passato.
+	 * Richiede quale contatto mantenere tra quelli equals presenti nel set
+	 * passato.
 	 * 
-	 * @param set il set di contatti tra cui scegliere quale mantenere
-	 * @return il contatto scelto dall'utente per essere mantenuto
+	 * @param set
+	 *            il set di contatti tra cui scegliere quale mantenere
+	 * @return il contatto scelto per essere mantenuto
 	 */
 	Contatto wichContattoToMantain(Set<Contatto> set);
 }

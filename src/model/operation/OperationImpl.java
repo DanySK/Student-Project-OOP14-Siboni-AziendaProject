@@ -1,5 +1,8 @@
 package model.operation;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -28,7 +31,7 @@ public class OperationImpl implements Operation {
 	private final Map<Conto, Double> map;
 	private final Data data;
 	private boolean movementsApplied;
-	private Optional<String> description;
+	private transient Optional<String> description;
 
 	/**
 	 * Restituisce una nuova operazione.
@@ -155,4 +158,34 @@ public class OperationImpl implements Operation {
 		return result;
 	}
 
+	/**
+	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
+	 * una Operation.
+	 * 
+	 * @param out
+	 *            l'outputstream su cui scrivere
+	 * @throws IOException
+	 */
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		
+		out.writeObject(this.description.orElse(null));
+	}
+
+	/**
+	 * Metodo chiamato da un input stream che legge; indica come leggere una
+	 * Operation serializzata.
+	 * 
+	 * @param in
+	 *            l'input stream da cui si legge
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	private void readObject(final ObjectInputStream in)
+			throws ClassNotFoundException, IOException {
+		in.defaultReadObject();
+		
+		this.description = Optional.ofNullable((String)in.readObject());
+	}
+	
 }

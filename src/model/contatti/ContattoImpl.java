@@ -1,5 +1,8 @@
 package model.contatti;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Optional;
 
 /**
@@ -19,11 +22,11 @@ public class ContattoImpl implements Contatto {
 	private final String ragSoc;
 	private final String cf;
 	private final String piva;
-	private final Optional<String> telefono;
-	private final Optional<String> sedeLeg;
-	private final Optional<String> citta;
-	private final Optional<String> cap;
-	private final Optional<String> provincia;
+	private transient Optional<String> telefono;
+	private transient Optional<String> sedeLeg;
+	private transient Optional<String> citta;
+	private transient Optional<String> cap;
+	private transient Optional<String> provincia;
 
 	private ContattoImpl(final String nome, final String ragSoc,
 			final String cf, final String piva,
@@ -154,9 +157,9 @@ public class ContattoImpl implements Contatto {
 	@Override
 	public String toString() {
 		final StringBuilder s = new StringBuilder(100);
-		s.append("Contatto [RagioneSociale= ").append(ragSoc)
-				.append(", NomeTitolare= ").append(nomeTit).append(", P.IVA= ")
-				.append(piva).append(", C.F.= ").append(cf);
+		s.append("RagioneSociale= ").append(ragSoc).append(", NomeTitolare= ")
+				.append(nomeTit).append(", P.IVA= ").append(piva)
+				.append(", C.F.= ").append(cf);
 		if (telefono.isPresent()) {
 			s.append(", Telefono= ").append(telefono.get());
 		}
@@ -172,12 +175,52 @@ public class ContattoImpl implements Contatto {
 		if (provincia.isPresent()) {
 			s.append(", Provincia= ").append(provincia.get());
 		}
-		return s.append("]").toString();
+		return s.toString();
 	}
 
-	// TODO implementare la writeE read Objecct in modo da non scrivere
-	// direttamente Optional che non è serializzabile -.-
+	/**
+	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
+	 * un contatto.
+	 * 
+	 * @param out
+	 *            l'outputstream su cui scrivere
+	 * @throws IOException
+	 */
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		out.defaultWriteObject();
+		
+		out.writeObject(telefono.orElse(null));
+		out.writeObject(sedeLeg.orElse(null));
+		out.writeObject(citta.orElse(null));
+		out.writeObject(cap.orElse(null));
+		out.writeObject(provincia.orElse(null));
+	}
 
+	/**
+	 * Metodo chiamato da un input stream che legge; indica come leggere un
+	 * contatto serializzato.
+	 * 
+	 * @param in
+	 *            l'input stream da cui si legge
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	private void readObject(final ObjectInputStream in)
+			throws ClassNotFoundException, IOException {
+		in.defaultReadObject();
+		
+		telefono = Optional.ofNullable((String) in.readObject());
+		
+		sedeLeg = Optional.ofNullable((String) in.readObject());
+
+		citta = Optional.ofNullable((String) in.readObject());
+
+		cap =  Optional.ofNullable((String) in.readObject());
+
+		provincia =  Optional.ofNullable((String) in.readObject());
+	}
+	
+	
 	/**
 	 * Builder per la classe Contatto.
 	 * 

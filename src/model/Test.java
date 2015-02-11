@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -214,5 +215,60 @@ public class Test {
 		} catch (NoSuchElementException e) {
 		}
 
+	}
+	
+	@org.junit.Test
+	public void testWriteAndRead(){
+		final Model a = new ModelImpl();
+
+		final Contatto ciccio = new ContattoImpl.Builder()
+				.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
+				.setCF("ssssssssssssssss").setPIVA("33333333333").build();
+		final Contatto mio = new ContattoImpl.Builder()
+				.setNomeTitolare("Enrico Siboni").setRagSoc("Siboni s.n.c.")
+				.setCF("SBNNRC94M03D704F").setPIVA("16680464604").build();
+		final Contatto other = new ContattoImpl.Builder()
+				.setCF("wwwwwwwwwwwwwwww").setPIVA("22222222222")
+				.setNomeTitolare("other").setRagSoc("other spa").build();
+
+		a.addContatto(ciccio);
+		a.addContatto(mio);
+		a.addContatto(other);
+
+		final Conto c1 = new ContoImpl("Crediti v/clienti", AccesoA.CREDITI);
+		final Conto c2 = new ContoImpl("Denaro In Cassa", AccesoA.DENARO);
+
+		a.addConto(c1);
+		a.addConto(c2);
+
+		final Operation op1 = new OperationImpl();
+		op1.setContoMovimentato(c1, -100);
+		op1.setContoMovimentato(c2, 100);
+		op1.applicaMovimenti();
+		a.addOperation(op1);
+
+		final Operation op2 = new OperationImpl();
+		op2.setContoMovimentato(c1, -200.50);
+		op2.setContoMovimentato(c2, 200.50);
+		a.addOperation(op2);
+		op2.applicaMovimenti();
+
+		final Document d = new SimpleFattura.Builder().setAliqIva(20)
+				.setData(new DataImpl()).setImportoMerce(200).setMittente(mio)
+				.setDebitore(ciccio).setNumFattura("88").build();
+
+		a.addDocumentToOperation(1, d);
+		
+		try {
+			System.out.println(System.getProperty("java.io.tmpdir"));
+			
+			a.save(System.getProperty("java.io.tmpdir"));
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+		
 	}
 }

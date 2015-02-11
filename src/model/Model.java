@@ -1,8 +1,9 @@
 package model;
 
-import java.io.Serializable;
+import java.io.FileNotFoundException;
 import java.util.Set;
 
+import controller.Controller;
 import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Document;
@@ -16,7 +17,7 @@ import model.situazione.SituazionePatrimoniale;
  * @author Enrico
  *
  */
-public interface Model extends Serializable {
+public interface Model {
 
 	/**
 	 * Aggiunge il conto passato come parametro, se questo non era già presente,
@@ -145,12 +146,35 @@ public interface Model extends Serializable {
 	 * @return la situazione economica dell'azienda
 	 */
 	SituazioneEconomica getSituazioneEconomica();
-	
+
 	/**
 	 * 
 	 * @return la situazione patrimoniale dell'azienda
 	 */
 	SituazionePatrimoniale getSituazionePatrimoniale();
+
+	/**
+	 * Setta il riferimento al controller sul modello.
+	 * 
+	 * @param c
+	 */
+	void setController(Controller c);
+
+	/**
+	 * Salva il modello nel path passato.
+	 * 
+	 * @param path dove salvare il modello
+	 * @throws FileNotFoundException se il path è inesistente
+	 */
+	void save(String path) throws FileNotFoundException;
+	
+	/**
+	 * Carica il modello dal path passato.
+	 * 
+	 * @param path da cui caricare il modello
+	 * @throws FileNotFoundException se il file non viene trovato nel path, o path inesistente
+	 */
+	void load(String path) throws FileNotFoundException;
 	
 	/**
 	 * Resetta il modello allo stato di partenza
