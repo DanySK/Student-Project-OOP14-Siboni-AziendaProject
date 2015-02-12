@@ -1,9 +1,7 @@
 package model;
 
-import java.io.FileNotFoundException;
 import java.util.Set;
 
-import controller.Controller;
 import model.contatti.Contatto;
 import model.conto.Conto;
 import model.douments.Document;
@@ -154,27 +152,18 @@ public interface Model {
 	SituazionePatrimoniale getSituazionePatrimoniale();
 
 	/**
-	 * Setta il riferimento al controller sul modello.
-	 * 
-	 * @param c
-	 */
-	void setController(Controller c);
-
-	/**
 	 * Salva il modello nel path passato.
 	 * 
 	 * @param path dove salvare il modello
-	 * @throws FileNotFoundException se il path è inesistente
 	 */
-	void save(String path) throws FileNotFoundException;
+	void save(String path);
 	
 	/**
 	 * Carica il modello dal path passato.
 	 * 
 	 * @param path da cui caricare il modello
-	 * @throws FileNotFoundException se il file non viene trovato nel path, o path inesistente
 	 */
-	void load(String path) throws FileNotFoundException;
+	void load(String path);
 	
 	/**
 	 * Resetta il modello allo stato di partenza

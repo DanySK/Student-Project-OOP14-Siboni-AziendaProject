@@ -2,10 +2,9 @@ package model;
 
 import static org.junit.Assert.*;
 
-import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
 import model.contatti.Contatto;
 import model.contatti.ContattoImpl;
@@ -29,7 +28,7 @@ public class Test {
 	@org.junit.Test
 	public void testOk() {
 
-		final Model a = new ModelImpl();
+		final Model a = new ModelImpl(null);
 
 		final Contatto ciccio = new ContattoImpl.Builder()
 				.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
@@ -44,7 +43,7 @@ public class Test {
 		a.addContatto(ciccio);
 		a.addContatto(mio);
 
-		assertEquals(a.getContatti(), new HashSet<>(Arrays.asList(ciccio, mio)));
+		assertEquals(a.getContatti(), new TreeSet<>(Arrays.asList(ciccio, mio)));
 
 		try {
 			a.deleteContatto(other);
@@ -54,7 +53,7 @@ public class Test {
 
 		a.deleteContatto(ciccio);
 
-		assertEquals(a.getContatti(), new HashSet<>(Arrays.asList(mio)));
+		assertEquals(a.getContatti(), new TreeSet<>(Arrays.asList(mio)));
 		a.addContatto(ciccio);
 		a.addContatto(other);
 
@@ -78,7 +77,7 @@ public class Test {
 		} catch (NoSuchElementException e) {
 		}
 
-		assertEquals(a.getConti(), new HashSet<>(Arrays.asList(c2)));
+		assertEquals(a.getConti(), new TreeSet<>(Arrays.asList(c2)));
 		a.addConto(c1);
 
 		final Operation op1 = new OperationImpl();
@@ -135,7 +134,7 @@ public class Test {
 	@org.junit.Test
 	public void testExceptions() {
 
-		final Model a = new ModelImpl();
+		final Model a = new ModelImpl(null);
 
 		try {
 			a.addContatto(null);
@@ -219,7 +218,7 @@ public class Test {
 	
 	@org.junit.Test
 	public void testWriteAndRead(){
-		final Model a = new ModelImpl();
+		final Model a = new ModelImpl(null);
 
 		final Contatto ciccio = new ContattoImpl.Builder()
 				.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
@@ -259,26 +258,16 @@ public class Test {
 
 		a.addDocumentToOperation(1, d);
 		
-		try {
-			System.out.println(System.getProperty("java.io.tmpdir"));
-			
-			a.save(System.getProperty("java.io.tmpdir"));
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			fail();
-		}
+		System.out.println(System.getProperty("java.io.tmpdir"));
 		
-		final Model b = new ModelImpl();
+		a.save(System.getProperty("java.io.tmpdir"));
 		
-		try {
-			b.load(System.getProperty("java.io.tmpdir"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			fail();
-		}
+		final Model b = new ModelImpl(null);
+		
+		b.load(System.getProperty("java.io.tmpdir"));
 		
 		assertEquals(a.getContatti(),b.getContatti());
+		System.out.print(a.getContatti());
 		assertEquals(a.getConti(),b.getConti());
 		assertEquals(a.getDocumentReferredTo(1),b.getDocumentReferredTo(1));
 		assertEquals(a.getOperation(1),b.getOperation(1));

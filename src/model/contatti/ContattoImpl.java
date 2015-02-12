@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Enrico
  *
  */
-public class ContattoImpl implements Contatto {
+public class ContattoImpl implements Contatto,Comparable<Contatto> {
 
 	/**
 	 * 
@@ -178,6 +178,14 @@ public class ContattoImpl implements Contatto {
 		return s.toString();
 	}
 
+	@Override
+	/**
+	 * Note: this class has a natural ordering that is inconsistent with equals.
+	 */
+	public int compareTo(final Contatto other) {
+		return this.ragSoc.toLowerCase().compareTo(other.getRagioneSociale().toLowerCase());
+	}
+	
 	/**
 	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
 	 * un contatto.

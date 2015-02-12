@@ -6,7 +6,7 @@ package model.conto;
  * @author Enrico
  *
  */
-public class ContoImpl implements Conto {
+public class ContoImpl implements Conto,Comparable<Conto> {
 
 	/**
 	 * 
@@ -111,6 +111,14 @@ public class ContoImpl implements Conto {
 	public String toString() {
 		return "Conto [NomeConto= " + name + ", AccesoA= " + accesoA
 				+ ", Saldo= " + importo + "]";
+	}
+
+	@Override
+	/**
+	 * Note: this class has a natural ordering that is inconsistent with equals.
+	 */
+	public int compareTo(final Conto other) {
+		return this.name.toLowerCase().compareTo(other.getName().toLowerCase());
 	}
 
 }

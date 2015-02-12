@@ -36,12 +36,10 @@ public interface Operation extends Serializable {
 	 * Applica i movimenti di questa Operazione ai conti, se l'operazione
 	 * bilancia... altrimenti lancia IllegalStateException
 	 * 
-	 * se i movimenti erano già stati applicati non fa nulla se il numeo
-	 * operazione non era stato settato lancia IllegalStateException
+	 * se i movimenti erano già stati applicati non fa nulla
 	 * 
 	 * @throws IllegalStateException
-	 *             se l'operazione non bilancia oppure se il numero operazione
-	 *             non è stato settato
+	 *             se l'operazione non bilancia
 	 */
 	void applicaMovimenti();
 

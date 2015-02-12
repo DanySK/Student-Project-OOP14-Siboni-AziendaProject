@@ -3,17 +3,16 @@ package model;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import controller.Controller;
@@ -38,7 +37,7 @@ public final class ModelImpl implements Model {
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
 	private static final String DOCUMENTS_FILENAME = "documents.azpj";
 
-	private transient Controller c;
+	private final transient Controller controller;
 
 	private int operationCounter = 1;
 	private Contatto ourContact;
@@ -54,9 +53,10 @@ public final class ModelImpl implements Model {
 	/**
 	 * Restituisce un modello vuoto.
 	 */
-	public ModelImpl() {
-		this.contiStore = new HashSet<>();
-		this.contattiStore = new HashSet<>();
+	public ModelImpl(final Controller c) {
+		this.controller = c;
+		this.contiStore = new TreeSet<>();
+		this.contattiStore = new TreeSet<>();
 		this.operationMap = new TreeMap<>();
 		this.documentMap = new TreeMap<>();
 	}
@@ -84,7 +84,7 @@ public final class ModelImpl implements Model {
 
 	@Override
 	public Set<Conto> getConti() {
-		return new HashSet<>(this.contiStore);
+		return new TreeSet<>(this.contiStore);
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public final class ModelImpl implements Model {
 	@Override
 	public Contatto getOurContact() {
 		if (ourContact == null) {
-			ourContact = c.askOurContact();
+			ourContact = controller.askOurContact();
 		}
 		return new ContattoImpl(ourContact);
 	}
@@ -163,7 +163,7 @@ public final class ModelImpl implements Model {
 			this.contattiStore.add(contatto);
 		} else {
 			this.contattiStore.removeAll(set);
-			this.contattiStore.add(c.wichContattoToMantain(set));
+			this.contattiStore.add(controller.wichContattoToMantain(set));
 		}
 		this.contattiStoreChanged = true;
 	}
@@ -182,7 +182,7 @@ public final class ModelImpl implements Model {
 
 	@Override
 	public Set<Contatto> getContatti() {
-		return new HashSet<>(this.contattiStore);
+		return new TreeSet<>(this.contattiStore);
 	}
 
 	@Override
@@ -198,13 +198,7 @@ public final class ModelImpl implements Model {
 	}
 
 	@Override
-	public void setController(final Controller c) {
-		Objects.requireNonNull(c);
-		this.c = c;
-	}
-
-	@Override
-	public void save(final String path) throws FileNotFoundException {
+	public void save(final String path) {
 
 		if (this.operationMapChanged) {
 			try {
@@ -216,6 +210,7 @@ public final class ModelImpl implements Model {
 				out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				// Chiamare metodo visualizzazione errore del controller
 				e.printStackTrace();
 			}
 		}
@@ -229,8 +224,10 @@ public final class ModelImpl implements Model {
 				out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				// Chiamare metodo visualizzazione errore del controller
 				e.printStackTrace();
 			}
+
 		}
 
 		if (this.contattiStoreChanged) {
@@ -243,6 +240,7 @@ public final class ModelImpl implements Model {
 				out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				// Chiamare metodo visualizzazione errore del controller
 				e.printStackTrace();
 			}
 		}
@@ -256,6 +254,7 @@ public final class ModelImpl implements Model {
 				out.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				// Chiamare metodo visualizzazione errore del controller
 				e.printStackTrace();
 			}
 		}
@@ -264,7 +263,7 @@ public final class ModelImpl implements Model {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void load(final String path) throws FileNotFoundException {
+	public void load(final String path) {
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
@@ -272,11 +271,9 @@ public final class ModelImpl implements Model {
 			operationCounter = in.readInt();
 			operationMap = (Map<Integer, Operation>) in.readObject();
 			in.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// Chiamare metodo visualizzazione errore del controller
 			e.printStackTrace();
 		}
 
@@ -286,11 +283,9 @@ public final class ModelImpl implements Model {
 							+ DOCUMENTS_FILENAME)));
 			documentMap = (Map<Integer, Document>) in.readObject();
 			in.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// Chiamare metodo visualizzazione errore del controller
 			e.printStackTrace();
 		}
 
@@ -301,11 +296,9 @@ public final class ModelImpl implements Model {
 			ourContact = (Contatto) in.readObject();
 			contattiStore = (Set<Contatto>) in.readObject();
 			in.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// Chiamare metodo visualizzazione errore del controller
 			e.printStackTrace();
 		}
 
@@ -315,11 +308,9 @@ public final class ModelImpl implements Model {
 							+ CONTI_FILENAME)));
 			contiStore = (Set<Conto>) in.readObject();
 			in.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// Chiamare metodo visualizzazione errore del controller
 			e.printStackTrace();
 		}
 	}

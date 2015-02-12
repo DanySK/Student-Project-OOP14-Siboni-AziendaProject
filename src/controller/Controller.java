@@ -1,9 +1,13 @@
 package controller;
 
+import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Set;
 
 import view.View;
+import model.Model;
 import model.contatti.Contatto;
+import model.conto.Conto;
 
 /**
  * Descrive il comportamento del controllore dell'applicazione.
@@ -11,8 +15,43 @@ import model.contatti.Contatto;
  * @author Enrico, Marco, Elia
  *
  */
-public interface Controller {
+public interface Controller extends ActionListener{
 
+	/**
+	 * Mostra il menu.
+	 * 
+	 * @param appName il nome da dare al menu
+	 */
+	void showMenu(String appName);
+	
+	/**
+	 * Mostra un messaggio di errore.
+	 * 
+	 * @param errorMessage messaggio da mostrare
+	 */
+	void showErrorMessage(String errorMessage);
+	
+	/**
+	 * Aggiunge una operazione al modello.
+	 * 
+	 * @param nomeConti i conti movimentati
+	 * @param importi gli importi di cui sono stati movimentati
+	 * @return true se l'aggiunta va a buon fine, false altrimenti
+	 */
+	boolean aggiuntaOperazione(List<Conto> conti, List<Double> importi);
+	
+	/**
+	 * 
+	 * @return l'insieme dei conti
+	 */
+	Set<Conto> getInsiemeConti();
+	
+	/**
+	 * 
+	 * @return l'insieme dei contatti
+	 */
+	Set<Contatto> getInsiemeContatti();
+	
 	/**
 	 * Carica i dati salvati e popola il modello.
 	 * 
@@ -25,19 +64,20 @@ public interface Controller {
 	void save();
 
 	/**
-	 * Aggiunge una View al controller.
+	 * Aggiunge la View al controller.
 	 * 
 	 * @param v
 	 *            la view da aggiungere
 	 */
-	void attachView(View v);
+	void setView(View v);
 	
 	/**
-	 * Rimuove la view passata, se non corrisponde a nessuna view non fa nulla
-	 * @param v la view da rimuovere
+	 * Collega il modello al controller.
+	 * 
+	 * @param m il modello da collegare
 	 */
-	void removeView(View v);
-
+	void setModel(Model m);
+	
 	/**
 	 * Chiede l'inserimento del nostro contatto all'utente.
 	 * 
@@ -54,4 +94,5 @@ public interface Controller {
 	 * @return il contatto scelto per essere mantenuto
 	 */
 	Contatto wichContattoToMantain(Set<Contatto> set);
+	
 }
