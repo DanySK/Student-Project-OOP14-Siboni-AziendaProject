@@ -12,7 +12,7 @@ import model.contatti.ContattoImpl;
 import model.conto.Conto;
 import model.conto.Conto.AccesoA;
 import model.conto.ContoImpl;
-import model.douments.DataImpl;
+import model.data.DataImpl;
 import model.douments.Document;
 import model.douments.fattura.SimpleFattura;
 import model.operation.Operation;
@@ -268,7 +268,19 @@ public class Test {
 			e.printStackTrace();
 			fail();
 		}
-
 		
+		final Model b = new ModelImpl();
+		
+		try {
+			b.load(System.getProperty("java.io.tmpdir"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+		assertEquals(a.getContatti(),b.getContatti());
+		assertEquals(a.getConti(),b.getConti());
+		assertEquals(a.getDocumentReferredTo(1),b.getDocumentReferredTo(1));
+		assertEquals(a.getOperation(1),b.getOperation(1));
 	}
 }

@@ -1,5 +1,7 @@
 package model;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -44,10 +46,10 @@ public final class ModelImpl implements Model {
 	private Set<Contatto> contattiStore;
 	private Map<Integer, Operation> operationMap;
 	private Map<Integer, Document> documentMap;
-	private boolean contiStoreChanged;
-	private boolean contattiStoreChanged;
-	private boolean operationMapChanged;
-	private boolean documentMapChanged;
+	private transient boolean contiStoreChanged;
+	private transient boolean contattiStoreChanged;
+	private transient boolean operationMapChanged;
+	private transient boolean documentMapChanged;
 
 	/**
 	 * Restituisce un modello vuoto.
@@ -207,7 +209,8 @@ public final class ModelImpl implements Model {
 		if (this.operationMapChanged) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
-						new FileOutputStream(path + OPERATIONS_FILENAME));
+						new BufferedOutputStream(new FileOutputStream(path
+								+ OPERATIONS_FILENAME)));
 				out.writeInt(operationCounter);
 				out.writeObject(operationMap);
 				out.close();
@@ -220,7 +223,8 @@ public final class ModelImpl implements Model {
 		if (this.documentMapChanged) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
-						new FileOutputStream(path + DOCUMENTS_FILENAME));
+						new BufferedOutputStream(new FileOutputStream(path
+								+ DOCUMENTS_FILENAME)));
 				out.writeObject(documentMap);
 				out.close();
 			} catch (IOException e) {
@@ -232,7 +236,8 @@ public final class ModelImpl implements Model {
 		if (this.contattiStoreChanged) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
-						new FileOutputStream(path + CONTATTI_FILENAME));
+						new BufferedOutputStream(new FileOutputStream(path
+								+ CONTATTI_FILENAME)));
 				out.writeObject(ourContact);
 				out.writeObject(contattiStore);
 				out.close();
@@ -245,7 +250,8 @@ public final class ModelImpl implements Model {
 		if (this.contiStoreChanged) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
-						new FileOutputStream(path + CONTI_FILENAME));
+						new BufferedOutputStream(new FileOutputStream(path
+								+ CONTI_FILENAME)));
 				out.writeObject(contiStore);
 				out.close();
 			} catch (IOException e) {
@@ -261,7 +267,8 @@ public final class ModelImpl implements Model {
 	public void load(final String path) throws FileNotFoundException {
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
-					new FileInputStream(path + OPERATIONS_FILENAME));
+					new BufferedInputStream(new FileInputStream(path
+							+ OPERATIONS_FILENAME)));
 			operationCounter = in.readInt();
 			operationMap = (Map<Integer, Operation>) in.readObject();
 			in.close();
@@ -275,7 +282,8 @@ public final class ModelImpl implements Model {
 
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
-					new FileInputStream(path + DOCUMENTS_FILENAME));
+					new BufferedInputStream(new FileInputStream(path
+							+ DOCUMENTS_FILENAME)));
 			documentMap = (Map<Integer, Document>) in.readObject();
 			in.close();
 		} catch (IOException e) {
@@ -288,7 +296,8 @@ public final class ModelImpl implements Model {
 
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
-					new FileInputStream(path + CONTATTI_FILENAME));
+					new BufferedInputStream(new FileInputStream(path
+							+ CONTATTI_FILENAME)));
 			ourContact = (Contatto) in.readObject();
 			contattiStore = (Set<Contatto>) in.readObject();
 			in.close();
@@ -302,7 +311,8 @@ public final class ModelImpl implements Model {
 
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
-					new FileInputStream(path + CONTI_FILENAME));
+					new BufferedInputStream(new FileInputStream(path
+							+ CONTI_FILENAME)));
 			contiStore = (Set<Conto>) in.readObject();
 			in.close();
 		} catch (IOException e) {

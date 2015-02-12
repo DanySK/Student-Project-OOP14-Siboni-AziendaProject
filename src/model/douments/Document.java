@@ -1,7 +1,9 @@
 package model.douments;
 
 import java.io.Serializable;
+
 import model.contatti.Contatto;
+import model.data.Data;
 
 /**
  * Descrive un generico documento di contabilità.

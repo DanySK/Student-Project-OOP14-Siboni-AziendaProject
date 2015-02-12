@@ -1,6 +1,7 @@
 package model.douments;
 
 import model.contatti.Contatto;
+import model.data.Data;
 
 /**
  * Implementazione astratta di un Documento.

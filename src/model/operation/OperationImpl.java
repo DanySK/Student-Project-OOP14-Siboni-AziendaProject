@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import model.conto.Conto;
 import model.conto.Conto.Eccedenza;
-import model.douments.Data;
-import model.douments.DataImpl;
+import model.data.Data;
+import model.data.DataImpl;
 
 /**
  * Implementazione concreta di una Operazione.

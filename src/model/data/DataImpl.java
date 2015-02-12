@@ -1,4 +1,4 @@
-package model.douments;
+package model.data;
 
 import java.util.Arrays;
 import java.util.Calendar;

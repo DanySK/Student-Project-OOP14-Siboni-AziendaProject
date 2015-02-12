@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import model.conto.Conto;
-import model.douments.Data;
+import model.data.Data;
 
 /**
  * Descrive un'operazione di gestione.

@@ -6,8 +6,8 @@ import java.io.ObjectOutputStream;
 import java.util.Optional;
 
 import model.contatti.Contatto;
+import model.data.Data;
 import model.douments.AbstractDocument;
-import model.douments.Data;
 
 /**
  * Implementazione concreta di una Fattura.
