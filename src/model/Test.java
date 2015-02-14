@@ -215,9 +215,9 @@ public class Test {
 		}
 
 	}
-	
+
 	@org.junit.Test
-	public void testWriteAndRead(){
+	public void testWriteAndRead() {
 		final Model a = new ModelImpl(null);
 
 		final Contatto ciccio = new ContattoImpl.Builder()
@@ -257,19 +257,20 @@ public class Test {
 				.setDebitore(ciccio).setNumFattura("88").build();
 
 		a.addDocumentToOperation(1, d);
-		
-		System.out.println(System.getProperty("java.io.tmpdir"));
-		
+
+		// System.out.println(System.getProperty("java.io.tmpdir"));
+
 		a.save(System.getProperty("java.io.tmpdir"));
-		
+
 		final Model b = new ModelImpl(null);
-		
+
 		b.load(System.getProperty("java.io.tmpdir"));
-		
-		assertEquals(a.getContatti(),b.getContatti());
-		System.out.print(a.getContatti());
-		assertEquals(a.getConti(),b.getConti());
-		assertEquals(a.getDocumentReferredTo(1),b.getDocumentReferredTo(1));
-		assertEquals(a.getOperation(1),b.getOperation(1));
+
+		assertEquals(a.getContatti(), b.getContatti());
+		// System.out.println(b.getContatti());
+		assertEquals(a.getConti(), b.getConti());
+		// System.out.println(b.getConti());
+		assertEquals(a.getDocumentReferredTo(1), b.getDocumentReferredTo(1));
+		assertEquals(a.getOperation(1), b.getOperation(1));
 	}
 }

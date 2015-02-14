@@ -268,8 +268,8 @@ public final class ModelImpl implements Model {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ OPERATIONS_FILENAME)));
-			operationCounter = in.readInt();
-			operationMap = (Map<Integer, Operation>) in.readObject();
+			operationCounter = in.readInt(); // System.out.println("Letto: operationCounter="+operationCounter);
+			operationMap = (Map<Integer, Operation>) in.readObject(); // System.out.println("Letto: operationMap="+operationMap);
 			in.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -281,7 +281,7 @@ public final class ModelImpl implements Model {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ DOCUMENTS_FILENAME)));
-			documentMap = (Map<Integer, Document>) in.readObject();
+			documentMap = (Map<Integer, Document>) in.readObject(); // System.out.println("Letto: documentMap="+documentMap);
 			in.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -293,8 +293,8 @@ public final class ModelImpl implements Model {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ CONTATTI_FILENAME)));
-			ourContact = (Contatto) in.readObject();
-			contattiStore = (Set<Contatto>) in.readObject();
+			ourContact = (Contatto) in.readObject(); // System.out.println("Letto: ourContact="+ourContact);
+			contattiStore = (Set<Contatto>) in.readObject(); // System.out.println("Letto: contattiStore="+contattiStore);
 			in.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -306,7 +306,7 @@ public final class ModelImpl implements Model {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ CONTI_FILENAME)));
-			contiStore = (Set<Conto>) in.readObject();
+			contiStore = (Set<Conto>) in.readObject(); // System.out.println("Letto: contiStore="+contiStore);
 			in.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

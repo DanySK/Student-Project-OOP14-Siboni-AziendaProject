@@ -97,7 +97,7 @@ public class Test {
 			assertEquals(a.getSedeLegale(), Optional.empty());
 			assertEquals(a.getTelefono(), Optional.empty());
 
-			System.out.println(a.toString());
+			System.out.println(((ContattoImpl) a).longToString());
 		} catch (IllegalStateException e) {
 			fail("No exception expected");
 		}
@@ -132,29 +132,31 @@ public class Test {
 	@org.junit.Test
 	public void testReadWriteObject() {
 		try {
-			final Contatto a = new ContattoImpl.Builder().setNomeTitolare("ciccio")
-					.setRagSoc("ciccio snc").setPIVA("11111111111")
-					.setCF("asderf51c10324ds").setCAP("47122").setProvincia("FC")
-					.build();
-			
+			final Contatto a = new ContattoImpl.Builder()
+					.setNomeTitolare("ciccio").setRagSoc("ciccio snc")
+					.setPIVA("11111111111").setCF("asderf51c10324ds")
+					.setCAP("47122").setProvincia("FC").build();
+
 			final ObjectOutputStream o = new ObjectOutputStream(
 					new FileOutputStream(System.getProperty("java.io.tmpdir")
 							+ System.getProperty("file.separator")
 							+ "fileProva.file"));
-			
+
 			o.writeObject(a);
 			o.close();
-			final ObjectInputStream i = new ObjectInputStream(new FileInputStream(System.getProperty("java.io.tmpdir")
+			final ObjectInputStream i = new ObjectInputStream(
+					new FileInputStream(System.getProperty("java.io.tmpdir")
 							+ System.getProperty("file.separator")
 							+ "fileProva.file"));
-			
+
 			final Contatto b = (Contatto) i.readObject();
 			i.close();
-			
-			assertEquals(a,b);
-			assertEquals(b,a);
-			assertEquals(b.toString(),a.toString());
-			
+
+			assertEquals(a, b);
+			assertEquals(b, a);
+			assertEquals(((ContattoImpl) b).longToString(),
+					((ContattoImpl) a).longToString());
+
 		} catch (IOException e) {
 			fail("No Exception Expected");
 		} catch (ClassNotFoundException e) {

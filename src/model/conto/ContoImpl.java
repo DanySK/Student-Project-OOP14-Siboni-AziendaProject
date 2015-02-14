@@ -6,7 +6,7 @@ package model.conto;
  * @author Enrico
  *
  */
-public class ContoImpl implements Conto,Comparable<Conto> {
+public class ContoImpl implements Conto, Comparable<Conto> {
 
 	/**
 	 * 
@@ -20,8 +20,10 @@ public class ContoImpl implements Conto,Comparable<Conto> {
 	/**
 	 * Ritorna un nuovo conto.
 	 * 
-	 * @param name il nome del nuovo conto
-	 * @param acc a cosa è acceso il nuovo conto
+	 * @param name
+	 *            il nome del nuovo conto
+	 * @param acc
+	 *            a cosa è acceso il nuovo conto
 	 */
 	public ContoImpl(final String name, final AccesoA acc) {
 		this.accesoA = acc;
@@ -52,8 +54,7 @@ public class ContoImpl implements Conto,Comparable<Conto> {
 
 	@Override
 	public Eccedenza getEccedenzaSolita() {
-		if (Eccedenza.DARE.getContiAccesiQui().contains(
-				this.accesoA)) {
+		if (Eccedenza.DARE.getContiAccesiQui().contains(this.accesoA)) {
 
 			return Eccedenza.DARE;
 		} else {
@@ -109,6 +110,14 @@ public class ContoImpl implements Conto,Comparable<Conto> {
 
 	@Override
 	public String toString() {
+		return this.name;
+	}
+
+	/**
+	 * 
+	 * @return stringa completa di tutti i campi
+	 */
+	public String longToString() {
 		return "Conto [NomeConto= " + name + ", AccesoA= " + accesoA
 				+ ", Saldo= " + importo + "]";
 	}

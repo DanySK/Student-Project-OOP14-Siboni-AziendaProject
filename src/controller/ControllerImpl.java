@@ -34,27 +34,29 @@ public class ControllerImpl implements Controller {
 	@Override
 	public boolean aggiuntaOperazione(final List<Conto> conti,
 			final List<Double> importi) {
-		
+
 		if (conti.size() == importi.size()) {
 			final Operation o = new OperationImpl();
 			for (int i = 0; i < conti.size(); i++) {
 				o.setContoMovimentato(conti.get(i), importi.get(i));
 			}
-			if(o.isBalanced()){
+			if (o.isBalanced()) {
 				o.applicaMovimenti();
 				this.model.addOperation(o);
 				return true;
-			}else{
-				this.view.displayError("L'operazione non è bilanciata!!\nControllare gli importi...");
+			} else {
+				this.view
+						.displayError("L'operazione non è bilanciata!!\nControllare gli importi...");
 				return false;
 			}
-		}else{
+		} else {
 			return false;
 		}
 	}
 
 	@Override
 	public Set<Conto> getInsiemeConti() {
+
 		return this.model.getConti();
 	}
 
@@ -83,9 +85,9 @@ public class ControllerImpl implements Controller {
 	@Override
 	public void setModel(final Model m) {
 		this.model = m;
-		
+
 	}
-	
+
 	@Override
 	public void showMenu(final String appName) {
 		this.view.displayMainMenu(appName);

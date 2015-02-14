@@ -26,21 +26,13 @@ public class Test {
 
 		assertEquals(c.getTipo(), Tipo.FINANZIARIO);
 
-		System.out.println(c);
-
 		c.addMovimento(0);
 
-		System.out.println(c);
-
 		assertEquals(0, c.getSaldo(), 0.001);
-
-		System.out.println(c);
 
 		assertEquals(c.getEccedenzaAttuale(), Eccedenza.DARE);
 
 		c.addMovimento(-10.05);
-
-		System.out.println(c);
 
 		assertEquals(c.getEccedenzaAttuale(), Eccedenza.AVERE);
 

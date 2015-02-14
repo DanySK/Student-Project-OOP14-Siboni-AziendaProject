@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author Enrico
  *
  */
-public class ContattoImpl implements Contatto,Comparable<Contatto> {
+public class ContattoImpl implements Contatto, Comparable<Contatto> {
 
 	/**
 	 * 
@@ -156,6 +156,14 @@ public class ContattoImpl implements Contatto,Comparable<Contatto> {
 
 	@Override
 	public String toString() {
+		return this.ragSoc + ", " + this.piva;
+	}
+
+	/**
+	 * 
+	 * @return la stringa completa con tutti i campi
+	 */
+	public String longToString() {
 		final StringBuilder s = new StringBuilder(100);
 		s.append("RagioneSociale= ").append(ragSoc).append(", NomeTitolare= ")
 				.append(nomeTit).append(", P.IVA= ").append(piva)
@@ -183,9 +191,10 @@ public class ContattoImpl implements Contatto,Comparable<Contatto> {
 	 * Note: this class has a natural ordering that is inconsistent with equals.
 	 */
 	public int compareTo(final Contatto other) {
-		return this.ragSoc.toLowerCase().compareTo(other.getRagioneSociale().toLowerCase());
+		return this.ragSoc.toLowerCase().compareTo(
+				other.getRagioneSociale().toLowerCase());
 	}
-	
+
 	/**
 	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
 	 * un contatto.
@@ -196,7 +205,7 @@ public class ContattoImpl implements Contatto,Comparable<Contatto> {
 	 */
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		
+
 		out.writeObject(telefono.orElse(null));
 		out.writeObject(sedeLeg.orElse(null));
 		out.writeObject(citta.orElse(null));
@@ -216,19 +225,18 @@ public class ContattoImpl implements Contatto,Comparable<Contatto> {
 	private void readObject(final ObjectInputStream in)
 			throws ClassNotFoundException, IOException {
 		in.defaultReadObject();
-		
+
 		telefono = Optional.ofNullable((String) in.readObject());
-		
+
 		sedeLeg = Optional.ofNullable((String) in.readObject());
 
 		citta = Optional.ofNullable((String) in.readObject());
 
-		cap =  Optional.ofNullable((String) in.readObject());
+		cap = Optional.ofNullable((String) in.readObject());
 
-		provincia =  Optional.ofNullable((String) in.readObject());
+		provincia = Optional.ofNullable((String) in.readObject());
 	}
-	
-	
+
 	/**
 	 * Builder per la classe Contatto.
 	 * 
