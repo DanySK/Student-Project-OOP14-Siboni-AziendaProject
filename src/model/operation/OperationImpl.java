@@ -49,7 +49,8 @@ public class OperationImpl implements Operation {
 				throw new IllegalArgumentException(
 						"L'importo inserito è uguale a zero!");
 			}
-			this.map.put(c, importo);
+			this.map.compute(c, (k, v) -> v == null ? (v = importo) : (v = v
+					+ importo));
 		}
 
 	}
@@ -66,6 +67,19 @@ public class OperationImpl implements Operation {
 
 	@Override
 	public boolean isBalanced() {
+		System.out.println(map);
+		System.out.println(this.map
+				.entrySet()
+				.stream()
+				.filter(e -> e.getKey().getEccedenzaSolita()
+						.equals(Eccedenza.DARE)).mapToDouble(e -> e.getValue())
+				.sum());
+		System.out.println(this.map
+				.entrySet()
+				.stream()
+				.filter(e -> e.getKey().getEccedenzaSolita()
+						.equals(Eccedenza.AVERE))
+				.mapToDouble(e -> e.getValue()).sum());
 		final double result = this.map
 				.entrySet()
 				.stream()
@@ -168,7 +182,7 @@ public class OperationImpl implements Operation {
 	 */
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		
+
 		out.writeObject(this.description.orElse(null));
 	}
 
@@ -184,8 +198,8 @@ public class OperationImpl implements Operation {
 	private void readObject(final ObjectInputStream in)
 			throws ClassNotFoundException, IOException {
 		in.defaultReadObject();
-		
-		this.description = Optional.ofNullable((String)in.readObject());
+
+		this.description = Optional.ofNullable((String) in.readObject());
 	}
-	
+
 }

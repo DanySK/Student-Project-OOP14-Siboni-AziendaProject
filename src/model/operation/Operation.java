@@ -19,8 +19,8 @@ public interface Operation extends Serializable {
 	 * Aggiunge un conto movimentato a questa operazione; lancia
 	 * IllegalArgumentException se l'importo è uguale a zero;
 	 * 
-	 * se l'operazione aveva già un movimento su quel conto questo lo
-	 * sovrascrive; se i movimenti sono già stati applicati questo metodo non ha
+	 * se l'operazione aveva già un movimento su quel conto, questo lo
+	 * aggiunge; se i movimenti sono già stati applicati questo metodo non ha
 	 * più effetti sull'operazione.
 	 * 
 	 * @param c

@@ -87,10 +87,10 @@ public class Test {
 
 		assertFalse(o2.isBalanced());
 
-		System.out.println(creditivclienti);
-		System.out.println(assegni + "\n");
+		System.out.println(creditivclienti.getSaldo());
+		System.out.println(assegni.getSaldo() + "\n");
 
-		o2.setContoMovimentato(creditivclienti, -133.64);
+		o2.setContoMovimentato(creditivclienti, -0.01);
 
 		try {
 			o2.applicaMovimenti();
@@ -100,8 +100,8 @@ public class Test {
 
 		assertEquals(creditivclienti.getSaldo(), 0, 0.001);
 
-		System.out.println(creditivclienti);
-		System.out.println(assegni);
+		System.out.println(creditivclienti.getSaldo());
+		System.out.println(assegni.getSaldo());
 
 		final Map<Conto, Double> first = o2.getContiMovimentatiEImporto();
 		o2.setContoMovimentato(creditivclienti, 10);
