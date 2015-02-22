@@ -57,6 +57,11 @@ public interface Conto extends Serializable {
 	 * @return a cosa è accesso questo conto
 	 */
 	AccesoA getAccesoA();
+	
+	/**
+	 * Resetta il conto portando il saldo a 0
+	 */
+	void reset();
 
 	/**
 	 * Descrive l'eccedenza che può avere un conto.

@@ -91,41 +91,28 @@ public class Test {
 		op2.setContoMovimentato(c2, 200.50);
 		a.addOperation(op2);
 
-		assertEquals(a.getOperation(1), op1);
-		assertEquals(a.getOperation(2), op2);
 		op2.applicaMovimenti();
 
 		final Document d = new SimpleFattura.Builder().setAliqIva(20)
 				.setData(new DataImpl()).setImportoMerce(200).setMittente(mio)
 				.setDebitore(ciccio).setNumFattura("88").build();
 
-		try {
-			a.addDocumentToOperation(0, d);
-			fail("Exception Expected");
-		} catch (IllegalArgumentException e) {
-		}
 
-		try {
-			a.addDocumentToOperation(1, null);
-			fail("Exception Expected");
-		} catch (NullPointerException e) {
-		}
+		assertTrue(a.addDocumentToOperation(op1, d));
+		assertFalse(a.addDocumentToOperation(op1, d));
 
-		assertTrue(a.addDocumentToOperation(1, d));
-		assertFalse(a.addDocumentToOperation(1, d));
-
-		final Document d2 = a.getDocumentReferredTo(1);
+		final Document d2 = a.getDocumentReferredTo(op1);
 		assertEquals(d, d2);
 
-		a.deleteDocumentReferredTo(1);
+		a.deleteDocumentReferredTo(op1);
 
 		try {
-			a.deleteDocumentReferredTo(1);
+			a.deleteDocumentReferredTo(op1);
 		} catch (NoSuchElementException e) {
 		}
 
 		try {
-			a.getDocumentReferredTo(1);
+			a.getDocumentReferredTo(op1);
 		} catch (NoSuchElementException e) {
 		}
 
@@ -173,45 +160,9 @@ public class Test {
 		}
 
 		try {
-			a.getOperation(0);
+			a.getDocumentReferredTo(null);
 			fail("Exception Expected");
-		} catch (IllegalArgumentException e) {
-		}
-
-		try {
-			a.getOperation(-20);
-			fail("Exception Expected");
-		} catch (IllegalArgumentException e) {
-		}
-
-		try {
-			a.getDocumentReferredTo(-1);
-			fail("Exception Expected");
-		} catch (IllegalArgumentException e) {
-		}
-
-		try {
-			a.deleteDocumentReferredTo(-1);
-			fail("Exception Expected");
-		} catch (IllegalArgumentException e) {
-		}
-
-		try {
-			a.getOperation(3);
-			fail("Exception Expected");
-		} catch (NoSuchElementException e) {
-		}
-
-		try {
-			a.getDocumentReferredTo(1);
-			fail("Exception Expected");
-		} catch (NoSuchElementException e) {
-		}
-
-		try {
-			a.deleteDocumentReferredTo(1);
-			fail("Exception Expected");
-		} catch (NoSuchElementException e) {
+		} catch (NullPointerException e) {
 		}
 
 	}
@@ -256,7 +207,9 @@ public class Test {
 				.setData(new DataImpl()).setImportoMerce(200).setMittente(mio)
 				.setDebitore(ciccio).setNumFattura("88").build();
 
-		a.addDocumentToOperation(1, d);
+		a.addDocumentToOperation(op1, d);
+		
+		a.setOurContact(mio);
 
 		// System.out.println(System.getProperty("java.io.tmpdir"));
 
@@ -270,7 +223,6 @@ public class Test {
 		// System.out.println(b.getContatti());
 		assertEquals(a.getConti(), b.getConti());
 		// System.out.println(b.getConti());
-		assertEquals(a.getDocumentReferredTo(1), b.getDocumentReferredTo(1));
-		assertEquals(a.getOperation(1), b.getOperation(1));
+		assertEquals(a.getDocumentReferredTo(op1), b.getDocumentReferredTo(op1));
 	}
 }

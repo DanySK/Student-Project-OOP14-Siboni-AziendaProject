@@ -1,6 +1,7 @@
 package controller;
 
-import view.ViewImpl;
+import view.ViewControllerImpl;
+import model.Model;
 import model.ModelImpl;
 
 /**
@@ -9,23 +10,30 @@ import model.ModelImpl;
  * @author Enrico
  *
  */
-public class Application {
+public final class Application {
 
+	private static final String APP_NAME = "Azienda Project";
 	private static final String SAVE_PATH = System.getProperty("user.dir")
 			+ System.getProperty("file.separator");
-	private static final String APP_NAME = "Azienda Project";
-
+	
+	private Application(){
+	}
+	
 	/**
 	 * 
 	 * @param args
 	 *            ingnorato
 	 */
-	public static void main(String... args) {
+	public static void main(final String... args) {
 		final Controller c = new ControllerImpl(SAVE_PATH);
 		c.setModel(new ModelImpl(c));
-		c.setView(new ViewImpl(c));
-		c.load();
-		c.showMenu(APP_NAME);
+		c.setView(new ViewControllerImpl(c, APP_NAME));
+		final Model.State stato = c.load();
+		if (stato == Model.State.FIRST_RUN) {
+			c.showFirstRunView();
+		} else if (stato == Model.State.LOADING_SUCCESS) {
+			c.showMenu();
+		}
 	}
 
 }

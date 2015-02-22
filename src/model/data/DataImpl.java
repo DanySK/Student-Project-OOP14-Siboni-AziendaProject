@@ -16,7 +16,7 @@ public class DataImpl implements Data {
 	 * 
 	 */
 	private static final long serialVersionUID = 1347212958680819868L;
-	
+
 	private static final String DATA_REGEX = "[0-9]?[0-9]/[0-9]?[0-9]/[0-9][0-9][0-9][0-9]";
 	private static final int LOWEST_DATE = 1900;
 	private static final int MONTHS_IN_A_YEAR = 12;
@@ -199,7 +199,9 @@ public class DataImpl implements Data {
 
 	@Override
 	public String toString() {
-		return this.giorno + "/" + this.mese + "/" + this.anno;
+		return this.giorno + "/"
+				+ (this.mese > 9 ? this.mese : "0" + this.mese) + "/"
+				+ this.anno;
 	}
 
 }

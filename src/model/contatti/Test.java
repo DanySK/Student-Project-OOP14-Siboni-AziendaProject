@@ -30,21 +30,37 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324dsX").build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324ds").build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324dsX")
+					.build();
+			fail("No exception generated");
+		} catch (IllegalStateException e) {
+			System.out.println(e.toString());
+		}
+
+		try {
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
+					.build();
+			fail("No exception generated");
+		} catch (IllegalStateException e) {
+			System.out.println(e.toString());
+		}
+
+		try {
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
 					.setPIVA("11111111111X").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
@@ -52,25 +68,9 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324ds")
-					.setPIVA("11111111111").build();
-			fail("No exception generated");
-		} catch (IllegalStateException e) {
-			System.out.println(e.toString());
-		}
-
-		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324ds")
-					.setPIVA("11111111111").setNomeTitolare("ciccio").build();
-			fail("No exception generated");
-		} catch (IllegalStateException e) {
-			System.out.println(e.toString());
-		}
-
-		try {
-			new ContattoImpl.Builder().setCF("asderf51c10324ds")
-					.setPIVA("11111111111").setNomeTitolare("ciccio")
-					.setRagSoc("ciccio snc").setCAP("47122X").build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
+			.setPIVA("11111111111")
+					.setCAP("47122X").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
@@ -97,7 +97,7 @@ public class Test {
 			assertEquals(a.getSedeLegale(), Optional.empty());
 			assertEquals(a.getTelefono(), Optional.empty());
 
-			System.out.println(((ContattoImpl) a).longToString());
+			System.out.println(a);
 		} catch (IllegalStateException e) {
 			fail("No exception expected");
 		}
@@ -154,8 +154,7 @@ public class Test {
 
 			assertEquals(a, b);
 			assertEquals(b, a);
-			assertEquals(((ContattoImpl) b).longToString(),
-					((ContattoImpl) a).longToString());
+			assertEquals(b.toString(),a.toString());
 
 		} catch (IOException e) {
 			fail("No Exception Expected");

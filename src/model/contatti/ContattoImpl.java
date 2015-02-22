@@ -156,34 +156,35 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 
 	@Override
 	public String toString() {
-		return this.ragSoc + ", " + this.piva;
-	}
-
-	/**
-	 * 
-	 * @return la stringa completa con tutti i campi
-	 */
-	public String longToString() {
 		final StringBuilder s = new StringBuilder(100);
-		s.append("RagioneSociale= ").append(ragSoc).append(", NomeTitolare= ")
-				.append(nomeTit).append(", P.IVA= ").append(piva)
-				.append(", C.F.= ").append(cf);
+		s.append("Rag.Sociale: ").append(ragSoc).append("\tNomeTitolare: ").append(nomeTit).append("\nP.IVA: ")
+				.append(piva).append("\tC.F.: ").append(cf);
 		if (telefono.isPresent()) {
-			s.append(", Telefono= ").append(telefono.get());
+			s.append("\nTel: ").append(telefono.get());
 		}
 		if (sedeLeg.isPresent()) {
-			s.append(", SedeLeg.= ").append(sedeLeg.get());
+			s.append("\nSedeLeg.: ").append(sedeLeg.get());
 		}
 		if (citta.isPresent()) {
-			s.append(", Citta'= ").append(citta.get());
+			if(sedeLeg.isPresent()){
+				s.append('\t');
+			}else{
+				s.append('\n');
+			}
+			s.append("Citta': ").append(citta.get());
 		}
 		if (cap.isPresent()) {
-			s.append(", CAP= ").append(cap.get());
+			s.append("\nCAP: ").append(cap.get());
 		}
 		if (provincia.isPresent()) {
-			s.append(", Provincia= ").append(provincia.get());
+			if(cap.isPresent()){
+				s.append('\t');
+			}else{
+				s.append('\n');
+			}
+			s.append("Prov.: ").append(provincia.get());
 		}
-		return s.toString();
+		return s.append('\n').toString();
 	}
 
 	@Override
@@ -320,6 +321,11 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 		}
 
 		public Contatto build() {
+			if (!nomeTit.isPresent() || !ragSoc.isPresent()) {
+				throw new IllegalStateException(
+						"I campi Nome Titolare e/o Rag. Sociale non sono stati compilati");
+			}
+			
 			if (cf.orElseThrow(
 					() -> new IllegalStateException(
 							"Il campo C.F. non è stato compilato")).length() != CF_LENGTH) {
@@ -332,21 +338,17 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 							"Il campo P.IVA non è stato compilato")).length() != PIVA_LENGTH) {
 				throw new IllegalStateException(
 						"Il campo P.IVA deve contenere " + PIVA_LENGTH
-								+ " caratteri");
+								+ " numeri");
 			}
 
 			if (cap.isPresent() && cap.get().length() != CAP_LENGTH) {
 				throw new IllegalStateException("Il campo CAP deve contenere "
-						+ CAP_LENGTH + " caratteri");
+						+ CAP_LENGTH + " numeri");
 			}
+			
+			return new ContattoImpl(nomeTit.get(), ragSoc.get(), cf.get(),
+					piva.get(), tel, sedeLeg, citta, cap, prov);
 
-			if (nomeTit.isPresent() && ragSoc.isPresent()) {
-				return new ContattoImpl(nomeTit.get(), ragSoc.get(), cf.get(),
-						piva.get(), tel, sedeLeg, citta, cap, prov);
-			} else {
-				throw new IllegalStateException(
-						"I campi Nome Titolare e/o Rag. Sociale non sono stati compilati");
-			}
 		}
 	}
 

@@ -7,9 +7,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -19,10 +23,14 @@ import controller.Controller;
 import model.contatti.Contatto;
 import model.contatti.ContattoImpl;
 import model.conto.Conto;
+import model.conto.Conto.AccesoA;
+import model.data.Data;
 import model.douments.Document;
 import model.operation.Operation;
 import model.situazione.SituazioneEconomica;
+import model.situazione.SituazioneEconomicaImpl;
 import model.situazione.SituazionePatrimoniale;
+import model.situazione.SituazionePatrimonialeImpl;
 
 /**
  * Implementazione concreta della classe Model.
@@ -32,23 +40,31 @@ import model.situazione.SituazionePatrimoniale;
  */
 public final class ModelImpl implements Model {
 
-	private static final String CONTATTI_FILENAME = "contatti.azpj";
+	private static final String CONTATTI_FILENAME = "contacts.azpj";
+	private static final String OUR_CONTACT_FILENAME = "our.azjp";
 	private static final String CONTI_FILENAME = "conti.azpj";
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
 	private static final String DOCUMENTS_FILENAME = "documents.azpj";
+	private static final int NUM_FILES = 5;
+
+	private static final String LOADING_ERROR = "Errore caricamento file: ";
+
+	private static final List<AccesoA> CONTI_SIT_ECONOMICA = Arrays.asList(
+			AccesoA.COSTI_ES, AccesoA.RICAVI_ES);
 
 	private final transient Controller controller;
 
-	private int operationCounter = 1;
 	private Contatto ourContact;
 	private Set<Conto> contiStore;
 	private Set<Contatto> contattiStore;
-	private Map<Integer, Operation> operationMap;
-	private Map<Integer, Document> documentMap;
+	private TreeSet<Operation> operationSet;
+	private Map<Operation, Document> documentMap;
 	private transient boolean contiStoreChanged;
 	private transient boolean contattiStoreChanged;
-	private transient boolean operationMapChanged;
+	private transient boolean operationSetChanged;
 	private transient boolean documentMapChanged;
+	private transient boolean ourContactChanged;
+	private transient State currentState;
 
 	/**
 	 * Restituisce un modello vuoto.
@@ -57,7 +73,7 @@ public final class ModelImpl implements Model {
 		this.controller = c;
 		this.contiStore = new TreeSet<>();
 		this.contattiStore = new TreeSet<>();
-		this.operationMap = new TreeMap<>();
+		this.operationSet = new TreeSet<>();
 		this.documentMap = new TreeMap<>();
 	}
 
@@ -91,52 +107,62 @@ public final class ModelImpl implements Model {
 	public void setOurContact(final Contatto c) {
 		Objects.requireNonNull(c);
 		ourContact = new ContattoImpl(c);
-		this.contattiStoreChanged = true;
+		this.ourContactChanged = true;
 	}
 
 	@Override
 	public Contatto getOurContact() {
-		if (ourContact == null) {
-			ourContact = controller.askOurContact();
-		}
-		return new ContattoImpl(ourContact);
+		return ourContact == null ? ourContact : new ContattoImpl(ourContact);
 	}
 
 	@Override
 	public void addOperation(final Operation op) {
 		Objects.requireNonNull(op);
-		this.operationMap.put(getNextOperationNumber(), op);
-		this.operationMapChanged = true;
+		this.operationSet.add(op);
+		op.applicaMovimenti();
+		this.contiStoreChanged = true;
+		this.operationSetChanged = true;
 	}
 
 	@Override
-	public Operation getOperation(final int numOperation) {
-		controlNumOp(numOperation);
-		return this.operationMap.get(numOperation);
+	public Optional<Operation> getLastOperation() {
+		if (this.operationSet.isEmpty()) {
+			return Optional.empty();
+		} else {
+			return Optional.of(this.operationSet.last());
+		}
 	}
 
 	@Override
-	public boolean addDocumentToOperation(final int numOperation,
-			final Document doc) {
+	public List<Operation> getOperations(final Data dataFrom, final Data dataTo) {
+		return this.operationSet
+				.stream()
+				.filter(op -> dataFrom.compareTo(op.getData()) <= 0
+						&& dataTo.compareTo(op.getData()) >= 0)
+				// .sorted((op1, op2) -> op1.getData().compareTo(op2.getData()))
+				// //TODO
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean addDocumentToOperation(final Operation op, final Document doc) {
+		Objects.requireNonNull(op);
 		Objects.requireNonNull(doc);
 
-		controlNumOp(numOperation);
-
-		if (this.documentMap.containsKey(numOperation)) {
+		if (this.documentMap.containsKey(op)) {
 			return false;
 		}
-		this.documentMap.put(numOperation, doc);
+		this.documentMap.put(op, doc);
 		this.documentMapChanged = true;
 		return true;
 	}
 
 	@Override
-	public Document getDocumentReferredTo(final int numOperation) {
+	public Document getDocumentReferredTo(final Operation op) {
+		Objects.requireNonNull(op);
 
-		controlNumOp(numOperation);
-
-		if (this.documentMap.containsKey(numOperation)) {
-			return this.documentMap.get(numOperation);
+		if (this.documentMap.containsKey(op)) {
+			return this.documentMap.get(op);
 		} else {
 			throw new NoSuchElementException(
 					"Non c'è nessun documento allegato a questa operazione");
@@ -145,26 +171,18 @@ public final class ModelImpl implements Model {
 	}
 
 	@Override
-	public void deleteDocumentReferredTo(final int numOperation) {
-		controlNumOp(numOperation);
-
-		this.documentMap.remove(numOperation);
-		this.documentMapChanged = true;
+	public void deleteDocumentReferredTo(final Operation op) {
+		Objects.requireNonNull(op);
+		if (this.documentMap.remove(op) != null) {
+			this.documentMapChanged = true;
+		}
 	}
 
 	@Override
 	public void addContatto(final Contatto contatto) {
 		Objects.requireNonNull(contatto);
-
-		final Set<Contatto> set = this.contattiStore.stream()
-				.filter(c -> c.equals(contatto)).collect(Collectors.toSet());
-
-		if (set.isEmpty()) {
-			this.contattiStore.add(contatto);
-		} else {
-			this.contattiStore.removeAll(set);
-			this.contattiStore.add(controller.wichContattoToMantain(set));
-		}
+		this.contattiStore.remove(contatto);
+		this.contattiStore.add(contatto);
 		this.contattiStoreChanged = true;
 	}
 
@@ -187,35 +205,37 @@ public final class ModelImpl implements Model {
 
 	@Override
 	public SituazioneEconomica getSituazioneEconomica() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SituazioneEconomicaImpl(this.contiStore.stream()
+				.filter(c -> CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
+				.collect(Collectors.toSet()));
 	}
 
 	@Override
 	public SituazionePatrimoniale getSituazionePatrimoniale() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SituazionePatrimonialeImpl(this.contiStore.stream()
+				.filter(c -> !CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
+				.collect(Collectors.toSet()));
+
 	}
 
 	@Override
 	public void save(final String path) {
-
-		if (this.operationMapChanged) {
+		if (this.operationSetChanged || currentState == State.FIRST_RUN) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
 						new BufferedOutputStream(new FileOutputStream(path
 								+ OPERATIONS_FILENAME)));
-				out.writeInt(operationCounter);
-				out.writeObject(operationMap);
+				out.writeObject(operationSet);
 				out.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				// Chiamare metodo visualizzazione errore del controller
-				e.printStackTrace();
+				controller
+						.showErrorMessage("Errore salvataggio file delle operazioni\n"
+								+ e.getMessage());
 			}
+			this.operationSetChanged = false;
 		}
 
-		if (this.documentMapChanged) {
+		if (this.documentMapChanged || currentState == State.FIRST_RUN) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
 						new BufferedOutputStream(new FileOutputStream(path
@@ -223,29 +243,44 @@ public final class ModelImpl implements Model {
 				out.writeObject(documentMap);
 				out.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				// Chiamare metodo visualizzazione errore del controller
-				e.printStackTrace();
+				controller
+						.showErrorMessage("Errore salvataggio file dei documenti\n"
+								+ e.getMessage());
 			}
-
+			this.documentMapChanged = false;
 		}
 
-		if (this.contattiStoreChanged) {
+		if (this.ourContactChanged || currentState == State.FIRST_RUN) {
+			try {
+				final ObjectOutputStream out = new ObjectOutputStream(
+						new BufferedOutputStream(new FileOutputStream(path
+								+ OUR_CONTACT_FILENAME)));
+				out.writeObject(ourContact);
+				out.close();
+			} catch (IOException e) {
+				controller
+						.showErrorMessage("Errore salvataggio file nostro contatto\n"
+								+ e.getMessage());
+			}
+			this.ourContactChanged = false;
+		}
+
+		if (this.contattiStoreChanged || currentState == State.FIRST_RUN) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
 						new BufferedOutputStream(new FileOutputStream(path
 								+ CONTATTI_FILENAME)));
-				out.writeObject(ourContact);
 				out.writeObject(contattiStore);
 				out.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				// Chiamare metodo visualizzazione errore del controller
-				e.printStackTrace();
+				controller
+						.showErrorMessage("Errore salvataggio file dei contatti\n"
+								+ e.getMessage());
 			}
+			this.contattiStoreChanged = false;
 		}
 
-		if (this.contiStoreChanged) {
+		if (this.contiStoreChanged || currentState == State.FIRST_RUN) {
 			try {
 				final ObjectOutputStream out = new ObjectOutputStream(
 						new BufferedOutputStream(new FileOutputStream(path
@@ -253,53 +288,57 @@ public final class ModelImpl implements Model {
 				out.writeObject(contiStore);
 				out.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				// Chiamare metodo visualizzazione errore del controller
-				e.printStackTrace();
+				controller
+						.showErrorMessage("Errore salvataggio file dei conti\n"
+								+ e.getMessage());
 			}
+			this.contiStoreChanged = false;
 		}
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void load(final String path) {
+	public State load(final String path) {
+		final Map<String, Exception> exceptionMap = new HashMap<>();
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ OPERATIONS_FILENAME)));
-			operationCounter = in.readInt(); // System.out.println("Letto: operationCounter="+operationCounter);
-			operationMap = (Map<Integer, Operation>) in.readObject(); // System.out.println("Letto: operationMap="+operationMap);
+			operationSet = (TreeSet<Operation>) in.readObject(); // System.out.println("Letto: operationMap="+operationMap);
 			in.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// Chiamare metodo visualizzazione errore del controller
-			e.printStackTrace();
+			exceptionMap.put(OPERATIONS_FILENAME, e);
 		}
 
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ DOCUMENTS_FILENAME)));
-			documentMap = (Map<Integer, Document>) in.readObject(); // System.out.println("Letto: documentMap="+documentMap);
+			documentMap = (Map<Operation, Document>) in.readObject(); // System.out.println("Letto: documentMap="+documentMap);
 			in.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// Chiamare metodo visualizzazione errore del controller
-			e.printStackTrace();
+			exceptionMap.put(DOCUMENTS_FILENAME, e);
+		}
+
+		try {
+			final ObjectInputStream in = new ObjectInputStream(
+					new BufferedInputStream(new FileInputStream(path
+							+ OUR_CONTACT_FILENAME)));
+			ourContact = (Contatto) in.readObject(); // System.out.println("Letto: ourContact="+ourContact);
+			in.close();
+		} catch (Exception e) {
+			exceptionMap.put(OUR_CONTACT_FILENAME, e);
 		}
 
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ CONTATTI_FILENAME)));
-			ourContact = (Contatto) in.readObject(); // System.out.println("Letto: ourContact="+ourContact);
 			contattiStore = (Set<Contatto>) in.readObject(); // System.out.println("Letto: contattiStore="+contattiStore);
 			in.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// Chiamare metodo visualizzazione errore del controller
-			e.printStackTrace();
+			exceptionMap.put(CONTATTI_FILENAME, e);
 		}
 
 		try {
@@ -309,47 +348,28 @@ public final class ModelImpl implements Model {
 			contiStore = (Set<Conto>) in.readObject(); // System.out.println("Letto: contiStore="+contiStore);
 			in.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			// Chiamare metodo visualizzazione errore del controller
-			e.printStackTrace();
+			exceptionMap.put(CONTI_FILENAME, e);
 		}
+
+		if (exceptionMap.size() == NUM_FILES) {
+			currentState = State.FIRST_RUN;
+		} else if (exceptionMap.size() == 0) {
+			currentState = State.LOADING_SUCCESS;
+		} else {
+			exceptionMap.entrySet().forEach(
+					e -> controller.showErrorMessage(LOADING_ERROR + path
+							+ e.getKey() + "\n\n" + e.getValue().getMessage()));
+			currentState = State.ERROR_LOADING;
+		}
+		return currentState;
 	}
 
 	@Override
 	public void reset() {
 		this.documentMap.clear();
-		this.operationMap.clear();
-		operationCounter = 1;
-	}
-
-	/**
-	 * Metodo che da il numero progressivo alle operazioni
-	 * 
-	 * @return il numero progressivo da dare alla prossima operazione
-	 */
-	private int getNextOperationNumber() {
-		return operationCounter++;
-	}
-
-	/**
-	 * Metodo che controlla il numero dell'operazione passato; lancia
-	 * IllegalArgumentException se viene passato un numero negativo o 0; lancia
-	 * NoSuchElementException se il numero passato supera il numero attualmnte
-	 * inserito di operazioni
-	 * 
-	 * @param numOp
-	 *            numero operazione da controllare
-	 * @return true, se passa i controlli
-	 */
-	private boolean controlNumOp(final int numOp) {
-		if (numOp <= 0) {
-			throw new IllegalArgumentException(
-					"Il numero dell'operazione non può essere negativo");
-		}
-		if (numOp > operationMap.size()) {
-			throw new NoSuchElementException();
-		}
-		return true;
+		this.operationSet.clear();
+		this.contiStore.forEach(Conto::reset);
+		this.documentMapChanged = this.operationSetChanged = this.contiStoreChanged = true;
 	}
 
 }

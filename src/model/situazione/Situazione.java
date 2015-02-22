@@ -36,4 +36,6 @@ public interface Situazione extends Serializable{
 	 * @return il totale avere di questa situazione
 	 */
 	double getTotAvere();
+
+	
 }

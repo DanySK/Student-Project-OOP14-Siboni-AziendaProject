@@ -44,9 +44,6 @@ public class Test {
 		} catch (IllegalStateException e) {
 		}
 
-		System.out.println(creditivclienti);
-		System.out.println(venditamerci);
-		System.out.println(ivadebito + "\n");
 
 		o.setContoMovimentato(ivadebito, 22.27);
 
@@ -71,27 +68,22 @@ public class Test {
 
 		assertEquals(creditivclienti.getSaldo(), 133.64, 0.001);
 
-		System.out.println(creditivclienti);
-		System.out.println(venditamerci);
-		System.out.println(ivadebito + "\n");
-
-		System.out.println("\n" + o + "\n");
+		System.out.println(o);
 
 		Operation o2 = new OperationImpl();
 
 		Conto assegni = new ContoImpl("Assegni", AccesoA.DENARO);
 
 		o2.setContoMovimentato(assegni, 133.64);
-		o2.setContoMovimentato(creditivclienti, -133.63);
-		System.out.println("\n" + o2 + "\n");
+		o2.setContoMovimentato(creditivclienti, -101.63);
+		System.out.println(o2);
 
 		assertFalse(o2.isBalanced());
 
-		System.out.println(creditivclienti.getSaldo());
-		System.out.println(assegni.getSaldo() + "\n");
+		o2.setContoMovimentato(creditivclienti, -32.01);
 
-		o2.setContoMovimentato(creditivclienti, -0.01);
-
+		System.out.println(o2);
+		
 		try {
 			o2.applicaMovimenti();
 		} catch (IllegalStateException e) {
@@ -100,12 +92,9 @@ public class Test {
 
 		assertEquals(creditivclienti.getSaldo(), 0, 0.001);
 
-		System.out.println(creditivclienti.getSaldo());
-		System.out.println(assegni.getSaldo());
-
 		final Map<Conto, Double> first = o2.getContiMovimentatiEImporto();
 		o2.setContoMovimentato(creditivclienti, 10);
 		assertEquals(first, o2.getContiMovimentatiEImporto());
-
+		
 	}
 }

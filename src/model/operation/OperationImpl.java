@@ -20,13 +20,14 @@ import model.data.DataImpl;
  * @author Enrico
  *
  */
-public class OperationImpl implements Operation {
+public class OperationImpl implements Operation, Comparable<Operation> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1445965986132678879L;
 	private static final double TOLLERANZA = 0.001;
+	private static final int MINIMUM_LENGTH = 21;
 
 	private final Map<Conto, Double> map;
 	private final Data data;
@@ -49,8 +50,8 @@ public class OperationImpl implements Operation {
 				throw new IllegalArgumentException(
 						"L'importo inserito è uguale a zero!");
 			}
-			this.map.compute(c, (k, v) -> v == null ? (v = importo) : (v = v
-					+ importo));
+			this.map.compute(c, (k, v) -> v == null ? (v = round(importo))
+					: (v = round(v + importo)));
 		}
 
 	}
@@ -67,19 +68,6 @@ public class OperationImpl implements Operation {
 
 	@Override
 	public boolean isBalanced() {
-		System.out.println(map);
-		System.out.println(this.map
-				.entrySet()
-				.stream()
-				.filter(e -> e.getKey().getEccedenzaSolita()
-						.equals(Eccedenza.DARE)).mapToDouble(e -> e.getValue())
-				.sum());
-		System.out.println(this.map
-				.entrySet()
-				.stream()
-				.filter(e -> e.getKey().getEccedenzaSolita()
-						.equals(Eccedenza.AVERE))
-				.mapToDouble(e -> e.getValue()).sum());
 		final double result = this.map
 				.entrySet()
 				.stream()
@@ -165,11 +153,49 @@ public class OperationImpl implements Operation {
 
 	@Override
 	public String toString() {
-		String result = "Data=" + data + ",\nMovimenti=" + map;
+		final StringBuilder str = new StringBuilder(this.map.size()
+				* MINIMUM_LENGTH);
+		final int nameMaxLength = Integer.max(
+				this.map.entrySet().stream()
+						.mapToInt(e -> e.getKey().getName().length()).max()
+						.orElse(MINIMUM_LENGTH), MINIMUM_LENGTH);
+		str.append('\n');
+		this.map.entrySet()
+				.stream()
+				.forEach(
+						e -> {
+							str.append("\t\t\t").append(e.getKey().getName());
+
+							appendSpaces(
+									str,
+									nameMaxLength
+											- e.getKey().getName().length())
+									.append("\t\t");
+
+							if (e.getKey().getEccedenzaSolita() == Eccedenza.DARE) {
+								if (e.getValue() < 0) {
+									str.append('\t');
+									str.append(-e.getValue());
+								} else {
+									str.append(e.getValue());
+								}
+
+							} else {
+								if (e.getValue() < 0) {
+									str.append(-e.getValue());
+								} else {
+									str.append('\t');
+									str.append(e.getValue());
+								}
+							}
+							str.append('\n');
+
+						});
 		if (description.isPresent()) {
-			result += ",\nDescrizione=" + description.get();
+			str.append('\n').append("\t\t\t").append(description.get());
 		}
-		return result;
+		str.replace(1, 2, this.data.toString());
+		return str.toString();
 	}
 
 	/**
@@ -202,4 +228,36 @@ public class OperationImpl implements Operation {
 		this.description = Optional.ofNullable((String) in.readObject());
 	}
 
+	/**
+	 * Arrotondamento a due cifre decimali.
+	 * 
+	 * @param toRound
+	 * @return
+	 */
+	private double round(final double toRound) {
+		return (Math.ceil(toRound * 100 - TOLLERANZA)) / 100;
+	}
+
+	/**
+	 * Aggiunge spazi in base alla lunghezza data.
+	 * 
+	 * @param strB
+	 *            lo StringBuilder a cui aggiungere gli spazi
+	 * @param numSpaces
+	 *            la lunghezza della parola da scrivere
+	 * @return lo string builder utilizzato per appendere gli spazi, in modo ca
+	 *         continuare dopo averchiamato il metodo
+	 */
+	private StringBuilder appendSpaces(final StringBuilder strB,
+			final int numSpaces) {
+		for (int i = 0; i < numSpaces; i++) {
+			strB.append(' ');
+		}
+		return strB;
+	}
+
+	@Override
+	public int compareTo(final Operation other) {
+		return this.data.compareTo(other.getData());
+	}
 }

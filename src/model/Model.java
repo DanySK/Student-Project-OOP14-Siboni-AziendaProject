@@ -1,9 +1,12 @@
 package model;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import model.contatti.Contatto;
 import model.conto.Conto;
+import model.data.Data;
 import model.douments.Document;
 import model.operation.Operation;
 import model.situazione.SituazioneEconomica;
@@ -52,7 +55,7 @@ public interface Model {
 
 	/**
 	 * 
-	 * @return il nostro contatto, se non presente lo genera
+	 * @return il nostro contatto, oppure null se non presente
 	 */
 	Contatto getOurContact();
 
@@ -65,59 +68,55 @@ public interface Model {
 	void addOperation(Operation op);
 
 	/**
-	 * Ottiene l'operazione attraverso il numero progressivo; lancia
-	 * IllegalArgumentException se viene passato un numero negativo o 0, oppure
-	 * lancia NoSuchElementException se il numero non corrisponde ad
-	 * un'operazione ancora
 	 * 
-	 * @param numOperation
-	 *            numero dell'operazione da trovare
-	 * @return l'operazione trovata
+	 * @return l'ultima operazione inserita
 	 */
-	Operation getOperation(int numOperation);
+	Optional<Operation> getLastOperation();
 
 	/**
-	 * Aggiunge un documento all'operazione indicata dal numero passato; lancia
-	 * IllegalArgumentException se il numero passato è negativo o 0,
-	 * NoSuchElementException se il numero dell'operazione passato ancora non
-	 * corrisponde a nessuna
+	 * Ottiene le operazioni tra le due date indicate.
 	 * 
-	 * @param numOperation
-	 *            il numero dell'operazione a cui collegare il documento
+	 * @param dataFrom
+	 *            la data dacui si vogliono visualizzare le operazioni
+	 * @param dataTo
+	 *            la fino alla quale si vogliono visualizzare le operazioni
+	 * @return la lista contenente le operazioni
+	 */
+	List<Operation> getOperations(Data dataFrom, Data dataTo);
+
+	/**
+	 * Aggiunge un documento all'operazione indicata.
+	 * 
+	 * @param op
+	 *            l'operazione a cui collegare il documento
 	 * @param doc
 	 *            il documento da collegare
 	 * @return true se il documento viene aggiunto, false se l'operazione aveva
 	 *         già un documento correlato
 	 */
-	boolean addDocumentToOperation(int numOperation, Document doc);
+	boolean addDocumentToOperation(Operation op, Document doc);
 
 	/**
-	 * Ritorna il documento riferito all'operazione con quel numero; lancia
-	 * IllegalArgumentException se il numero passato è negativo o 0, lancia
-	 * NoSuchElementException se il numero ancora non corrisponde ad alcuna
-	 * operazione oppure se non c'è un documento correlato all'operazione
+	 * Ritorna il documento riferito all'operazione passata; lancia
+	 * NoSuchElementException se non c'è un documento correlato all'operazione
 	 * 
-	 * @param numOperation
-	 *            numero dell'operazione da trovare
+	 * @param op
+	 *            l'operazione da cui prendere il documento
 	 * @return il documento relativo all'operazione con quel numero operazione
 	 */
-	Document getDocumentReferredTo(int numOperation);
+	Document getDocumentReferredTo(Operation op);
 
 	/**
-	 * Elimina il documento riferito all'operazione indicata; lancia
-	 * IllegalArgumentException se il numero passato è negativo o 0, lancia
-	 * NoSuchElementException se il numero ancora non corrisponde ad alcuna
-	 * operazione; se l'operazione indicata non ha un documento allegato non fa
+	 * Elimina il documento riferito all'operazione indicata; se l'operazione indicata non ha un documento allegato non fa
 	 * nulla
 	 * 
-	 * @param numOperation
-	 *            numero operazione di cui eliminare il documento
+	 * @param op
+	 *            operazione di cui eliminare il documento
 	 */
-	void deleteDocumentReferredTo(int numOperation);
+	void deleteDocumentReferredTo(Operation op);
 
 	/**
-	 * Aggiunge un conttatto all'insieme degli altri contatti; se uno equals è
-	 * già presente, si chiede quale mantenere.
+	 * Aggiunge un conttatto all'insieme degli altri contatti;
 	 * 
 	 * @param contatto
 	 *            da aggiungere
@@ -154,23 +153,27 @@ public interface Model {
 	/**
 	 * Salva il modello nel path passato.
 	 * 
-	 * @param path dove salvare il modello
+	 * @param path
+	 *            dove salvare il modello
 	 */
 	void save(String path);
-	
+
 	/**
 	 * Carica il modello dal path passato.
 	 * 
-	 * @param path da cui caricare il modello
+	 * @param path
+	 *            da cui caricare il modello
+	 * @return lo stato del modello
 	 */
-	void load(String path);
-	
+	State load(String path);
+
 	/**
 	 * Resetta il modello allo stato di partenza
 	 * 
 	 */
 	void reset();
 
+	
 	/*
 	 * Queta funzione sarebbe un po avanzata... non so riusciremo a
 	 * implementarla... dipende se rimane tempo
@@ -183,5 +186,9 @@ public interface Model {
 	 * 
 	 * Operation generateOperationFromDocument(Document doc);
 	 */
+	
+	static enum State{
+		FIRST_RUN,ERROR_LOADING,LOADING_SUCCESS;
+	}
 
 }

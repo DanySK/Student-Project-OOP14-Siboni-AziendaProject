@@ -1,5 +1,6 @@
 package model.situazione;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,10 +20,11 @@ public abstract class AbstractSituazione implements Situazione {
 	 */
 	private static final long serialVersionUID = -1474335757768346975L;
 
-	private final Set<Conto> contiDare = new TreeSet<>((c1, c2) -> c1.getName()
-			.compareTo(c2.getName()));
-	private final Set<Conto> contiAvere = new TreeSet<>((c1, c2) -> c1
-			.getName().compareTo(c2.getName()));
+	private static final Comparator<Conto> NAME_SORTER = (c1, c2) -> c1.getName()
+			.compareTo(c2.getName());
+	
+	private final Set<Conto> contiDare = new TreeSet<>(NAME_SORTER);
+	private final Set<Conto> contiAvere = new TreeSet<>(NAME_SORTER);
 
 	/**
 	 * Costruisce una situazione a partire da tutti i conti passati
@@ -55,12 +57,12 @@ public abstract class AbstractSituazione implements Situazione {
 
 	@Override
 	public double getTotDare() {
-		return this.contiDare.stream().mapToDouble(c -> c.getSaldo()).sum();
+		return this.contiDare.stream().mapToDouble(c -> c.getEccedenzaAttuale() != c.getEccedenzaSolita() ? -c.getSaldo() : c.getSaldo()).sum();
 	}
 
 	@Override
 	public double getTotAvere() {
-		return this.contiAvere.stream().mapToDouble(c -> c.getSaldo()).sum();
+		return this.contiAvere.stream().mapToDouble(c -> c.getEccedenzaAttuale() != c.getEccedenzaSolita() ? -c.getSaldo() : c.getSaldo()).sum();
 	}
 
 }

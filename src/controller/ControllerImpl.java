@@ -1,20 +1,22 @@
 package controller;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-import view.View;
+import view.ViewController;
 import model.Model;
 import model.contatti.Contatto;
 import model.conto.Conto;
+import model.data.Data;
 import model.operation.Operation;
-import model.operation.OperationImpl;
+import model.situazione.SituazioneEconomica;
+import model.situazione.SituazionePatrimoniale;
 
 public class ControllerImpl implements Controller {
 
 	private Model model;
-	private View view;
+	private ViewController viewController;
 	private final String savePath;
 
 	public ControllerImpl(final String path) {
@@ -22,8 +24,8 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void load() {
-		this.model.load(savePath);
+	public Model.State load() {
+		return this.model.load(savePath);
 	}
 
 	@Override
@@ -32,31 +34,32 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public boolean aggiuntaOperazione(final List<Conto> conti,
-			final List<Double> importi) {
-
-		if (conti.size() == importi.size()) {
-			final Operation o = new OperationImpl();
-			for (int i = 0; i < conti.size(); i++) {
-				o.setContoMovimentato(conti.get(i), importi.get(i));
-			}
-			if (o.isBalanced()) {
-				o.applicaMovimenti();
-				this.model.addOperation(o);
-				return true;
-			} else {
-				this.view
-						.displayError("L'operazione non è bilanciata!!\nControllare gli importi...");
-				return false;
-			}
-		} else {
-			return false;
-		}
+	public void aggiuntaOperazione(final Operation op) {
+		this.model.addOperation(op);
 	}
 
 	@Override
-	public Set<Conto> getInsiemeConti() {
+	public void aggiuntaConto(final Conto conto) {
+		this.model.addConto(conto);
+	}
 
+	@Override
+	public void aggiuntaContatto(final Contatto contatto) {
+		this.model.addContatto(contatto);
+	}
+
+	@Override
+	public void cancellaConto(final Conto conto) {
+		this.model.deleteConto(conto);
+	}
+
+	@Override
+	public void cancellaContatto(final Contatto contatto) {
+		this.model.deleteContatto(contatto);
+	}
+	
+	@Override
+	public Set<Conto> getInsiemeConti() {
 		return this.model.getConti();
 	}
 
@@ -64,22 +67,30 @@ public class ControllerImpl implements Controller {
 	public Set<Contatto> getInsiemeContatti() {
 		return this.model.getContatti();
 	}
-
+	
 	@Override
-	public Contatto askOurContact() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Operation> getOperations(final Data dataFrom,final Data dataTo) {
+		return this.model.getOperations(dataFrom,dataTo);
 	}
 
 	@Override
-	public Contatto wichContattoToMantain(final Set<Contatto> set) {
-		// TODO Auto-generated method stub
-		return null;
+	public SituazioneEconomica getSitEconomica(){
+		return this.model.getSituazioneEconomica();
+	}
+	
+	@Override
+	public SituazionePatrimoniale getSitPatrimoniale(){
+		return this.model.getSituazionePatrimoniale();
+	}
+	
+	@Override
+	public Optional<Operation> getLastOp() {
+		return this.model.getLastOperation();
 	}
 
 	@Override
-	public void setView(final View v) {
-		this.view = v;
+	public void setView(final ViewController v) {
+		this.viewController = v;
 	}
 
 	@Override
@@ -89,18 +100,34 @@ public class ControllerImpl implements Controller {
 	}
 
 	@Override
-	public void showMenu(final String appName) {
-		this.view.displayMainMenu(appName);
+	public void showMenu() {
+		this.viewController.displayMainMenu();
 	}
 
 	@Override
 	public void showErrorMessage(final String errorMessage) {
-		this.view.displayError(errorMessage);
+		this.viewController.displayError(errorMessage);
 	}
 
 	@Override
-	public void actionPerformed(final ActionEvent evento) {
+	public void reset() {
+		this.model.reset();
+		save();
+	}
+	
+	@Override
+	public void showFirstRunView() {
+		this.viewController.displayNostroContatto();
+	}
 
+	@Override
+	public void setOurContact(final Contatto ourContact) {
+		this.model.setOurContact(ourContact);
+	}
+
+	@Override
+	public Contatto getOurContact() {
+		return this.model.getOurContact();
 	}
 
 }
