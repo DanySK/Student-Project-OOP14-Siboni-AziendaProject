@@ -27,6 +27,8 @@ public class DataImpl implements Data {
 	private static final List<Integer> MONTHS_WITH_30_DAYS = Arrays.asList(4,
 			6, 9, 11);
 
+	private static final String DAY_NOT_ABOVE = "Il giorno non puo' essere maggiore di ";
+
 	private final int giorno;
 	private final int mese;
 	private final int anno;
@@ -143,28 +145,24 @@ public class DataImpl implements Data {
 		} else if (month == 2) {
 			if (year % 4 == 0) {
 				if (day > FEBRUARY_DAYS_BISSEXTILE_YEAR) {
-					throw new IllegalArgumentException(
-							"Il giorno non puo' essere maggiore di "
-									+ FEBRUARY_DAYS_BISSEXTILE_YEAR);
+					throw new IllegalArgumentException(DAY_NOT_ABOVE
+							+ FEBRUARY_DAYS_BISSEXTILE_YEAR);
 				}
 			} else {
 				if (day > FEBRUARY_DAYS) {
-					throw new IllegalArgumentException(
-							"Il giorno non puo' essere maggiore di "
-									+ FEBRUARY_DAYS);
+					throw new IllegalArgumentException(DAY_NOT_ABOVE
+							+ FEBRUARY_DAYS);
 				}
 			}
 
 		} else if (MONTHS_WITH_30_DAYS.contains(month)
 				&& day > DAYS_IN_SHORT_MONTHS) {
-			throw new IllegalArgumentException(
-					"Il giorno non puo' essere maggiore di "
-							+ DAYS_IN_SHORT_MONTHS);
+			throw new IllegalArgumentException(DAY_NOT_ABOVE
+					+ DAYS_IN_SHORT_MONTHS);
 
 		} else if (day > DAYS_IN_LONG_MONTHS) {
-			throw new IllegalArgumentException(
-					"Il giorno non puo' essere maggiore di "
-							+ DAYS_IN_LONG_MONTHS);
+			throw new IllegalArgumentException(DAY_NOT_ABOVE
+					+ DAYS_IN_LONG_MONTHS);
 		}
 
 	}

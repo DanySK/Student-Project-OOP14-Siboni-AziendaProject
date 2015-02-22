@@ -15,6 +15,7 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public final class ModelImpl implements Model {
 	private Contatto ourContact;
 	private Set<Conto> contiStore;
 	private Set<Contatto> contattiStore;
-	private TreeSet<Operation> operationSet;
+	private SortedSet<Operation> operationSet;
 	private Map<Operation, Document> documentMap;
 	private transient boolean contiStoreChanged;
 	private transient boolean contattiStoreChanged;
@@ -305,7 +306,7 @@ public final class ModelImpl implements Model {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
 							+ OPERATIONS_FILENAME)));
-			operationSet = (TreeSet<Operation>) in.readObject(); // System.out.println("Letto: operationMap="+operationMap);
+			operationSet = (SortedSet<Operation>) in.readObject(); // System.out.println("Letto: operationMap="+operationMap);
 			in.close();
 		} catch (Exception e) {
 			exceptionMap.put(OPERATIONS_FILENAME, e);

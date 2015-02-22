@@ -57,12 +57,12 @@ public abstract class AbstractSituazione implements Situazione {
 
 	@Override
 	public double getTotDare() {
-		return this.contiDare.stream().mapToDouble(c -> c.getEccedenzaAttuale() != c.getEccedenzaSolita() ? -c.getSaldo() : c.getSaldo()).sum();
+		return this.contiDare.stream().mapToDouble(c -> c.getEccedenzaAttuale() == c.getEccedenzaSolita() ? c.getSaldo() : -c.getSaldo()).sum();
 	}
 
 	@Override
 	public double getTotAvere() {
-		return this.contiAvere.stream().mapToDouble(c -> c.getEccedenzaAttuale() != c.getEccedenzaSolita() ? -c.getSaldo() : c.getSaldo()).sum();
+		return this.contiAvere.stream().mapToDouble(c -> c.getEccedenzaAttuale() == c.getEccedenzaSolita() ? c.getSaldo() : -c.getSaldo()).sum();
 	}
 
 }
