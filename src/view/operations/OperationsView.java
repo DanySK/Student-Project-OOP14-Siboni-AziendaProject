@@ -170,7 +170,16 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 		dateFrom.setText(null);
 		getViewController().displayMainMenu();
 	}
-
+	
+    @Override
+	protected void listSelectionHandler() {
+		if (getList().getSelectedValuesList().size() == 1) {
+			getActionButton().setEnabled(true);
+		} else {
+			getActionButton().setEnabled(false);
+		}
+	}
+	
 	@Override
 	protected void actionHandler() {
 		System.out

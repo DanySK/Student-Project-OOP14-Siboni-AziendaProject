@@ -106,8 +106,15 @@ public class MainMenu extends AbstractFrame {
 		final int answer = JOptionPane.showConfirmDialog(this, SURE_TO_EXIT,
 				ESCI, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (answer == JOptionPane.YES_OPTION) {
-			System.exit(0);
+			exitApplication();
 		}
+	}
+	
+	/**
+	 * Esegue le operazioni finali di chiusura del'applicazione
+	 */
+	private void exitApplication(){
+		System.exit(0);
 	}
 
 	/**

@@ -138,7 +138,7 @@ public interface Controller { // TODO forse sarebbe meglio fattorizzare meglio
 
 	/**
 	 * 
-	 * @return il nostro contatto mantenuto nel modello
+	 * @return il nostro contatto mantenuto nel modello, o null se non è ancora stato impostato
 	 */
 	Contatto getOurContact();
 

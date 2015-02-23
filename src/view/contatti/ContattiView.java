@@ -1,5 +1,6 @@
 package view.contatti;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -8,6 +9,7 @@ import controller.Controller;
 import view.AbstractSearchListView;
 import view.ViewController;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,12 +23,17 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 	private static final int SEARCH_FIELD_WIDTH = 20;
 
 	private static final String BTN_NEW_CONTACT_TEXT = "Nuovo Contatto";
-	private static final String BTN_DELETE_CONTACT_TEXT = "Elimina Contatto";
+	private static final String BTN_DELETE_CONTACT_TEXT = "Elimina Contatto/i";
+	private static final String BTN_MODIFY_CONTACT_TEXT = "Modifica Contatto";
 	private static final String LABEL_CONTATTI_TEXT = "Contatti";
 
 	private static final String SURE_TO_DELETE = "Sei sicuro di voler eliminare il contatto: ";
+	private static final String SURE_TO_DELETE_MANY = "Sei sicuro di voler eliminare tutti i contatti selezionati?";
 	private static final String NOTHING_FOUND = "Non sono stati trovati contatti corrispondenti...";
 	private static final String NOT_FOUND = "Non Trovato";
+
+	private final JButton btnModify = getGUIFactory().createButton(
+			BTN_MODIFY_CONTACT_TEXT);
 
 	/**
 	 * Create the frame.
@@ -39,6 +46,10 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 
 		getActionButton().setText(BTN_DELETE_CONTACT_TEXT);
 
+		getEastPanelConstraints().gridy++;
+		getEastButtonPanel().add(btnModify, getEastPanelConstraints());
+		btnModify.setEnabled(false);
+
 		getSearchField().setColumns(SEARCH_FIELD_WIDTH);
 
 		final JLabel lblContatti = getGUIFactory().createLabel(
@@ -48,6 +59,15 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 		for (final Contatto c : controller.getInsiemeContatti()) {
 			getListModel().addElement(c);
 		}
+
+		btnModify.addActionListener(e -> modifyHandler());
+	}
+
+	/**
+	 * Handler bottone modifica
+	 */
+	protected void modifyHandler() {
+		getViewController().displayModificaContatto(getList().getSelectedValue());
 	}
 
 	@Override
@@ -58,7 +78,8 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 		}
 	}
 
-	//TODO se ho tempo inserire la ricerca istantanea con un listener sulla casella di testo
+	// TODO se ho tempo inserire la ricerca istantanea con un listener sulla
+	// casella di testo
 	@Override
 	protected void searchHandler() {
 		if (getSearchField().getText().trim().isEmpty()) {
@@ -84,7 +105,7 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 							|| stringStarts(c.getSedeLegale().orElse(" "),
 									getSearchField().getText())
 							|| stringStarts(c.getTelefono().orElse(" "),
-									getSearchField().getText()))
+									getSearchField().getText())).sorted()
 					.collect(Collectors.toSet());
 			if (set.isEmpty()) {
 				JOptionPane.showMessageDialog(this, NOTHING_FOUND, NOT_FOUND,
@@ -106,11 +127,21 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 
 	@Override
 	protected void actionHandler() {
-		final int scelta = JOptionPane.showConfirmDialog(this, SURE_TO_DELETE
-				+ '\n' + getList().getSelectedValue() + " ?", null,
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		int scelta = JOptionPane.NO_OPTION;
+		final List<Contatto> selection = getList().getSelectedValuesList();
+		if (selection.size() == 1) {
+			scelta = JOptionPane.showConfirmDialog(this, SURE_TO_DELETE + '\n'
+					+ selection.get(0) + " ?", null, JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+		} else {
+			scelta = JOptionPane.showConfirmDialog(this, SURE_TO_DELETE_MANY,
+					null, JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+		}
 		if (scelta == JOptionPane.YES_OPTION) {
-			getController().cancellaContatto(getList().getSelectedValue());
+			for (final Contatto c : selection) {
+				getController().cancellaContatto(c);
+			}
 			refresh();
 		}
 	}
@@ -119,6 +150,16 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 	protected void quittingHandler() {
 		super.quittingHandler();
 		getViewController().displayMainMenu();
+	}
+
+	@Override
+	protected void listSelectionHandler() {
+		super.listSelectionHandler();
+		if (getList().getSelectedValuesList().size() == 1) {
+			btnModify.setEnabled(true);
+		} else {
+			btnModify.setEnabled(false);
+		}
 	}
 
 	/**

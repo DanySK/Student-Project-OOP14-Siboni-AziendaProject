@@ -1,5 +1,6 @@
 package view.conti;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,14 +20,15 @@ public class ContiView extends AbstractSearchListView<Conto> {
 	private static final long serialVersionUID = -8640710017223019457L;
 
 	private static final String SURE_TO_DELETE = "Sei sicuro di voler eliminare il conto: ";
+	private static final String SURE_TO_DELETE_MANY = "Sei sicuro di voler eliminare tutti i conti selezionati?";
 	private static final String NOTHING_FOUND = "Non sono stati trovati conti corrispondenti...";
 	private static final String NOT_FOUND = "Non Trovato";
 
 	private static final String BTN_NEW_CONTO_TEXT = "Nuovo Conto";
-	private static final String BTN_DELETE_CONTO = "Elimina Conto";
+	private static final String BTN_DELETE_CONTO = "Elimina Conto/i";
 	private static final String LABEL_CONTO_TEXT = "Conto";
 
-	private static final String CONTO_IN_USO_ERROR = "Non puoi cancellare un conto che hai movimentato!!\nQuesta operazione può essere fatta solo se il saldo del conto e' nullo!";
+	private static final String CONTO_IN_USE_ERROR = "Hai selezionato uno o più conti che sono stati movimentati, e quindi non sono cancellabili!!\nQuesta operazione può essere fatta solo se il saldo del conto e' zero!";
 
 	/**
 	 * Create the frame.
@@ -70,7 +72,7 @@ public class ContiView extends AbstractSearchListView<Conto> {
 							.toLowerCase()
 							.startsWith(
 									getSearchField().getText().trim()
-											.toLowerCase()))
+											.toLowerCase())).sorted()
 					.collect(Collectors.toSet());
 			if (set.isEmpty()) {
 				JOptionPane.showMessageDialog(this, NOTHING_FOUND, NOT_FOUND,
@@ -91,19 +93,34 @@ public class ContiView extends AbstractSearchListView<Conto> {
 
 	@Override
 	protected void actionHandler() {
-		if (getList().getSelectedValue().getSaldo() == 0) {
-			final int scelta = JOptionPane.showConfirmDialog(this,
-					SURE_TO_DELETE + getList().getSelectedValue() + " ?", null,
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		final List<Conto> selected = getList().getSelectedValuesList();
+		if (hasContiSaldoNullo(selected)) {
+			int scelta;
+			if (selected.size() == 1) {
+				scelta = JOptionPane
+						.showConfirmDialog(this,
+								SURE_TO_DELETE + selected.get(0) + " ?", null,
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE);
+			} else {
+				scelta = JOptionPane.showConfirmDialog(this,
+						SURE_TO_DELETE_MANY, null, JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+			}
 			if (scelta == JOptionPane.YES_OPTION) {
-				getController().cancellaConto(getList().getSelectedValue());
+				for (final Conto c : selected) {
+					getController().cancellaConto(c);
+				}
 				refresh();
 			}
 		} else {
-			JOptionPane.showMessageDialog(this, CONTO_IN_USO_ERROR,
+			JOptionPane.showMessageDialog(this, CONTO_IN_USE_ERROR,
 					TITOLO_ERRORE, JOptionPane.ERROR_MESSAGE);
 		}
+	}
 
+	private boolean hasContiSaldoNullo(final List<Conto> selected) {
+		return !selected.stream().anyMatch(c -> c.getSaldo() != 0);
 	}
 
 	@Override

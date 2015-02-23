@@ -193,7 +193,7 @@ public abstract class AbstractSearchListView<E> extends AbstractViewFrame
 	 * Handler selezione elemento dalla lista.
 	 */
 	protected void listSelectionHandler() {
-		if (jList.getSelectedValuesList().size() == 1) {
+		if (jList.getSelectedValuesList().size() >= 1) {
 			btnAction.setEnabled(true);
 		} else {
 			btnAction.setEnabled(false);

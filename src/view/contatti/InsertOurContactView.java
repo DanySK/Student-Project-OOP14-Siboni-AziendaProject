@@ -1,5 +1,7 @@
 package view.contatti;
 
+import java.util.Optional;
+
 import javax.swing.JOptionPane;
 
 import model.contatti.Contatto;
@@ -8,7 +10,7 @@ import view.Saver;
 import view.ViewController;
 import controller.Controller;
 
-public class InsertOurContactView extends InsertContattiView {
+public class InsertOurContactView extends InsertContattoView {
 
 	/**
 	 * 
@@ -19,21 +21,8 @@ public class InsertOurContactView extends InsertContattiView {
 	private static final String CONTACT_NECESSARY_ERROR = "E necessario inserire il nostro contatto !!";
 
 	public InsertOurContactView(final String frameName,
-			final ViewController view, final Controller controller) {
-		super(frameName, view, controller);
-
-		final Contatto existingContact = controller.getOurContact();
-		if (existingContact != null) {
-			this.capField.setText(existingContact.getCAP().orElse(null));
-			this.cfField.setText(existingContact.getCF());
-			this.cittaField.setText(existingContact.getCitta().orElse(null));
-			this.nomeTitField.setText(existingContact.getNomeCognomeTitolare());
-			this.pivaField.setText(existingContact.getPIVA());
-			this.ragSocField.setText(existingContact.getRagioneSociale());
-			this.telField.setText(existingContact.getTelefono().orElse(null));
-			this.viaField.setText(existingContact.getSedeLegale().orElse(null));
-			this.provField.setText(existingContact.getProvincia().orElse(null));
-		}
+			final ViewController view, final Controller controller, final Contatto existingContact) {
+		super(frameName, view, controller,Optional.ofNullable(existingContact));
 
 		getAddButton().setText(BTN_ADD_TEXT);
 

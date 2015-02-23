@@ -79,8 +79,7 @@ public abstract class AbstractInsertFrame extends AbstractFrame {
 	protected abstract void addingHandler();
 
 	/**
-	 * Specifica come si deve agire se l'utente decide di tornare indietro anche
-	 * se ci sono dati non salvati, dopo aver chiuso la finestra corrente.
+	 * Specifica dove tornare, dopo aver chiuso la finestra corrente.
 	 */
 	protected abstract void whenQuittingReturnHere();
 

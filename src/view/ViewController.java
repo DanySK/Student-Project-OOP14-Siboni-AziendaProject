@@ -1,5 +1,7 @@
 package view;
 
+import model.contatti.Contatto;
+
 /**
  * Descrive il comportamento della vista dell'applicazione.
  * 
@@ -37,6 +39,8 @@ public interface ViewController {
 	void displayInserimentoConto();
 	
 	void displayInserminetoContatto();
+	
+	void displayModificaContatto(Contatto contatto);
 
 	void displayNostroContatto();
 	

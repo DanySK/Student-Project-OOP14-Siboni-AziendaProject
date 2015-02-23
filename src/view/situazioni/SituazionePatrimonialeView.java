@@ -19,7 +19,7 @@ public class SituazionePatrimonialeView extends AbstractSituazioneView {
 
 	private static final String TOT = "TOT ";
 	private static final String ATTIVITA = "ATTIVITA'";
-	private static final String PASSIVITA = "PASSIVITA'";
+	private static final String PASSIVITA = "PASSIVITA' E NETTO";
 	private static final String LIQUID_IMMEDIATE = "LIQUIDITA' IMMEDIATE";
 	private static final String LIQUID_DIFFERITE = "LIQUIDITA' DIFFERITE";
 	private static final String IMMOBILIZZAZIONI = "IMMOBILIZZAZZIONI";
@@ -141,9 +141,9 @@ public class SituazionePatrimonialeView extends AbstractSituazioneView {
 				.append('\t').append(round(sitCached.getTotAvere()))
 				.append('\n');
 		appendCharacters(s, '=', lineLength).append("\n\n").append(
-				reddito > 0 ? UTILE_ES : PERDITA_ES);
+				reddito >= 0 ? UTILE_ES : PERDITA_ES);
 		appendCharacters(s, ' ',
-				nameMaxLength - (reddito > 0 ? UTILE_ES : PERDITA_ES).length())
+				nameMaxLength - (reddito >= 0 ? UTILE_ES : PERDITA_ES).length())
 				.append('\t').append(round(reddito)).append("\n\n")
 				.append(TOT_A_PAREGGIO);
 		appendCharacters(s, ' ', nameMaxLength - TOT_A_PAREGGIO.length())

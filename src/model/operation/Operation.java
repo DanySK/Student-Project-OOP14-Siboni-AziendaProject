@@ -1,6 +1,7 @@
 package model.operation;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -87,5 +88,11 @@ public interface Operation extends Serializable {
 	 * @return la descrizione dell'operazione
 	 */
 	String getDescription();
+
+	/**
+	 * 
+	 * @return quando è stata creata l'operazione attraverso un Date
+	 */
+	Date getTimeStamp();
 
 }

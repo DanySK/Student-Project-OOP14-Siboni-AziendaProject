@@ -28,7 +28,7 @@ public class InsertContoView extends AbstractInsertFrame {
 
 	private static final String EMPTY_NAME_ERROR = "Non hai inserito alcun nome per il conto!!";
 	private static final String EMPTY_ACCESOA_ERROR = "Non hai inserito a cosa e' acceso questo conto!!";
-	private static final String ALREADY_EXISTS_ERROR = "Hai inserito i dettagli di un conto gia esistente!!";
+	private static final String ALREADY_EXISTS_ERROR = "Hai inserito il nome di un conto gia esistente!!";
 
 	private static final String BTN_ADD_TEXT = "Aggiungi";
 	private static final String LABEL_CONTO_NAME_TEXT = "Nome Conto";

@@ -3,6 +3,7 @@ package model.operation;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	private static final int MINIMUM_LENGTH = 21;
 
 	private final Map<Conto, Double> map;
+	private final Date timeStamp;
 	private final Data data;
 	private boolean movementsApplied;
 	private transient Optional<String> description;
@@ -38,6 +40,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	 * Restituisce una nuova operazione.
 	 */
 	public OperationImpl() {
+		this.timeStamp = new Date();
 		this.map = new HashMap<>();
 		this.data = new DataImpl();
 		this.description = Optional.empty();
@@ -119,13 +122,19 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	public String getDescription() {
 		return this.description.orElse("");
 	}
+	
+	@Override
+	public Date getTimeStamp(){
+		return new Date(this.timeStamp.getTime());
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((map == null) ? 0 : map.hashCode());
+		result = prime * result
+				+ ((timeStamp == null) ? 0 : timeStamp.hashCode());
 		return result;
 	}
 
@@ -138,15 +147,15 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 		if (getClass() != obj.getClass())
 			return false;
 		OperationImpl other = (OperationImpl) obj;
-		if (data == null) {
-			if (other.data != null)
-				return false;
-		} else if (!data.equals(other.data))
-			return false;
 		if (map == null) {
 			if (other.map != null)
 				return false;
 		} else if (!map.equals(other.map))
+			return false;
+		if (timeStamp == null) {
+			if (other.timeStamp != null)
+				return false;
+		} else if (!timeStamp.equals(other.timeStamp))
 			return false;
 		return true;
 	}
@@ -258,6 +267,6 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 
 	@Override
 	public int compareTo(final Operation other) {
-		return this.data.compareTo(other.getData());
+		return this.timeStamp.compareTo(other.getTimeStamp());
 	}
 }

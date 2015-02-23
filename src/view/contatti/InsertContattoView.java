@@ -5,6 +5,7 @@ import view.AbstractInsertFrame;
 import view.ViewController;
 
 import javax.swing.JOptionPane;
+
 import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
@@ -19,9 +20,10 @@ import model.contatti.ContattoImpl;
 import java.awt.Insets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class InsertContattiView extends AbstractInsertFrame {
+public class InsertContattoView extends AbstractInsertFrame {
 
 	/**
 	 * 
@@ -49,12 +51,14 @@ public class InsertContattiView extends AbstractInsertFrame {
 	protected final JTextField provField;
 	protected final JTextField capField;
 	protected final JTextField telField;
+	private boolean modifyMode;
 
 	/**
 	 * Create the frame.
 	 */
-	public InsertContattiView(final String frameName,
-			final ViewController view, final Controller controller) {
+	public InsertContattoView(final String frameName,
+			final ViewController view, final Controller controller,
+			final Optional<Contatto> toModify) {
 		super(frameName, view, controller);
 
 		final GridBagLayout centerPanelLayout = new GridBagLayout();
@@ -152,6 +156,19 @@ public class InsertContattiView extends AbstractInsertFrame {
 		gbcFields.gridy++;
 		getCenterPanel().add(telField, gbcFields);
 
+		if (toModify != null && toModify.isPresent()) {
+			this.capField.setText(toModify.get().getCAP().orElse(null));
+			this.cfField.setText(toModify.get().getCF());
+			this.cittaField.setText(toModify.get().getCitta().orElse(null));
+			this.nomeTitField.setText(toModify.get().getNomeCognomeTitolare());
+			this.pivaField.setText(toModify.get().getPIVA());
+			this.ragSocField.setText(toModify.get().getRagioneSociale());
+			this.telField.setText(toModify.get().getTelefono().orElse(null));
+			this.viaField.setText(toModify.get().getSedeLegale().orElse(null));
+			this.provField.setText(toModify.get().getProvincia().orElse(null));
+			this.modifyMode = true;
+		}
+
 		pack();
 	}
 
@@ -185,9 +202,8 @@ public class InsertContattiView extends AbstractInsertFrame {
 						.filter(c -> c.equals(toInsert))
 						.collect(Collectors.toList());
 
-				if (list.isEmpty()) {
-					getController().aggiuntaContatto(toInsert);
-					getViewController().displayContatti();
+				if (list.isEmpty() || this.modifyMode) {
+					insertThisAndClose(toInsert);
 				} else {
 					list.add(toInsert);
 
@@ -201,9 +217,7 @@ public class InsertContattiView extends AbstractInsertFrame {
 									JOptionPane.QUESTION_MESSAGE, null, tmpMap
 											.keySet().toArray(), null);
 					if (selected != null) {
-						getController().aggiuntaContatto(tmpMap.get(selected));
-						this.dispose();
-						getViewController().displayContatti();
+						insertThisAndClose(tmpMap.get(selected));
 					}
 				}
 
@@ -213,6 +227,19 @@ public class InsertContattiView extends AbstractInsertFrame {
 			}
 		}
 
+	}
+
+	/**
+	 * Inserisce il contatto nel modello e chiude la finestra insermento
+	 * tornando indietro
+	 * 
+	 * @param toInsert
+	 *            il contatto da inserire
+	 */
+	private void insertThisAndClose(final Contatto toInsert) {
+		getController().aggiuntaContatto(toInsert);
+		this.dispose();
+		whenQuittingReturnHere();
 	}
 
 	@Override
@@ -232,4 +259,6 @@ public class InsertContattiView extends AbstractInsertFrame {
 				|| !viaField.getText().trim().isEmpty()
 				|| !cittaField.getText().trim().isEmpty();
 	}
+	
+
 }
