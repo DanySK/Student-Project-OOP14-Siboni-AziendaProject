@@ -34,11 +34,13 @@ public class ViewControllerImpl implements ViewController {
 	private static final String OPERATION_INSERT_TITLE = "Inserimento Operazione";
 	private static final String CONTATTI_VIEW_TITLE = "Contatti";
 	private static final String CONTATTI_INSERT_TITLE = "Nuovo Contatto";
+	private static final String CONTATTI_MODIFY_TITLE = "Modifica Contatto";
 	private static final String CONTI_VIEW_TITLE = "Conti";
 	private static final String CONTI_INSERT_TITLE = "Nuovo Conto";
 	private static final String SIT_PATR_VIEW_TITLE = "Situazione Patrimoniale";
 	private static final String SIT_ECO_VIEW_TITLE = "Situazione Economica";
 	private static final String OUR_CONTACT_TITLE = "Nostro Contatto";
+	
 
 	private final String appName;
 	private final List<JFrame> frameList = Arrays
@@ -148,7 +150,7 @@ public class ViewControllerImpl implements ViewController {
 	@Override
 	public void displayModificaContatto(final Contatto contatto) {
 		this.frameList.set(FramePosition.CONTATTI_INSERT.ordinal(),
-				new InsertContattoView(CONTATTI_INSERT_TITLE, this,
+				new InsertContattoView(CONTATTI_MODIFY_TITLE, this,
 						this.controller, Optional.of(contatto)));
 		setAllInvisibleExcept(get(FramePosition.CONTATTI_INSERT));
 	}
