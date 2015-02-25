@@ -39,7 +39,14 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 			BTN_MODIFY_CONTACT_TEXT);
 
 	/**
-	 * Create the frame.
+	 * Crea il frame per la visualizzazione/ricerca dei contatti.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della vista
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public ContattiView(final String frameName, final ViewController view,
 			final Controller controller) {

@@ -70,7 +70,7 @@ public class DataImpl implements Data {
 	 * Crea un nuovo oggetto data a partire dalla stringa passata, la quale deve
 	 * essere nel formato GG/MM/AAAA.
 	 * 
-	 * @param data
+	 * @param data la data da cui partire per costruire l'oggetto
 	 * 
 	 * @throws IllegalArgumentException
 	 *             se la stringa passata non corrisponde al formato previsto, o

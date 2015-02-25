@@ -240,8 +240,10 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	/**
 	 * Arrotondamento a due cifre decimali.
 	 * 
+	 * 
 	 * @param toRound
-	 * @return
+	 *            num da arrotondare
+	 * @return il numero arrotondato
 	 */
 	private double round(final double toRound) {
 		return (Math.ceil(toRound * 100 - TOLLERANZA)) / 100;

@@ -28,7 +28,7 @@ public interface Operation extends Serializable {
 	 *            il conto da movimentare
 	 * @param importo
 	 *            l'importo di cui il conto dovrà essere movimentato
-	 * @throws IllgalArgumentException
+	 * @throws IllegalArgumentException
 	 *             se il valore passato come importo è 0
 	 */
 	void setContoMovimentato(Conto c, double importo);
@@ -79,7 +79,7 @@ public interface Operation extends Serializable {
 
 	/**
 	 * 
-	 * @return la mappa conto -> importo di cui è stato movimentato
+	 * @return la mappa dal conto all'importo di cui è stato movimentato
 	 */
 	Map<Conto, Double> getContiMovimentatiEImporto();
 
