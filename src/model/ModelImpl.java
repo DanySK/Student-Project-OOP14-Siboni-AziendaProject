@@ -42,7 +42,7 @@ import model.situazione.SituazionePatrimonialeImpl;
 public final class ModelImpl implements Model {
 
 	private static final String CONTATTI_FILENAME = "contacts.azpj";
-	private static final String OUR_CONTACT_FILENAME = "our.azjp";
+	private static final String OUR_CONTACT_FILENAME = "our.azpj";
 	private static final String CONTI_FILENAME = "conti.azpj";
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
 	private static final String DOCUMENTS_FILENAME = "documents.azpj";
