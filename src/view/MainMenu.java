@@ -17,9 +17,6 @@ import controller.Controller;
  */
 public class MainMenu extends AbstractFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 4134970724206737559L;
 
 	private static final String ESCI = "Esci";
@@ -37,7 +34,14 @@ public class MainMenu extends AbstractFrame {
 	private static final String RESET = "Reset";
 
 	/**
-	 * Create the frame.
+	 * Crea il main menu dell'applicazione.
+	 * 
+	 * @param frameName
+	 *            il nome del frame contenente il menu
+	 * @param view
+	 *            il controller della view
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public MainMenu(final String frameName, final ViewController view,
 			final Controller controller) {
@@ -109,11 +113,11 @@ public class MainMenu extends AbstractFrame {
 			exitApplication();
 		}
 	}
-	
+
 	/**
 	 * Esegue le operazioni finali di chiusura del'applicazione
 	 */
-	private void exitApplication(){
+	private void exitApplication() {
 		System.exit(0);
 	}
 
@@ -123,12 +127,12 @@ public class MainMenu extends AbstractFrame {
 	private void resetHandler() {
 		if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
 				SURE_TO_RESET_1, RESET, JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE)) {
-			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(this,
-					SURE_TO_RESET_2, RESET, JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE)) {
-				getController().reset();
-			}
+				JOptionPane.QUESTION_MESSAGE)
+				&& JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
+						this, SURE_TO_RESET_2, RESET,
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE)) {
+			getController().reset();
 		}
 	}
 

@@ -10,21 +10,38 @@ import javax.swing.JFrame;
 
 import controller.Controller;
 
-public abstract class AbstractFrame extends JFrame implements IMyApplicationFrame {
+/**
+ * Classe astratta per un generico frame dell'applicazione.
+ * 
+ * @author Enrico
+ *
+ */
+public abstract class AbstractFrame extends JFrame implements
+		IMyApplicationFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8367366047326420881L;
 
-	protected final static String TITOLO_ERRORE = "Errore";
+	/**
+	 * Stringa titolo per un messaggio di errore.
+	 */
+	protected static final String TITOLO_ERRORE = "Errore";
 
-	private transient final ViewController v;
-	private transient final Controller c;
-	private transient final GUIFactory factory = new GUIFactory.Standard();
+	private final transient ViewController v;
+	private final transient Controller c;
+	private final transient GUIFactory factory = new GUIFactory.Standard();
 	private final Dimension screenDim = Toolkit.getDefaultToolkit()
 			.getScreenSize();
 
+	/**
+	 * Costruttore di un generico frame dell'applicazione.
+	 * 
+	 * @param frameName
+	 *            il nome nella barra del titolo
+	 * @param v
+	 *            il controllore della view
+	 * @param c
+	 *            il controllore generale dell'applicazione
+	 */
 	public AbstractFrame(final String frameName, final ViewController v,
 			final Controller c) {
 		this.c = c;

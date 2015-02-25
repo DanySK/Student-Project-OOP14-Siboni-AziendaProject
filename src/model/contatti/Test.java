@@ -37,30 +37,32 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324dsX")
-					.build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").setCF("asderf51c10324dsX").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
-					.build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").setCF("asderf51c10324ds").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
 		}
 
 		try {
-			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
+			new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").setCF("asderf51c10324ds")
 					.setPIVA("11111111111X").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
@@ -68,9 +70,9 @@ public class Test {
 		}
 
 		try {
-			new ContattoImpl.Builder().setNomeTitolare("ciccio").setRagSoc("ciccio snc").setCF("asderf51c10324ds")
-			.setPIVA("11111111111")
-					.setCAP("47122X").build();
+			new ContattoImpl.Builder().setNomeTitolare("ciccio")
+					.setRagSoc("ciccio snc").setCF("asderf51c10324ds")
+					.setPIVA("11111111111").setCAP("47122X").build();
 			fail("No exception generated");
 		} catch (IllegalStateException e) {
 			System.out.println(e.toString());
@@ -154,7 +156,7 @@ public class Test {
 
 			assertEquals(a, b);
 			assertEquals(b, a);
-			assertEquals(b.toString(),a.toString());
+			assertEquals(b.toString(), a.toString());
 
 		} catch (IOException e) {
 			fail("No Exception Expected");

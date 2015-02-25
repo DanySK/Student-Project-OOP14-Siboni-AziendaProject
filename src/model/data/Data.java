@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Enrico
  *
  */
-public interface Data extends Comparable<Data>,Serializable {
+public interface Data extends Comparable<Data>, Serializable {
 
 	/**
 	 * 

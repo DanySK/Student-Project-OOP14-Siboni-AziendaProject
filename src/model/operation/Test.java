@@ -44,7 +44,6 @@ public class Test {
 		} catch (IllegalStateException e) {
 		}
 
-
 		o.setContoMovimentato(ivadebito, 22.27);
 
 		assertFalse(o.haveMovementsBeenApplied());
@@ -83,7 +82,7 @@ public class Test {
 		o2.setContoMovimentato(creditivclienti, -32.01);
 
 		System.out.println(o2);
-		
+
 		try {
 			o2.applicaMovimenti();
 		} catch (IllegalStateException e) {
@@ -95,6 +94,6 @@ public class Test {
 		final Map<Conto, Double> first = o2.getContiMovimentatiEImporto();
 		o2.setContoMovimentato(creditivclienti, 10);
 		assertEquals(first, o2.getContiMovimentatiEImporto());
-		
+
 	}
 }

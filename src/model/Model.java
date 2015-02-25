@@ -23,7 +23,7 @@ public interface Model {
 	/**
 	 * Aggiunge il conto passato come parametro, se questo non era già presente,
 	 * al file dei conti; lancia IllegalArgumentException se il conto esisteva
-	 * già
+	 * già.
 	 * 
 	 * @param c
 	 *            il conto da aggiungere
@@ -32,7 +32,7 @@ public interface Model {
 
 	/**
 	 * Cancella il conto passato come parametro; lancia NoSuchElementException
-	 * se il conto non era presente
+	 * se il conto non era presente.
 	 * 
 	 * @param c
 	 *            il conto da cancellare
@@ -46,7 +46,7 @@ public interface Model {
 	Set<Conto> getConti();
 
 	/**
-	 * Setta il contatto della nostra azienda
+	 * Setta il contatto della nostra azienda.
 	 * 
 	 * @param c
 	 *            il contatto da settare come nostro
@@ -61,9 +61,9 @@ public interface Model {
 
 	/**
 	 * Aggiunge l'operazione passata come parametro al modello, preoccupandosi
-	 * di dargli un numero progressivo
+	 * di dargli un numero progressivo.
 	 * 
-	 * @param op
+	 * @param op l'operazione da aggiungere
 	 */
 	void addOperation(Operation op);
 
@@ -98,7 +98,7 @@ public interface Model {
 
 	/**
 	 * Ritorna il documento riferito all'operazione passata; lancia
-	 * NoSuchElementException se non c'è un documento correlato all'operazione
+	 * NoSuchElementException se non c'è un documento correlato all'operazione.
 	 * 
 	 * @param op
 	 *            l'operazione da cui prendere il documento
@@ -107,8 +107,8 @@ public interface Model {
 	Document getDocumentReferredTo(Operation op);
 
 	/**
-	 * Elimina il documento riferito all'operazione indicata; se l'operazione indicata non ha un documento allegato non fa
-	 * nulla
+	 * Elimina il documento riferito all'operazione indicata; se l'operazione
+	 * indicata non ha un documento allegato non fa nulla.
 	 * 
 	 * @param op
 	 *            operazione di cui eliminare il documento
@@ -116,7 +116,7 @@ public interface Model {
 	void deleteDocumentReferredTo(Operation op);
 
 	/**
-	 * Aggiunge un conttatto all'insieme degli altri contatti;
+	 * Aggiunge un conttatto all'insieme degli altri contatti.
 	 * 
 	 * @param contatto
 	 *            da aggiungere
@@ -125,7 +125,7 @@ public interface Model {
 
 	/**
 	 * Cancella il conttato da quelli salvati; lancia NoSuchElementException se
-	 * il contatto passato non è presente in memoria
+	 * il contatto passato non è presente in memoria.
 	 * 
 	 * @param contatto
 	 *            il contatto da eliminare
@@ -168,27 +168,19 @@ public interface Model {
 	State load(String path);
 
 	/**
-	 * Resetta il modello allo stato di partenza
+	 * Resetta il modello allo stato di partenza.
 	 * 
 	 */
 	void reset();
 
-	
-	/*
-	 * Queta funzione sarebbe un po avanzata... non so riusciremo a
-	 * implementarla... dipende se rimane tempo
+	/**
+	 * Enumerazione che indica i tre valori di stato che può avere il modello.
 	 * 
-	 * Genera l'operazione a partire dal documento che la rappresenta; lancia
-	 * NullPointerException se il documento passato è null
-	 * 
-	 * @param doc il documento da cui prendere i dati per la generazione
-	 * dell'operazione
-	 * 
-	 * Operation generateOperationFromDocument(Document doc);
+	 * @author Enrico
+	 *
 	 */
-	
-	static enum State{
-		FIRST_RUN,ERROR_LOADING,LOADING_SUCCESS;
+	static enum State {
+		FIRST_RUN, ERROR_LOADING, LOADING_SUCCESS;
 	}
 
 }

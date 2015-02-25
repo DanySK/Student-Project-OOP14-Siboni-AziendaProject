@@ -15,10 +15,10 @@ public final class Application {
 	private static final String APP_NAME = "Azienda Project";
 	private static final String SAVE_PATH = System.getProperty("user.dir")
 			+ System.getProperty("file.separator");
-	
-	private Application(){
+
+	private Application() {
 	}
-	
+
 	/**
 	 * 
 	 * @param args

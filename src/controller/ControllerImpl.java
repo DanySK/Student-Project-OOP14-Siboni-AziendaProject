@@ -13,12 +13,25 @@ import model.operation.Operation;
 import model.situazione.SituazioneEconomica;
 import model.situazione.SituazionePatrimoniale;
 
+/**
+ * Implementazione concreta del controller.
+ * 
+ * @author Enrico
+ *
+ */
 public class ControllerImpl implements Controller {
 
 	private Model model;
 	private ViewController viewController;
 	private final String savePath;
 
+	/**
+	 * Crea il controller.
+	 * 
+	 * @param path
+	 *            il path di salvataggio per caricare e salvare i dati
+	 *            dell'applicazione
+	 */
 	public ControllerImpl(final String path) {
 		this.savePath = path;
 	}
@@ -57,7 +70,7 @@ public class ControllerImpl implements Controller {
 	public void cancellaContatto(final Contatto contatto) {
 		this.model.deleteContatto(contatto);
 	}
-	
+
 	@Override
 	public Set<Conto> getInsiemeConti() {
 		return this.model.getConti();
@@ -67,22 +80,22 @@ public class ControllerImpl implements Controller {
 	public Set<Contatto> getInsiemeContatti() {
 		return this.model.getContatti();
 	}
-	
+
 	@Override
-	public List<Operation> getOperations(final Data dataFrom,final Data dataTo) {
-		return this.model.getOperations(dataFrom,dataTo);
+	public List<Operation> getOperations(final Data dataFrom, final Data dataTo) {
+		return this.model.getOperations(dataFrom, dataTo);
 	}
 
 	@Override
-	public SituazioneEconomica getSitEconomica(){
+	public SituazioneEconomica getSitEconomica() {
 		return this.model.getSituazioneEconomica();
 	}
-	
+
 	@Override
-	public SituazionePatrimoniale getSitPatrimoniale(){
+	public SituazionePatrimoniale getSitPatrimoniale() {
 		return this.model.getSituazionePatrimoniale();
 	}
-	
+
 	@Override
 	public Optional<Operation> getLastOp() {
 		return this.model.getLastOperation();
@@ -114,7 +127,7 @@ public class ControllerImpl implements Controller {
 		this.model.reset();
 		save();
 	}
-	
+
 	@Override
 	public void showFirstRunView() {
 		this.viewController.displayNostroContatto();

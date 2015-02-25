@@ -157,8 +157,9 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 	@Override
 	public String toString() {
 		final StringBuilder s = new StringBuilder(100);
-		s.append("Rag.Sociale: ").append(ragSoc).append("\tNomeTitolare: ").append(nomeTit).append("\nP.IVA: ")
-				.append(piva).append("\tC.F.: ").append(cf);
+		s.append("Rag.Sociale: ").append(ragSoc).append("\tNomeTitolare: ")
+				.append(nomeTit).append("\nP.IVA: ").append(piva)
+				.append("\tC.F.: ").append(cf);
 		if (telefono.isPresent()) {
 			s.append("\nTel: ").append(telefono.get());
 		}
@@ -166,9 +167,9 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 			s.append("\nSedeLeg.: ").append(sedeLeg.get());
 		}
 		if (citta.isPresent()) {
-			if(sedeLeg.isPresent()){
+			if (sedeLeg.isPresent()) {
 				s.append('\t');
-			}else{
+			} else {
 				s.append('\n');
 			}
 			s.append("Citta': ").append(citta.get());
@@ -177,9 +178,9 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 			s.append("\nCAP: ").append(cap.get());
 		}
 		if (provincia.isPresent()) {
-			if(cap.isPresent()){
+			if (cap.isPresent()) {
 				s.append('\t');
-			}else{
+			} else {
 				s.append('\n');
 			}
 			s.append("Prov.: ").append(provincia.get());
@@ -325,7 +326,7 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 				throw new IllegalStateException(
 						"I campi Nome Titolare e/o Rag. Sociale non sono stati compilati");
 			}
-			
+
 			if (cf.orElseThrow(
 					() -> new IllegalStateException(
 							"Il campo C.F. non è stato compilato")).length() != CF_LENGTH) {
@@ -345,7 +346,7 @@ public class ContattoImpl implements Contatto, Comparable<Contatto> {
 				throw new IllegalStateException("Il campo CAP deve contenere "
 						+ CAP_LENGTH + " numeri");
 			}
-			
+
 			return new ContattoImpl(nomeTit.get(), ragSoc.get(), cf.get(),
 					piva.get(), tel, sedeLeg, citta, cap, prov);
 

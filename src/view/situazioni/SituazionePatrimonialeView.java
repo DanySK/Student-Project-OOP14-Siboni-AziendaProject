@@ -8,6 +8,12 @@ import view.ViewController;
 
 import javax.swing.JSplitPane;
 
+/**
+ * Classe concreta che realizza la vista di una situazione patrimoniale.
+ * 
+ * @author Enrico
+ *
+ */
 public class SituazionePatrimonialeView extends AbstractSituazioneView {
 
 	/**
@@ -32,11 +38,19 @@ public class SituazionePatrimonialeView extends AbstractSituazioneView {
 	private static final String PERDITA_ES = "PERDITA DELL'ESERCIZIO";
 	private static final String TOT_A_PAREGGIO = "TOT A PAREGGIO";
 
-	private final int lineLength = Integer.max(nameMaxLength
+	private final int lineLength = Integer.max(getNameMaxLength()
 			+ NUM_MEDIUM_LENGTH, PERDITA_ES.length());
 
 	/**
-	 * Create the frame.
+	 * Crea il frame contenente la visualizzazione della situazione
+	 * patrimoniale.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della view
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public SituazionePatrimonialeView(final String frameName,
 			final ViewController view, final Controller controller) {
@@ -54,7 +68,7 @@ public class SituazionePatrimonialeView extends AbstractSituazioneView {
 		textAreaRight.setBackground(getBackground());
 
 		final int nameMaxLength = Integer.max(PERDITA_ES.length(),
-				super.nameMaxLength);
+				getNameMaxLength());
 
 		final SituazionePatrimoniale sitCached = controller
 				.getSitPatrimoniale();

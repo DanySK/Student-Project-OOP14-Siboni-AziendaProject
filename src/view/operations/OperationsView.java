@@ -18,18 +18,22 @@ import model.data.DataImpl;
 import model.operation.Operation;
 import controller.Controller;
 
+/**
+ * Classe concreta che realizza la vista di visualizzazione/ricerca delle
+ * operazioni.
+ * 
+ * @author Enrico
+ *
+ */
 public class OperationsView extends AbstractSearchListView<Operation> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6677986727299372138L;
 
 	private static final String WRONG_DATA_ERROR = "Il formato della data deve essere GG/MM/AAAA, controllare inoltre di non aver inserito una data incongruente!!";
 	private static final String WRONG_DATA_ORDER_ERROR = "Hai inserito le date nell'ordine sbagliato!!";
 	private static final String NO_OPERATION_FOUND = "Non sono state trovate operazioni inserite tra le date indicate";
 	private static final String BTN_NEW_OPERATION_TEXT = "Nuova Operazione";
-	private static final String BTN_VIEW_DOCUMENT_TEXT = "Visualizza Documento";
+	private static final String BTN_VIEW_DOCUMENT_TEXT = "Coming Soon";
 
 	private static final String LABEL_TO_TEXT = "Al";
 	private static final String LABEL_FROM_TEXT = "Dal";
@@ -40,7 +44,14 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 	private final JTextField dateFrom;
 
 	/**
-	 * Create the frame.
+	 * Crea il frame di visualizzazione/ricerca delle operazioni.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della view
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public OperationsView(final String frameName, final ViewController view,
 			final Controller controller) {
@@ -87,10 +98,10 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 
 		getCenterScroll().setViewportView(getList());
 
-		if(controller.getLastOp().isPresent()){
+		if (controller.getLastOp().isPresent()) {
 			getListModel().addElement(controller.getLastOp().get());
 		}
-		
+
 	}
 
 	@Override
@@ -153,7 +164,7 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 	@Override
 	public void refresh() {
 		getListModel().clear();
-		if(getController().getLastOp().isPresent()){
+		if (getController().getLastOp().isPresent()) {
 			getListModel().addElement(getController().getLastOp().get());
 		}
 	}
@@ -170,8 +181,8 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 		dateFrom.setText(null);
 		getViewController().displayMainMenu();
 	}
-	
-    @Override
+
+	@Override
 	protected void listSelectionHandler() {
 		if (getList().getSelectedValuesList().size() == 1) {
 			getActionButton().setEnabled(true);
@@ -179,7 +190,7 @@ public class OperationsView extends AbstractSearchListView<Operation> {
 			getActionButton().setEnabled(false);
 		}
 	}
-	
+
 	@Override
 	protected void actionHandler() {
 		System.out

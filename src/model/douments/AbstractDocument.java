@@ -15,7 +15,7 @@ public abstract class AbstractDocument implements Document {
 	 * 
 	 */
 	private static final long serialVersionUID = 7283770252215004660L;
-	
+
 	private final Contatto mittente;
 	private final Contatto benefiaciario;
 	private final Contatto debitore;
@@ -24,15 +24,19 @@ public abstract class AbstractDocument implements Document {
 	/**
 	 * Costruttore di un documento qualunque.
 	 * 
-	 * @param mittente il mittente/traente del documento
-	 * @param beneficiario il beneficiario del documento
-	 * @param debitore il debitore/trattario del documento
-	 * @param data la data del documento
+	 * @param mittente
+	 *            il mittente/traente del documento
+	 * @param beneficiario
+	 *            il beneficiario del documento
+	 * @param debitore
+	 *            il debitore/trattario del documento
+	 * @param data
+	 *            la data del documento
 	 */
 	protected AbstractDocument(final Contatto mittente,
 			final Contatto beneficiario, final Contatto debitore,
 			final Data data) {
-		
+
 		this.mittente = mittente;
 		this.debitore = debitore;
 		this.benefiaciario = beneficiario;
@@ -62,7 +66,6 @@ public abstract class AbstractDocument implements Document {
 	@Override
 	public abstract double getTotale();
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -115,5 +118,5 @@ public abstract class AbstractDocument implements Document {
 				+ benefiaciario + ", Debitore=" + debitore + ", Data=" + data
 				+ "]";
 	}
-	
+
 }

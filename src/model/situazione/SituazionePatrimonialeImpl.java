@@ -23,7 +23,7 @@ public class SituazionePatrimonialeImpl extends AbstractSituazione implements
 
 	/**
 	 * Costruisce la situazione patrimoniale a partire dai conti della
-	 * situazione patrimoniale
+	 * situazione patrimoniale.
 	 * 
 	 * @param contiSitPatr
 	 *            i conti da cui partire per costruire la situazione

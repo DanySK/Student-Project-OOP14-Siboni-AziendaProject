@@ -19,6 +19,12 @@ import view.operations.OperationsView;
 import view.situazioni.SituazioneEconomicaView;
 import view.situazioni.SituazionePatrimonialeView;
 
+/**
+ * Implementazione concreta del controller della view.
+ * 
+ * @author Enrico
+ *
+ */
 public class ViewControllerImpl implements ViewController {
 
 	private static final String TITOLO_ERRORE = "Errore";
@@ -39,9 +45,17 @@ public class ViewControllerImpl implements ViewController {
 			.asList(new JFrame[FramePosition.values().length]);
 	private final Controller controller;
 
-	public ViewControllerImpl(final Controller c, final String appName) {
+	/**
+	 * Crea un controller per la view.
+	 * 
+	 * @param c
+	 *            il controller dell'applicazione
+	 * @param applicationName
+	 *            il nome dell'applicazione
+	 */
+	public ViewControllerImpl(final Controller c, final String applicationName) {
 		this.controller = c;
-		this.appName = appName;
+		this.appName = applicationName;
 	}
 
 	@Override
@@ -127,33 +141,31 @@ public class ViewControllerImpl implements ViewController {
 	public void displayInserminetoContatto() {
 		this.frameList.set(FramePosition.CONTATTI_INSERT.ordinal(),
 				new InsertContattoView(CONTATTI_INSERT_TITLE, this,
-						this.controller,Optional.empty()));
+						this.controller, Optional.empty()));
 		setAllInvisibleExcept(get(FramePosition.CONTATTI_INSERT));
 	}
-
 
 	@Override
 	public void displayModificaContatto(final Contatto contatto) {
 		this.frameList.set(FramePosition.CONTATTI_INSERT.ordinal(),
 				new InsertContattoView(CONTATTI_INSERT_TITLE, this,
-						this.controller,Optional.of(contatto)));
+						this.controller, Optional.of(contatto)));
 		setAllInvisibleExcept(get(FramePosition.CONTATTI_INSERT));
 	}
 
-	
 	@Override
 	public void displayNostroContatto() {
 		this.frameList.set(FramePosition.OUR_CONTACT_VIEW.ordinal(),
 				new InsertOurContactView(OUR_CONTACT_TITLE, this,
-						this.controller,controller.getOurContact()));
+						this.controller, controller.getOurContact()));
 		setAllInvisibleExcept(get(FramePosition.OUR_CONTACT_VIEW));
 	}
 
-	@Override
+	/*@Override
 	public void displayDocument() {
 		// TODO Auto-generated method stub
 
-	}
+	}*/
 
 	@Override
 	public void displayError(final String errorMessage) {

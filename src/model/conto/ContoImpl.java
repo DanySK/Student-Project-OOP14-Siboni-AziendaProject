@@ -71,10 +71,10 @@ public class ContoImpl implements Conto, Comparable<Conto> {
 	public AccesoA getAccesoA() {
 		return this.accesoA;
 	}
-	
+
 	@Override
 	public void reset() {
-		this.importo=0;
+		this.importo = 0;
 	}
 
 	private Eccedenza eccedenzaContrariaDi(final Eccedenza e) {

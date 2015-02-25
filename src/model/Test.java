@@ -97,7 +97,6 @@ public class Test {
 				.setData(new DataImpl()).setImportoMerce(200).setMittente(mio)
 				.setDebitore(ciccio).setNumFattura("88").build();
 
-
 		assertTrue(a.addDocumentToOperation(op1, d));
 		assertFalse(a.addDocumentToOperation(op1, d));
 
@@ -208,7 +207,7 @@ public class Test {
 				.setDebitore(ciccio).setNumFattura("88").build();
 
 		a.addDocumentToOperation(op1, d);
-		
+
 		a.setOurContact(mio);
 
 		// System.out.println(System.getProperty("java.io.tmpdir"));

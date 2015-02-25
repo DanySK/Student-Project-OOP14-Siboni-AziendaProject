@@ -8,7 +8,7 @@ import controller.Controller;
 
 /**
  * Classe astratta che definisce il conportamento generico di una finestra
- * dell'applicazione.
+ * dell'applicazione, con pulsante di ritorno indietro.
  * 
  * @author Enrico
  *
@@ -24,6 +24,16 @@ public abstract class AbstractViewFrame extends AbstractFrame {
 	private final JButton btnBack = getGUIFactory().createButton(BTN_BACK_TEXT);
 	private final JPanel southPanel = getGUIFactory().createPanel(btnBack);
 
+	/**
+	 * Costruttore di un generico frame con pulsante di ritorno indietro.
+	 * 
+	 * @param frameName
+	 *            il nome nella barra del titolo
+	 * @param v
+	 *            il controllore della view
+	 * @param c
+	 *            il controllore generale dell'applicazione
+	 */
 	protected AbstractViewFrame(final String frameName, final ViewController v,
 			final Controller c) {
 		super(frameName, v, c);

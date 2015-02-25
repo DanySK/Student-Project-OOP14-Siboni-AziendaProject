@@ -57,9 +57,9 @@ public interface Conto extends Serializable {
 	 * @return a cosa è accesso questo conto
 	 */
 	AccesoA getAccesoA();
-	
+
 	/**
-	 * Resetta il conto portando il saldo a 0
+	 * Resetta il conto portando il saldo a 0.
 	 */
 	void reset();
 
@@ -71,10 +71,10 @@ public interface Conto extends Serializable {
 	 */
 	static enum Eccedenza {
 		DARE("Dare", Arrays.asList(AccesoA.COSTI_ES, AccesoA.COSTI_PLUR,
-				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO)),
-		AVERE("Avere", Arrays.asList(AccesoA.DEBITI,
-				AccesoA.PATRIMONIO_NETTO, AccesoA.RICAVI_ES,
-				AccesoA.RICAVI_PLUR, AccesoA.RICAVI_SOSP));
+				AccesoA.COSTI_SOSP, AccesoA.CREDITI, AccesoA.DENARO)), AVERE(
+				"Avere", Arrays.asList(AccesoA.DEBITI,
+						AccesoA.PATRIMONIO_NETTO, AccesoA.RICAVI_ES,
+						AccesoA.RICAVI_PLUR, AccesoA.RICAVI_SOSP));
 
 		private final String nome;
 		private final List<AccesoA> listConti;

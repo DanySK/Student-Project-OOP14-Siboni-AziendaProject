@@ -23,13 +23,11 @@ import controller.Controller;
  * 
  * @author Enrico
  *
+ * @param <E> il tipo degli elementi da visualizzare
  */
 public abstract class AbstractSearchListView<E> extends AbstractViewFrame
 		implements RefreshView {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1419508065951576119L;
 	private static final String BTN_SEARCH_TEXT = "Creca";
 	private static final String BTN_NEW_ELEM_TEXT = "Nuovo";
@@ -54,6 +52,16 @@ public abstract class AbstractSearchListView<E> extends AbstractViewFrame
 	private final JList<E> jList = getGUIFactory().createJList();
 	private final DefaultListModel<E> model = new DefaultListModel<>();
 
+	/**
+	 * Costruttore di un generico frame con barra ricerca, tasto ricerca, tasto nuovo elemento.
+	 * 
+	 * @param frameName
+	 *            il nome nella barra del titolo
+	 * @param v
+	 *            il controllore della view
+	 * @param c
+	 *            il controllore generale dell'applicazione
+	 */
 	protected AbstractSearchListView(final String frameName,
 			final ViewController v, final Controller c) {
 		super(frameName, v, c);

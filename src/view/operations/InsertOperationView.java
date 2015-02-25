@@ -1,27 +1,39 @@
 package view.operations;
 
-import javax.swing.*;
-
-import controller.Controller;
-import view.AbstractInsertFrame;
-import view.ViewController;
-import model.conto.Conto;
-import model.conto.Conto.Eccedenza;
-import model.operation.Operation;
-import model.operation.OperationImpl;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+import model.conto.Conto;
+import model.conto.Conto.Eccedenza;
+import model.operation.Operation;
+import model.operation.OperationImpl;
+import view.AbstractInsertFrame;
+import view.ViewController;
+import controller.Controller;
+
+/**
+ * Classe concreta che realizza la vista di inserimento delle
+ * operazioni.
+ * 
+ * @author Enrico
+ *
+ */
 public class InsertOperationView extends AbstractInsertFrame {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 2998504799503573659L;
 
 	private static final String CONTO_NULL_ERROR = "Il campo Conto non puo essere vuoto, se hai inserito un importo affianco!!";
@@ -49,7 +61,14 @@ public class InsertOperationView extends AbstractInsertFrame {
 	private Operation opGenerated;
 
 	/**
-	 * Creates component DynamicOperation
+	 * Crea il frame di inseriemento delle operazioni.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della viwe
+	 * @param c
+	 *            il controller dell'applicazione
 	 */
 	public InsertOperationView(final String frameName,
 			final ViewController view, final Controller c) {

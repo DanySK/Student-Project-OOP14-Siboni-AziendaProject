@@ -12,11 +12,14 @@ import controller.Controller;
 import view.AbstractSearchListView;
 import view.ViewController;
 
+/**
+ * Classe concreta che realizza la vista dei conti.
+ * 
+ * @author Enrico
+ *
+ */
 public class ContiView extends AbstractSearchListView<Conto> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8640710017223019457L;
 
 	private static final String SURE_TO_DELETE = "Sei sicuro di voler eliminare il conto: ";
@@ -31,7 +34,14 @@ public class ContiView extends AbstractSearchListView<Conto> {
 	private static final String CONTO_IN_USE_ERROR = "Hai selezionato uno o più conti che sono stati movimentati, e quindi non sono cancellabili!!\nQuesta operazione può essere fatta solo se il saldo del conto e' zero!";
 
 	/**
-	 * Create the frame.
+	 * Crea il frame per la visualizzazione e ricerca dei conti.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della view
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public ContiView(final String frameName, final ViewController view,
 			final Controller controller) {

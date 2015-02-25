@@ -23,6 +23,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * CLasse concreata che implementa la vista di inseriemnto di un contatto.
+ * 
+ * @author Enrico
+ *
+ */
 public class InsertContattoView extends AbstractInsertFrame {
 
 	/**
@@ -54,7 +60,16 @@ public class InsertContattoView extends AbstractInsertFrame {
 	private boolean modifyMode;
 
 	/**
-	 * Create the frame.
+	 * Crea il frame per l'inserimento di un contatto.
+	 * 
+	 * @param frameName
+	 *            il nome del frame;
+	 * @param view
+	 *            il controller della view;
+	 * @param controller
+	 *            il controller dell'applicazione;
+	 * @param toModify
+	 *            l'eventuale contatto da modificare attraverso questa view;
 	 */
 	public InsertContattoView(final String frameName,
 			final ViewController view, final Controller controller,
@@ -259,6 +274,5 @@ public class InsertContattoView extends AbstractInsertFrame {
 				|| !viaField.getText().trim().isEmpty()
 				|| !cittaField.getText().trim().isEmpty();
 	}
-	
 
 }

@@ -10,19 +10,36 @@ import view.Saver;
 import view.ViewController;
 import controller.Controller;
 
+/**
+ * Classe concreta che realizza la vista di modifica e consultazione del nostro
+ * contatto.
+ * 
+ * @author Enrico
+ *
+ */
 public class InsertOurContactView extends InsertContattoView {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -6649085106603895203L;
 
 	private static final String BTN_ADD_TEXT = "Imposta";
 	private static final String CONTACT_NECESSARY_ERROR = "E necessario inserire il nostro contatto !!";
 
+	/**
+	 * Crea il frame di inserimento/visualizzaqzione del nostro contatto.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controller della view
+	 * @param controller
+	 *            il controller dell'applicazione
+	 * @param existingContact
+	 *            l'eventuale nostro contatto già esistente
+	 */
 	public InsertOurContactView(final String frameName,
-			final ViewController view, final Controller controller, final Contatto existingContact) {
-		super(frameName, view, controller,Optional.ofNullable(existingContact));
+			final ViewController view, final Controller controller,
+			final Contatto existingContact) {
+		super(frameName, view, controller, Optional.ofNullable(existingContact));
 
 		getAddButton().setText(BTN_ADD_TEXT);
 

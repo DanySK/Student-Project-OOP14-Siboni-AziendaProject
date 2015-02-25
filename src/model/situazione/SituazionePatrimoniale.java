@@ -11,49 +11,49 @@ import model.conto.Conto;
  *
  */
 public interface SituazionePatrimoniale extends Situazione {
-	
+
 	/**
 	 * 
 	 * @return il totale dei costi pluriennali
 	 */
 	double getTotCostiPlur();
-	
+
 	/**
 	 * 
 	 * @return il totale dei ricavi pluriennali
 	 */
 	double getTotRicaviPlur();
-	
+
 	/**
 	 * 
 	 * @return il totale dei conti accesi ai crediti
 	 */
 	double getTotLiquiditaDifferite();
-	
+
 	/**
 	 * 
 	 * @return il totale dei conti accesi a denaro
 	 */
 	double getTotLiquiditaImmediate();
-	
+
 	/**
 	 * 
 	 * @return il totale dei costi sopsesi
 	 */
 	double getTotCostiSospesi();
-	
+
 	/**
 	 * 
 	 * @return il totale dei conti accesi a debiti
 	 */
 	double getTotDebiti();
-	
+
 	/**
 	 * 
 	 * @return il totale dei conti accesi a Patrimonio Netto
 	 */
 	double getTotPatrimonioNetto();
-	
+
 	/**
 	 * 
 	 * @return il totale dei ricavi sospesi
@@ -65,13 +65,13 @@ public interface SituazionePatrimoniale extends Situazione {
 	 * @return il reddito dell'azienda
 	 */
 	double getTotAPareggio();
-	
+
 	/**
 	 * 
 	 * @return il set dei conti accesi a costi pluriennali
 	 */
 	Set<Conto> getCostiPlur();
-	
+
 	/**
 	 * 
 	 * @return il set dei conti accesi a ricavi pluriennali

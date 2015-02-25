@@ -69,6 +69,9 @@ public final class ModelImpl implements Model {
 
 	/**
 	 * Restituisce un modello vuoto.
+	 * 
+	 * @param c
+	 *            il controller a cui il modello si deve riferire
 	 */
 	public ModelImpl(final Controller c) {
 		this.controller = c;
@@ -140,8 +143,6 @@ public final class ModelImpl implements Model {
 				.stream()
 				.filter(op -> dataFrom.compareTo(op.getData()) <= 0
 						&& dataTo.compareTo(op.getData()) >= 0)
-				// .sorted((op1, op2) -> op1.getData().compareTo(op2.getData()))
-				// //TODO
 				.collect(Collectors.toList());
 	}
 
@@ -370,6 +371,8 @@ public final class ModelImpl implements Model {
 		this.documentMap.clear();
 		this.operationSet.clear();
 		this.contiStore.forEach(Conto::reset);
+
+		// mappaDocumenti , setOperazioni e storeConti sono cambiati
 		this.documentMapChanged = this.operationSetChanged = this.contiStoreChanged = true;
 	}
 

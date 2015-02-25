@@ -198,7 +198,6 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 		return s.toString();
 	}
 
-	
 	/**
 	 * Metodo chiamato da un output stream che scrive; Indica come serailizzare
 	 * una SimpleFattura.
@@ -209,7 +208,7 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	 */
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
-		
+
 		out.writeObject(aliqSconto.orElse(null));
 		out.writeObject(importoSconto.orElse(null));
 		out.writeObject(speseDoc.orElse(null));
@@ -228,14 +227,14 @@ public class SimpleFattura extends AbstractDocument implements Fattura {
 	private void readObject(final ObjectInputStream in)
 			throws ClassNotFoundException, IOException {
 		in.defaultReadObject();
-		
-		aliqSconto = Optional.ofNullable((Integer)in.readObject());
-		importoSconto = Optional.ofNullable((Double)in.readObject());
-		speseDoc = Optional.ofNullable((Double)in.readObject());
-		interessi = Optional.ofNullable((Double)in.readObject());
+
+		aliqSconto = Optional.ofNullable((Integer) in.readObject());
+		importoSconto = Optional.ofNullable((Double) in.readObject());
+		speseDoc = Optional.ofNullable((Double) in.readObject());
+		interessi = Optional.ofNullable((Double) in.readObject());
 		totCached = Optional.empty();
 	}
-	
+
 	/**
 	 * Builder per la classe SimpleFattura.
 	 * 

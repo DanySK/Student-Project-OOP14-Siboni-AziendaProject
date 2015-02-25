@@ -13,11 +13,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Classe concreta che implementa la vista dei contatti.
+ * 
+ * @author Enrico
+ *
+ */
 public class ContattiView extends AbstractSearchListView<Contatto> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -710736374429103001L;
 
 	private static final int SEARCH_FIELD_WIDTH = 20;
@@ -64,10 +67,11 @@ public class ContattiView extends AbstractSearchListView<Contatto> {
 	}
 
 	/**
-	 * Handler bottone modifica
+	 * Handler bottone modifica.
 	 */
 	protected void modifyHandler() {
-		getViewController().displayModificaContatto(getList().getSelectedValue());
+		getViewController().displayModificaContatto(
+				getList().getSelectedValue());
 	}
 
 	@Override

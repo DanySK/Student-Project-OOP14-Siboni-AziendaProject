@@ -122,9 +122,9 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	public String getDescription() {
 		return this.description.orElse("");
 	}
-	
+
 	@Override
-	public Date getTimeStamp(){
+	public Date getTimeStamp() {
 		return new Date(this.timeStamp.getTime());
 	}
 

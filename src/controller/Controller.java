@@ -16,10 +16,10 @@ import model.situazione.SituazionePatrimoniale;
 /**
  * Descrive il comportamento del controllore dell'applicazione.
  * 
- * @author Enrico, Marco, Elia
+ * @author Enrico
  *
  */
-public interface Controller { // TODO forse sarebbe meglio fattorizzare meglio
+public interface Controller { // TODO forse sarebbe stato meglio fattorizzare meglio
 								// il comportamento del controller creando sotto
 								// controller che controllano piccole parti del
 								// programma (controller contatti,controller
@@ -108,7 +108,7 @@ public interface Controller { // TODO forse sarebbe meglio fattorizzare meglio
 	void save();
 
 	/**
-	 * Resetta il modello allo stato di partenza
+	 * Resetta il modello allo stato di partenza.
 	 */
 	void reset();
 
@@ -129,7 +129,7 @@ public interface Controller { // TODO forse sarebbe meglio fattorizzare meglio
 	void setModel(Model m);
 
 	/**
-	 * Setta il nostro contatto nel modello
+	 * Setta il nostro contatto nel modello.
 	 * 
 	 * @param ourContact
 	 *            il contatto da impostare come nostro

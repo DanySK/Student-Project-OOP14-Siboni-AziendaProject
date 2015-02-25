@@ -19,11 +19,14 @@ import model.conto.Conto;
 import model.conto.Conto.AccesoA;
 import model.conto.ContoImpl;
 
+/**
+ * Classe concreta che realizza la vista di inserimento di un conto.
+ * 
+ * @author Enrico
+ *
+ */
 public class InsertContoView extends AbstractInsertFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 582686582062429282L;
 
 	private static final String EMPTY_NAME_ERROR = "Non hai inserito alcun nome per il conto!!";
@@ -38,7 +41,14 @@ public class InsertContoView extends AbstractInsertFrame {
 	private final JComboBox<Conto.AccesoA> comboBox;
 
 	/**
-	 * Create the frame.
+	 * Crea il frame di inserimento di un conto.
+	 * 
+	 * @param frameName
+	 *            il nome del frame
+	 * @param view
+	 *            il controler della view
+	 * @param controller
+	 *            il controller dell'applicazione
 	 */
 	public InsertContoView(final String frameName, final ViewController view,
 			final Controller controller) {

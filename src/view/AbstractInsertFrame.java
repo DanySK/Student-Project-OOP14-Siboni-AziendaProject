@@ -9,11 +9,14 @@ import javax.swing.JPanel;
 
 import controller.Controller;
 
+/**
+ * Classe astratta che descrive un frame di inserimento dell'applicazione.
+ * 
+ * @author Enrico
+ *
+ */
 public abstract class AbstractInsertFrame extends AbstractFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8173351693637167153L;
 
 	private static final String DATA_UNSAVED = "Ci sono dati inseriti non salvati, tornando indietro li perderai...\nVuoi tornare indietro?";
@@ -24,6 +27,16 @@ public abstract class AbstractInsertFrame extends AbstractFrame {
 	private final JPanel southPanel = getGUIFactory().createPanel(btnConfirm);
 	private final JPanel centerPanel = getGUIFactory().createPanel();
 
+	/**
+	 * Costruttore di un generico frame di inserimento dell'applicazione.
+	 * 
+	 * @param frameName
+	 *            il nome nella barra del titolo
+	 * @param v
+	 *            il controllore della view
+	 * @param c
+	 *            il controllore generale dell'applicazione
+	 */
 	public AbstractInsertFrame(final String frameName, final ViewController v,
 			final Controller c) {
 		super(frameName, v, c);
@@ -74,7 +87,7 @@ public abstract class AbstractInsertFrame extends AbstractFrame {
 	}
 
 	/**
-	 * Handler bottone aggiunta
+	 * Handler bottone aggiunta.
 	 */
 	protected abstract void addingHandler();
 

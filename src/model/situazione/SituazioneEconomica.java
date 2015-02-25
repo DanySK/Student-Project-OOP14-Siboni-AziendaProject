@@ -7,10 +7,11 @@ package model.situazione;
  *
  */
 public interface SituazioneEconomica extends Situazione {
-	
+
 	/**
 	 * 
-	 * @return il reddito dell'azienda; se nagativo si tratta di Perdita, se positivo di Utile
+	 * @return il reddito dell'azienda; se nagativo si tratta di Perdita, se
+	 *         positivo di Utile
 	 */
 	double getReddito();
 }

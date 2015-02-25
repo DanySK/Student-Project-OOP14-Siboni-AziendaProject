@@ -20,7 +20,7 @@ public class SituazioneEconomicaImpl extends AbstractSituazione implements
 
 	/**
 	 * Costruisce la situazione economica a partire dai conti accesi a costi
-	 * d'es e ricavi d'es
+	 * d'es e ricavi d'es.
 	 * 
 	 * @param contiSitEconomica
 	 *            i conti da cui partire per la costruzione
@@ -32,6 +32,6 @@ public class SituazioneEconomicaImpl extends AbstractSituazione implements
 
 	@Override
 	public double getReddito() {
-		return getTotAvere()-getTotDare();
+		return getTotAvere() - getTotDare();
 	}
 }

@@ -20,7 +20,7 @@ import model.operation.Operation;
  *
  */
 
-// TODO
+// TODO ancora da sviluppare... forse, anzi sicuramente, da rifare da capo.....
 public final class Documents {
 
 	private Documents() {
