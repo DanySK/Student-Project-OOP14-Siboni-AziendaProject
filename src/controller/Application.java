@@ -32,10 +32,10 @@ public final class Application {
 		final Model.State stato = c.load();
 		if (stato == Model.State.FIRST_RUN) {
 			c.showFirstRunView();
-		} else if (stato == Model.State.LOADING_SUCCESS) {
-			c.showMenu();
 		} else {
-			c.showErrorMessage(ERRORS_LOADING);
+			if (stato == Model.State.ERROR_LOADING) {
+				c.showErrorMessage(ERRORS_LOADING);
+			}
 			c.showMenu();
 		}
 	}
