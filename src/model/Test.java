@@ -100,7 +100,7 @@ public class Test {
 		assertTrue(a.addDocumentToOperation(op1, d));
 		assertFalse(a.addDocumentToOperation(op1, d));
 
-		final Document d2 = a.getDocumentReferredTo(op1);
+		final Document d2 = a.getDocumentReferredTo(op1).get();
 		assertEquals(d, d2);
 
 		a.deleteDocumentReferredTo(op1);

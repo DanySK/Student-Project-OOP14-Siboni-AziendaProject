@@ -14,6 +14,7 @@ import model.conto.Conto;
 import model.conto.Conto.Eccedenza;
 import model.data.Data;
 import model.data.DataImpl;
+import model.douments.Document;
 
 /**
  * Implementazione concreta di una Operazione.
@@ -34,6 +35,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	private final Date timeStamp;
 	private final Data data;
 	private boolean movementsApplied;
+	private transient Optional<Document> opDocument;
 	private transient Optional<String> description;
 
 	/**
@@ -43,6 +45,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 		this.timeStamp = new Date();
 		this.map = new HashMap<>();
 		this.data = new DataImpl();
+		this.opDocument = Optional.empty();
 		this.description = Optional.empty();
 	}
 
@@ -62,6 +65,14 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	@Override
 	public void setDescription(final String description) {
 		this.description = Optional.ofNullable(description);
+	}
+	
+	@Override
+	public void setDocument(final Document documento){
+		if(this.opDocument.isPresent()){
+			throw new IllegalStateException("L'operazione aveva gia' un documento!!");
+		}
+		this.opDocument = Optional.ofNullable(documento);
 	}
 
 	@Override
@@ -126,6 +137,16 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	@Override
 	public Date getTimeStamp() {
 		return new Date(this.timeStamp.getTime());
+	}
+	
+	@Override
+	public Optional<Document> getDocument() {
+		return this.opDocument;
+	}
+	
+	@Override
+	public void removeDocument() {
+		this.opDocument = Optional.empty();
 	}
 
 	@Override
@@ -218,6 +239,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		out.defaultWriteObject();
 
+		out.writeObject(this.opDocument.orElse(null));
 		out.writeObject(this.description.orElse(null));
 	}
 
@@ -234,6 +256,7 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 			throws ClassNotFoundException, IOException {
 		in.defaultReadObject();
 
+		this.opDocument = Optional.ofNullable((Document) in.readObject());
 		this.description = Optional.ofNullable((String) in.readObject());
 	}
 

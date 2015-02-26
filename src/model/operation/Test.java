@@ -4,9 +4,14 @@ import static org.junit.Assert.*;
 
 import java.util.Map;
 
+import model.contatti.Contatto;
+import model.contatti.ContattoImpl;
 import model.conto.Conto;
 import model.conto.Conto.AccesoA;
 import model.conto.ContoImpl;
+import model.data.DataImpl;
+import model.douments.Document;
+import model.douments.fattura.SimpleFattura;
 
 /**
  * Classe di testing per le operazioni.
@@ -95,5 +100,35 @@ public class Test {
 		o2.setContoMovimentato(creditivclienti, 10);
 		assertEquals(first, o2.getContiMovimentatiEImporto());
 
+		final Contatto a = new ContattoImpl.Builder().setNomeTitolare("ciccio")
+				.setRagSoc("ciccio snc").setPIVA("11111111111")
+				.setCF("asderf51c10324ds").build();
+
+		final Document fatt = new SimpleFattura.Builder().setAliqIva(20)
+				.setData(new DataImpl()).setDebitore(a).setMittente(a)
+				.setImportoMerce(1000).setNumFattura("10/bis").build();
+		try{
+			o2.setDocument(null);
+		}catch (IllegalStateException e){
+			fail("No exception expected");
+		}
+		
+		try{
+			o2.setDocument(fatt);
+		}catch (IllegalStateException e){
+			fail("No exception expected");
+		}
+		
+		try{
+			o2.setDocument(fatt);
+			fail("Exception expected");
+		}catch (IllegalStateException e){
+		}
+
+		try{
+			o2.setDocument(null);
+			fail("Exception expected");
+		}catch (IllegalStateException e){
+		}
 	}
 }

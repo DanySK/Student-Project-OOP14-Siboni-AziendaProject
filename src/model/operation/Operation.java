@@ -3,10 +3,12 @@ package model.operation;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import model.conto.Conto;
 import model.data.Data;
+import model.douments.Document;
 
 /**
  * Descrive un'operazione di gestione.
@@ -94,5 +96,24 @@ public interface Operation extends Serializable {
 	 * @return quando è stata creata l'operazione attraverso un Date
 	 */
 	Date getTimeStamp();
+	
+	/**
+	 * 
+	 * @return il documento che ha generato l'operazione se c'è, altrimenti Optional.empty()
+	 */
+	Optional<Document> getDocument();
+
+	/**
+	 * Setta il documento che ha generato l'operazione.
+	 * 
+	 * @param documento il documento da settare
+	 * @throws IllegalStateException se l'operazione già aveva un documento settato
+	 */
+	void setDocument(Document documento);
+	
+	/**
+	 * Rimuove il documento settato in una operazione. Non fa nulla se il documento non c'era
+	 */
+	void removeDocument();
 
 }

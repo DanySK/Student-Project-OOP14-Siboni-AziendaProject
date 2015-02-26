@@ -15,6 +15,7 @@ public final class Application {
 	private static final String APP_NAME = "Azienda Project";
 	private static final String SAVE_PATH = System.getProperty("user.dir")
 			+ System.getProperty("file.separator");
+	private static final String ERRORS_LOADING = "Ci sono stati degli errori durante il caricamento dell'applicazione!\nQuindi verrà chiusa...";
 
 	private Application() {
 	}
@@ -33,6 +34,8 @@ public final class Application {
 			c.showFirstRunView();
 		} else if (stato == Model.State.LOADING_SUCCESS) {
 			c.showMenu();
+		} else {
+			c.showErrorMessage(ERRORS_LOADING);
 		}
 	}
 

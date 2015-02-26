@@ -102,9 +102,9 @@ public interface Model {
 	 * 
 	 * @param op
 	 *            l'operazione da cui prendere il documento
-	 * @return il documento relativo all'operazione con quel numero operazione
+	 * @return il documento relativo all'operazione op, oppure optional.empty se non c'è documento
 	 */
-	Document getDocumentReferredTo(Operation op);
+	Optional<Document> getDocumentReferredTo(Operation op);
 
 	/**
 	 * Elimina il documento riferito all'operazione indicata; se l'operazione

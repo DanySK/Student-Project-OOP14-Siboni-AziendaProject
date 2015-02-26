@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
@@ -45,8 +44,7 @@ public final class ModelImpl implements Model {
 	private static final String OUR_CONTACT_FILENAME = "our.azpj";
 	private static final String CONTI_FILENAME = "conti.azpj";
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
-	private static final String DOCUMENTS_FILENAME = "documents.azpj";
-	private static final int NUM_FILES = 5;
+	private static final int NUM_FILES = 4;
 
 	private static final String LOADING_ERROR = "Errore caricamento file: ";
 
@@ -59,11 +57,9 @@ public final class ModelImpl implements Model {
 	private Set<Conto> contiStore;
 	private Set<Contatto> contattiStore;
 	private SortedSet<Operation> operationSet;
-	private Map<Operation, Document> documentMap;
 	private transient boolean contiStoreChanged;
 	private transient boolean contattiStoreChanged;
 	private transient boolean operationSetChanged;
-	private transient boolean documentMapChanged;
 	private transient boolean ourContactChanged;
 	private transient State currentState;
 
@@ -78,7 +74,6 @@ public final class ModelImpl implements Model {
 		this.contiStore = new TreeSet<>();
 		this.contattiStore = new TreeSet<>();
 		this.operationSet = new TreeSet<>();
-		this.documentMap = new TreeMap<>();
 	}
 
 	@Override
@@ -151,33 +146,25 @@ public final class ModelImpl implements Model {
 		Objects.requireNonNull(op);
 		Objects.requireNonNull(doc);
 
-		if (this.documentMap.containsKey(op)) {
+		try {
+			op.setDocument(doc);
+		} catch (IllegalStateException e) {
 			return false;
 		}
-		this.documentMap.put(op, doc);
-		this.documentMapChanged = true;
 		return true;
 	}
 
 	@Override
-	public Document getDocumentReferredTo(final Operation op) {
+	public Optional<Document> getDocumentReferredTo(final Operation op) {
 		Objects.requireNonNull(op);
 
-		if (this.documentMap.containsKey(op)) {
-			return this.documentMap.get(op);
-		} else {
-			throw new NoSuchElementException(
-					"Non c'è nessun documento allegato a questa operazione");
-		}
-
+		return op.getDocument();
 	}
 
 	@Override
 	public void deleteDocumentReferredTo(final Operation op) {
 		Objects.requireNonNull(op);
-		if (this.documentMap.remove(op) != null) {
-			this.documentMapChanged = true;
-		}
+		op.removeDocument();
 	}
 
 	@Override
@@ -235,21 +222,6 @@ public final class ModelImpl implements Model {
 								+ e.getMessage());
 			}
 			this.operationSetChanged = false;
-		}
-
-		if (this.documentMapChanged || currentState == State.FIRST_RUN) {
-			try {
-				final ObjectOutputStream out = new ObjectOutputStream(
-						new BufferedOutputStream(new FileOutputStream(path
-								+ DOCUMENTS_FILENAME)));
-				out.writeObject(documentMap);
-				out.close();
-			} catch (IOException e) {
-				controller
-						.showErrorMessage("Errore salvataggio file dei documenti\n"
-								+ e.getMessage());
-			}
-			this.documentMapChanged = false;
 		}
 
 		if (this.ourContactChanged || currentState == State.FIRST_RUN) {
@@ -316,16 +288,6 @@ public final class ModelImpl implements Model {
 		try {
 			final ObjectInputStream in = new ObjectInputStream(
 					new BufferedInputStream(new FileInputStream(path
-							+ DOCUMENTS_FILENAME)));
-			documentMap = (Map<Operation, Document>) in.readObject(); // System.out.println("Letto: documentMap="+documentMap);
-			in.close();
-		} catch (Exception e) {
-			exceptionMap.put(DOCUMENTS_FILENAME, e);
-		}
-
-		try {
-			final ObjectInputStream in = new ObjectInputStream(
-					new BufferedInputStream(new FileInputStream(path
 							+ OUR_CONTACT_FILENAME)));
 			ourContact = (Contatto) in.readObject(); // System.out.println("Letto: ourContact="+ourContact);
 			in.close();
@@ -355,7 +317,7 @@ public final class ModelImpl implements Model {
 
 		if (exceptionMap.size() == NUM_FILES) {
 			currentState = State.FIRST_RUN;
-		} else if (exceptionMap.size() == 0) {
+		} else if (exceptionMap.isEmpty()) {
 			currentState = State.LOADING_SUCCESS;
 		} else {
 			exceptionMap.entrySet().forEach(
@@ -368,12 +330,11 @@ public final class ModelImpl implements Model {
 
 	@Override
 	public void reset() {
-		this.documentMap.clear();
 		this.operationSet.clear();
 		this.contiStore.forEach(Conto::reset);
 
-		// mappaDocumenti , setOperazioni e storeConti sono cambiati
-		this.documentMapChanged = this.operationSetChanged = this.contiStoreChanged = true;
+		//setOperazioni e storeConti sono cambiati
+		this.operationSetChanged = this.contiStoreChanged = true;
 	}
 
 }
