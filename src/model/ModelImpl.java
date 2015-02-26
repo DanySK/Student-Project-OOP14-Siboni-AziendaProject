@@ -44,7 +44,6 @@ public final class ModelImpl implements Model {
 	private static final String OUR_CONTACT_FILENAME = "our.azpj";
 	private static final String CONTI_FILENAME = "conti.azpj";
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
-	private static final int NUM_FILES = 4;
 
 	private static final String LOADING_ERROR = "Errore caricamento file: ";
 
@@ -315,7 +314,7 @@ public final class ModelImpl implements Model {
 			exceptionMap.put(CONTI_FILENAME, e);
 		}
 
-		if (exceptionMap.size() == NUM_FILES) {
+		if (exceptionMap.containsKey(OUR_CONTACT_FILENAME)) {
 			currentState = State.FIRST_RUN;
 		} else if (exceptionMap.isEmpty()) {
 			currentState = State.LOADING_SUCCESS;
@@ -332,7 +331,7 @@ public final class ModelImpl implements Model {
 	public void reset() {
 		this.operationSet.clear();
 		this.contiStore.forEach(Conto::reset);
-
+		
 		//setOperazioni e storeConti sono cambiati
 		this.operationSetChanged = this.contiStoreChanged = true;
 	}
