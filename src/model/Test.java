@@ -100,7 +100,7 @@ public class Test {
 		assertTrue(a.addDocumentToOperation(op1, d));
 		assertFalse(a.addDocumentToOperation(op1, d));
 
-		final Document d2 = a.getDocumentReferredTo(op1).get();
+		final Document d2 = op1.getDocument().get();
 		assertEquals(d, d2);
 
 		a.deleteDocumentReferredTo(op1);
@@ -110,11 +110,7 @@ public class Test {
 		} catch (NoSuchElementException e) {
 		}
 
-		try {
-			a.getDocumentReferredTo(op1);
-		} catch (NoSuchElementException e) {
-		}
-
+		assertFalse(op1.getDocument().isPresent());
 	}
 
 	@org.junit.Test
@@ -154,12 +150,6 @@ public class Test {
 
 		try {
 			a.setOurContact(null);
-			fail("Exception Expected");
-		} catch (NullPointerException e) {
-		}
-
-		try {
-			a.getDocumentReferredTo(null);
 			fail("Exception Expected");
 		} catch (NullPointerException e) {
 		}
@@ -222,6 +212,6 @@ public class Test {
 		// System.out.println(b.getContatti());
 		assertEquals(a.getConti(), b.getConti());
 		// System.out.println(b.getConti());
-		assertEquals(a.getDocumentReferredTo(op1), b.getDocumentReferredTo(op1));
+		assertEquals(a.getAllOperations(),b.getAllOperations());
 	}
 }

@@ -1,17 +1,22 @@
 package controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import view.ViewController;
 import model.Model;
 import model.contatti.Contatto;
 import model.conto.Conto;
+import model.conto.Conto.AccesoA;
 import model.data.Data;
 import model.operation.Operation;
 import model.situazione.SituazioneEconomica;
+import model.situazione.SituazioneEconomicaImpl;
 import model.situazione.SituazionePatrimoniale;
+import model.situazione.SituazionePatrimonialeImpl;
 
 /**
  * Implementazione concreta del controller.
@@ -24,6 +29,9 @@ public class ControllerImpl implements Controller {
 	private Model model;
 	private ViewController viewController;
 	private final String savePath;
+	
+	private static final List<AccesoA> CONTI_SIT_ECONOMICA = Arrays.asList(
+			AccesoA.COSTI_ES, AccesoA.RICAVI_ES);
 
 	/**
 	 * Crea il controller.
@@ -83,22 +91,32 @@ public class ControllerImpl implements Controller {
 
 	@Override
 	public List<Operation> getOperations(final Data dataFrom, final Data dataTo) {
-		return this.model.getOperations(dataFrom, dataTo);
+		return this.model
+				.getAllOperations()
+				.stream()
+				.filter(op -> dataFrom.compareTo(op.getData()) <= 0
+						&& dataTo.compareTo(op.getData()) >= 0)
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public SituazioneEconomica getSitEconomica() {
-		return this.model.getSituazioneEconomica();
+		return new SituazioneEconomicaImpl(this.model.getConti().stream()
+				.filter(c -> CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
+				.collect(Collectors.toSet()));
 	}
 
 	@Override
 	public SituazionePatrimoniale getSitPatrimoniale() {
-		return this.model.getSituazionePatrimoniale();
+		return new SituazionePatrimonialeImpl(this.model.getConti().stream()
+				.filter(c -> !CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
+				.collect(Collectors.toSet()));
 	}
 
 	@Override
 	public Optional<Operation> getLastOp() {
-		return this.model.getLastOperation();
+		return this.model.getAllOperations().isEmpty() ? Optional.empty()
+				: Optional.of(this.model.getAllOperations().last());
 	}
 
 	@Override

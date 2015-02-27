@@ -68,20 +68,12 @@ public interface Controller { // TODO forse sarebbe stato meglio fattorizzare me
 	void aggiuntaContatto(Contatto contatto);
 
 	/**
-	 * Cancella il conto passato dal modello.
+	 * Setta il nostro contatto nel modello.
 	 * 
-	 * @param conto
-	 *            il conto da cancellare
+	 * @param ourContact
+	 *            il contatto da impostare come nostro
 	 */
-	void cancellaConto(Conto conto);
-
-	/**
-	 * Cancella il contatto passato dal modello.
-	 * 
-	 * @param contatto
-	 *            il contatto da cancellare.
-	 */
-	void cancellaContatto(Contatto contatto);
+	void setOurContact(Contatto ourContact);
 
 	/**
 	 * 
@@ -94,48 +86,7 @@ public interface Controller { // TODO forse sarebbe stato meglio fattorizzare me
 	 * @return l'insieme dei contatti
 	 */
 	Set<Contatto> getInsiemeContatti();
-
-	/**
-	 * Carica i dati salvati e popola il modello.
-	 * 
-	 * @return lo stato di caricamento del modello
-	 */
-	Model.State load();
-
-	/**
-	 * Salva il modello.
-	 */
-	void save();
-
-	/**
-	 * Resetta il modello allo stato di partenza.
-	 */
-	void reset();
-
-	/**
-	 * Aggiunge la View al controller.
-	 * 
-	 * @param v
-	 *            la view da aggiungere
-	 */
-	void setView(ViewController v);
-
-	/**
-	 * Collega il modello al controller.
-	 * 
-	 * @param m
-	 *            il modello da collegare
-	 */
-	void setModel(Model m);
-
-	/**
-	 * Setta il nostro contatto nel modello.
-	 * 
-	 * @param ourContact
-	 *            il contatto da impostare come nostro
-	 */
-	void setOurContact(Contatto ourContact);
-
+	
 	/**
 	 * 
 	 * @return il nostro contatto mantenuto nel modello, o null se non è ancora stato impostato
@@ -170,5 +121,54 @@ public interface Controller { // TODO forse sarebbe stato meglio fattorizzare me
 	 * @return la situazione patrimoniale dell'azienda
 	 */
 	SituazionePatrimoniale getSitPatrimoniale();
+	
+	/**
+	 * Cancella il conto passato dal modello.
+	 * 
+	 * @param conto
+	 *            il conto da cancellare
+	 */
+	void cancellaConto(Conto conto);
+
+	/**
+	 * Cancella il contatto passato dal modello.
+	 * 
+	 * @param contatto
+	 *            il contatto da cancellare.
+	 */
+	void cancellaContatto(Contatto contatto);
+	
+	/**
+	 * Carica i dati salvati e popola il modello.
+	 * 
+	 * @return lo stato di caricamento del modello
+	 */
+	Model.State load();
+
+	/**
+	 * Salva il modello.
+	 */
+	void save();
+
+	/**
+	 * Resetta il modello allo stato di partenza.
+	 */
+	void reset();
+
+	/**
+	 * Aggiunge la View al controller.
+	 * 
+	 * @param v
+	 *            la view da aggiungere
+	 */
+	void setView(ViewController v);
+
+	/**
+	 * Collega il modello al controller.
+	 * 
+	 * @param m
+	 *            il modello da collegare
+	 */
+	void setModel(Model m);
 
 }

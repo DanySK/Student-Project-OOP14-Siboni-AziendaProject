@@ -1,16 +1,12 @@
 package model;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.SortedSet;
 
 import model.contatti.Contatto;
 import model.conto.Conto;
-import model.data.Data;
 import model.douments.Document;
 import model.operation.Operation;
-import model.situazione.SituazioneEconomica;
-import model.situazione.SituazionePatrimoniale;
 
 /**
  * Descrive il comportamento del modello dell'applicazione.
@@ -69,20 +65,9 @@ public interface Model {
 
 	/**
 	 * 
-	 * @return l'ultima operazione inserita
+	 * @return l'insieme delle operazioni salvate
 	 */
-	Optional<Operation> getLastOperation();
-
-	/**
-	 * Ottiene le operazioni tra le due date indicate.
-	 * 
-	 * @param dataFrom
-	 *            la data dacui si vogliono visualizzare le operazioni
-	 * @param dataTo
-	 *            la fino alla quale si vogliono visualizzare le operazioni
-	 * @return la lista contenente le operazioni
-	 */
-	List<Operation> getOperations(Data dataFrom, Data dataTo);
+	SortedSet<Operation> getAllOperations();
 
 	/**
 	 * Aggiunge un documento all'operazione indicata.
@@ -95,16 +80,6 @@ public interface Model {
 	 *         già un documento correlato
 	 */
 	boolean addDocumentToOperation(Operation op, Document doc);
-
-	/**
-	 * Ritorna il documento riferito all'operazione passata; lancia
-	 * NoSuchElementException se non c'è un documento correlato all'operazione.
-	 * 
-	 * @param op
-	 *            l'operazione da cui prendere il documento
-	 * @return il documento relativo all'operazione op, oppure optional.empty se non c'è documento
-	 */
-	Optional<Document> getDocumentReferredTo(Operation op);
 
 	/**
 	 * Elimina il documento riferito all'operazione indicata; se l'operazione
@@ -137,18 +112,6 @@ public interface Model {
 	 * @return il set dei contatti salvati
 	 */
 	Set<Contatto> getContatti();
-
-	/**
-	 * 
-	 * @return la situazione economica dell'azienda
-	 */
-	SituazioneEconomica getSituazioneEconomica();
-
-	/**
-	 * 
-	 * @return la situazione patrimoniale dell'azienda
-	 */
-	SituazionePatrimoniale getSituazionePatrimoniale();
 
 	/**
 	 * Salva il modello nel path passato.

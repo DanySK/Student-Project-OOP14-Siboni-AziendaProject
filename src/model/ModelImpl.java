@@ -7,30 +7,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-
 import controller.Controller;
 import model.contatti.Contatto;
 import model.contatti.ContattoImpl;
 import model.conto.Conto;
-import model.conto.Conto.AccesoA;
-import model.data.Data;
 import model.douments.Document;
 import model.operation.Operation;
-import model.situazione.SituazioneEconomica;
-import model.situazione.SituazioneEconomicaImpl;
-import model.situazione.SituazionePatrimoniale;
-import model.situazione.SituazionePatrimonialeImpl;
 
 /**
  * Implementazione concreta della classe Model.
@@ -46,9 +35,6 @@ public final class ModelImpl implements Model {
 	private static final String OPERATIONS_FILENAME = "operations.azpj";
 
 	private static final String LOADING_ERROR = "Errore caricamento file: ";
-
-	private static final List<AccesoA> CONTI_SIT_ECONOMICA = Arrays.asList(
-			AccesoA.COSTI_ES, AccesoA.RICAVI_ES);
 
 	private final transient Controller controller;
 
@@ -123,21 +109,8 @@ public final class ModelImpl implements Model {
 	}
 
 	@Override
-	public Optional<Operation> getLastOperation() {
-		if (this.operationSet.isEmpty()) {
-			return Optional.empty();
-		} else {
-			return Optional.of(this.operationSet.last());
-		}
-	}
-
-	@Override
-	public List<Operation> getOperations(final Data dataFrom, final Data dataTo) {
-		return this.operationSet
-				.stream()
-				.filter(op -> dataFrom.compareTo(op.getData()) <= 0
-						&& dataTo.compareTo(op.getData()) >= 0)
-				.collect(Collectors.toList());
+	public SortedSet<Operation> getAllOperations() {
+		return new TreeSet<>(this.operationSet);
 	}
 
 	@Override
@@ -147,6 +120,7 @@ public final class ModelImpl implements Model {
 
 		try {
 			op.setDocument(doc);
+			this.operationSetChanged = true;
 		} catch (IllegalStateException e) {
 			return false;
 		}
@@ -154,16 +128,10 @@ public final class ModelImpl implements Model {
 	}
 
 	@Override
-	public Optional<Document> getDocumentReferredTo(final Operation op) {
-		Objects.requireNonNull(op);
-
-		return op.getDocument();
-	}
-
-	@Override
 	public void deleteDocumentReferredTo(final Operation op) {
 		Objects.requireNonNull(op);
 		op.removeDocument();
+		this.operationSetChanged = true;
 	}
 
 	@Override
@@ -189,21 +157,6 @@ public final class ModelImpl implements Model {
 	@Override
 	public Set<Contatto> getContatti() {
 		return new TreeSet<>(this.contattiStore);
-	}
-
-	@Override
-	public SituazioneEconomica getSituazioneEconomica() {
-		return new SituazioneEconomicaImpl(this.contiStore.stream()
-				.filter(c -> CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
-				.collect(Collectors.toSet()));
-	}
-
-	@Override
-	public SituazionePatrimoniale getSituazionePatrimoniale() {
-		return new SituazionePatrimonialeImpl(this.contiStore.stream()
-				.filter(c -> !CONTI_SIT_ECONOMICA.contains(c.getAccesoA()))
-				.collect(Collectors.toSet()));
-
 	}
 
 	@Override
