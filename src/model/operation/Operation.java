@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
 import model.conto.Conto;
 import model.data.Data;
 import model.douments.Document;
@@ -72,12 +70,6 @@ public interface Operation extends Serializable {
 	 * @return true se l'operazione bilancia, false altrimenti
 	 */
 	boolean isBalanced();
-
-	/**
-	 * 
-	 * @return il set dei conti movimentati da questa operazione
-	 */
-	Set<Conto> getContiMovimentati();
 
 	/**
 	 * 

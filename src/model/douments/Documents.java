@@ -124,7 +124,7 @@ public final class Documents {
 
 		final Map<Conto, Double> tempMap = op.getContiMovimentatiEImporto();
 
-		if (op.getContiMovimentati().equals(
+		if (op.getContiMovimentatiEImporto().keySet().equals(
 				new HashSet<>(Arrays.asList(
 						ContiGeneratori.CREDITI_V_CLIENTI.get(),
 						ContiGeneratori.IVA_A_DEBITO.get(),

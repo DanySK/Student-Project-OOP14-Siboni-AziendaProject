@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import model.conto.Conto;
@@ -116,11 +115,6 @@ public class OperationImpl implements Operation, Comparable<Operation> {
 			}
 		}
 
-	}
-
-	@Override
-	public Set<Conto> getContiMovimentati() {
-		return this.map.keySet();
 	}
 
 	@Override
