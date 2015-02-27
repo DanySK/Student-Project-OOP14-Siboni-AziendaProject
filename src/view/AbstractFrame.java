@@ -42,7 +42,7 @@ public abstract class AbstractFrame extends JFrame implements
 	 * @param c
 	 *            il controllore generale dell'applicazione
 	 */
-	public AbstractFrame(final String frameName, final ViewController v,
+	protected AbstractFrame(final String frameName, final ViewController v,
 			final Controller c) {
 		this.c = c;
 		this.v = v;

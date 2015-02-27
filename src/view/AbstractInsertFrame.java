@@ -37,7 +37,7 @@ public abstract class AbstractInsertFrame extends AbstractFrame {
 	 * @param c
 	 *            il controllore generale dell'applicazione
 	 */
-	public AbstractInsertFrame(final String frameName, final ViewController v,
+	protected AbstractInsertFrame(final String frameName, final ViewController v,
 			final Controller c) {
 		super(frameName, v, c);
 
