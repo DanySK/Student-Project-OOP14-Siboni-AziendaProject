@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import controller.Controller;
 import model.contatti.Contatto;
 import model.contatti.ContattoImpl;
@@ -263,8 +264,18 @@ public final class ModelImpl implements Model {
 							+ CONTI_FILENAME)));
 			contiStore = (Set<Conto>) in.readObject(); // System.out.println("Letto: contiStore="+contiStore);
 			in.close();
-		} catch (Exception e) {
-			exceptionMap.put(CONTI_FILENAME, e);
+		} catch (IOException | ClassNotFoundException e) {
+			try {
+				final ObjectInputStream in = new ObjectInputStream(
+						new BufferedInputStream(Thread.currentThread()
+								.getContextClassLoader()
+								.getResourceAsStream("conti.azpj")));
+				contiStore = (Set<Conto>) in.readObject();
+				in.close();
+			} catch (IOException | ClassNotFoundException e1) {
+				System.err
+						.println("Errore caricamento interno del file dei conti!");
+			}
 		}
 
 		if (exceptionMap.containsKey(OUR_CONTACT_FILENAME)) {
@@ -284,8 +295,8 @@ public final class ModelImpl implements Model {
 	public void reset() {
 		this.operationSet.clear();
 		this.contiStore.forEach(Conto::reset);
-		
-		//setOperazioni e storeConti sono cambiati
+
+		// setOperazioni e storeConti sono cambiati
 		this.operationSetChanged = this.contiStoreChanged = true;
 	}
 
