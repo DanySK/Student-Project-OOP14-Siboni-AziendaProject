@@ -106,7 +106,7 @@ public class MainMenu extends AbstractFrame {
 	}
 
 	@Override
-	public void quittingHandler() {
+	protected void quittingHandler() {
 		final int answer = JOptionPane.showConfirmDialog(this, SURE_TO_EXIT,
 				ESCI, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (answer == JOptionPane.YES_OPTION) {
