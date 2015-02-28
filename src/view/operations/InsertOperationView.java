@@ -36,8 +36,8 @@ public class InsertOperationView extends AbstractInsertFrame {
 	private static final long serialVersionUID = 2998504799503573659L;
 
 	private static final String CONTO_NULL_ERROR = "Il campo Conto non puo essere vuoto, se hai inserito un importo affianco!!";
-	private static final String BOTH_FIELDS_FULL_ERROR = "I campi Dare e Avere non possone essere compilati contemporaneamente!!";
-	private static final String BOTH_FIELDS_EMPTY_ERROR = "I campi Dare e Avere non poonnono essere entrambi vuoti!!";
+	private static final String BOTH_FIELDS_FULL_ERROR = "I campi Dare e Avere non possono essere compilati contemporaneamente!!";
+	private static final String BOTH_FIELDS_EMPTY_ERROR = "I campi Dare e Avere non possono essere entrambi vuoti!!";
 	private static final String NOT_ENOUGH_LINES_COMPLETED_ERROR = "Un'operazione deve essere formata da almeno due movimentazioni di due conti diversi!!";
 	private static final String NEGATIVE_OR_NULL_NUMBER_ERROR = "Gli importi iscritti non devono essere negativi o nulli";
 	private static final String NOT_BALANCED_ERROR = "L'operazione non bilancia!! Ricontrollare gli importi!!";
