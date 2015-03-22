@@ -22,7 +22,6 @@ public class InsertOurContactView extends InsertContattoView {
 	private static final long serialVersionUID = -6649085106603895203L;
 
 	private static final String BTN_ADD_TEXT = "Imposta";
-	private static final String CONTACT_NECESSARY_ERROR = "E necessario inserire il nostro contatto !!";
 
 	/**
 	 * Crea il frame di inserimento/visualizzaqzione del nostro contatto.
@@ -73,15 +72,9 @@ public class InsertOurContactView extends InsertContattoView {
 
 	@Override
 	protected void quittingHandler() {
-		if (getController().getOurContact() == null) {
-			JOptionPane.showMessageDialog(this, CONTACT_NECESSARY_ERROR,
-					TITOLO_ERRORE, JOptionPane.ERROR_MESSAGE);
-		} else {
 			final Saver s = new Saver(getController());
 			s.start();
 			this.dispose();
 			getViewController().displayMainMenu();
-		}
-
 	}
 }

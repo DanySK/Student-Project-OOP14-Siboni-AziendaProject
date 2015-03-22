@@ -264,7 +264,10 @@ public final class ModelImpl implements Model {
 							+ CONTI_FILENAME)));
 			contiStore = (Set<Conto>) in.readObject(); // System.out.println("Letto: contiStore="+contiStore);
 			in.close();
-		} catch (IOException | ClassNotFoundException e) {
+			if(contiStore.isEmpty()){
+				throw new ZeroContiException();
+			}
+		} catch (ZeroContiException | IOException | ClassNotFoundException e) {
 			try {
 				final ObjectInputStream in = new ObjectInputStream(
 						new BufferedInputStream(Thread.currentThread()
@@ -300,4 +303,19 @@ public final class ModelImpl implements Model {
 		this.operationSetChanged = this.contiStoreChanged = true;
 	}
 
+	
+	/**
+	 * Eccezione lanciata quanto non ci sono più conti nel contiStore, in modo
+	 * da caricare quelli di default.
+	 * 
+	 * @author Enrico
+	 *
+	 */
+	private static class ZeroContiException extends RuntimeException {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -956388306772147275L;
+	}
 }
